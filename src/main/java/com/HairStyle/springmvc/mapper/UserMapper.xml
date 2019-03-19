@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.HairStyle.springmvc.dao.IUserDao">
+	<resultMap id="BaseResultMap" type="com.HairStyle.springmvc.model.User">
+		<result column="user_id" property="user_id" jdbcType="VARCHAR" />
+		<result column="user_name" property="user_name" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="VARCHAR" />
+		<result column="birth_date" property="birth_date" jdbcType="DATE" />
+		<result column="phone_area" property="phone_area" jdbcType="VARCHAR" />
+		<result column="phone_number" property="phone_number" jdbcType="VARCHAR" />
+		<result column="face_type" property="face_type" jdbcType="VARCHAR" />
+		<result column="career" property="career" jdbcType="VARCHAR" />
+		<result column="create_date" property="create_date" jdbcType="DATE" />
+	</resultMap>
+
+	<!--用户登录 -->
+	<select id="login" parameterType="java.util.Map" resultType="com.HairStyle.springmvc.model.User">
+		SELECT
+		*
+		FROM
+		user
+		WHERE
+		user_name=#{user_name,jdbcType=VARCHAR}
+		AND
+		password=#{password,jdbcType=VARCHAR}
+	</select>
+	
+	<!--用户注册 -->
+	<insert id="register" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+		insert into user (user_id,user_name,password,email,gender,birth_date,phone_area,phone_number,face_type,career,create_date)
+		VALUES
+		(#{user_id,jdbcType=VARCHAR},#{user_name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{gender,jdbcType=VARCHAR},#{birth_date,jdbcType=DATE},
+		#{phone_area,jdbcType=VARCHAR},#{phone_number,jdbcType=VARCHAR},#{face_type,jdbcType=VARCHAR},#{career,jdbcType=VARCHAR},#{create_date,jdbcType=DATE})	
+	</insert>
+	
+	<!-- 查找重复 -->
+	<select id="findUsersByUsername" resultType="com.HairStyle.springmvc.model.User">
+		select * from user
+		where user_name=#{user_name}
+	</select>
+	<select id="findUsersByPhone" parameterType="java.util.Map" resultType="com.HairStyle.springmvc.model.User">
+		select * from user
+		where phone_area=#{phone_area} AND phone_number=#{phone_number}
+	</select>
+	<select id="findUsersByEmail" parameterType="java.util.Map" resultType="com.HairStyle.springmvc.model.User">
+		select * from user
+		where email=#{email}
+	</select>
+	
+	<!--修改资料 -->
+	<update id="modifyPasswordByUser_name" parameterType="com.HairStyle.springmvc.model.User">
+		update user set password=#{password} where user_name=#{user_name}
+	</update>
+	
+	<update id="modifyUser_dataByUser_name" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+		update user set email=#{email,jdbcType=VARCHAR},gender=#{gender,jdbcType=VARCHAR},birth_date=#{birth_date,jdbcType=DATE},
+		phone_area=#{phone_area,jdbcType=VARCHAR},phone_number=#{phone_number,jdbcType=VARCHAR},face_type=#{face_type,jdbcType=VARCHAR},career=#{career,jdbcType=VARCHAR}			
+	</update>
+
+	<!-- 获取用户个人资料 -->
+	<select id="get_user_data" resultType="com.HairStyle.springmvc.model.User">
+		SELECT
+		*
+		FROM
+		user
+		WHERE
+		user_name=#{user_name,jdbcType=VARCHAR}
+
+	</select>
+
+</mapper>  

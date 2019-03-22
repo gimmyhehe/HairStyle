@@ -7,67 +7,86 @@
 		<result column="password" property="password" jdbcType="VARCHAR" />
 		<result column="email" property="email" jdbcType="VARCHAR" />
 		<result column="gender" property="gender" jdbcType="VARCHAR" />
-		<result column="birth_date" property="birth_date" jdbcType="DATE" />
+		<result column="birth_date" property="birth_date"  />
 		<result column="phone_area" property="phone_area" jdbcType="VARCHAR" />
 		<result column="phone_number" property="phone_number" jdbcType="VARCHAR" />
 		<result column="face_type" property="face_type" jdbcType="VARCHAR" />
 		<result column="career" property="career" jdbcType="VARCHAR" />
-		<result column="create_date" property="create_date" jdbcType="DATE" />
+		<result column="create_time" property="create_time"  />
 	</resultMap>
+	
+	
+	
+	
+	<!-- 贴文靠用户id找用户名 -->
+	<select id="findUser_nameByUser_idDao" resultMap="BaseResultMap">
+		SELECT
+		user_name
+		FROM
+		user
+		WHERE
+		user_id=#{user_id}		
+	</select>
 
 	<!--用户登录 -->
-	<select id="login" parameterType="java.util.Map" resultType="com.HairStyle.springmvc.model.User">
+	<select id="loginDao" parameterType="java.util.Map" resultMap="BaseResultMap">
 		SELECT
 		*
 		FROM
 		user
 		WHERE
-		user_name=#{user_name,jdbcType=VARCHAR}
+		user_name=#{user_name}
 		AND
-		password=#{password,jdbcType=VARCHAR}
+		password=#{password}
 	</select>
 	
 	<!--用户注册 -->
-	<insert id="register" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
-		insert into user (user_id,user_name,password,email,gender,birth_date,phone_area,phone_number,face_type,career,create_date)
+	<insert id="registerDao" parameterType="java.util.Map">
+		insert into user (user_id,user_name,password,email,gender,birth_date,phone_area,phone_number,face_type,career,create_time)
 		VALUES
-		(#{user_id,jdbcType=VARCHAR},#{user_name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{gender,jdbcType=VARCHAR},#{birth_date,jdbcType=DATE},
-		#{phone_area,jdbcType=VARCHAR},#{phone_number,jdbcType=VARCHAR},#{face_type,jdbcType=VARCHAR},#{career,jdbcType=VARCHAR},#{create_date,jdbcType=DATE})	
+		(#{user_id},#{user_name},#{password},#{email},#{gender},#{birth_date},
+		#{phone_area},#{phone_number},#{face_type},#{career},#{create_time})	
 	</insert>
 	
 	<!-- 查找重复 -->
-	<select id="findUsersByUsername" resultType="com.HairStyle.springmvc.model.User">
+	<select id="findUsersByUsernameDao" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select * from user
 		where user_name=#{user_name}
 	</select>
-	<select id="findUsersByPhone" parameterType="java.util.Map" resultType="com.HairStyle.springmvc.model.User">
-		select * from user
-		where phone_area=#{phone_area} AND phone_number=#{phone_number}
+	<select id="findUsersByPhoneDao" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select COUNT(*) from user
+		where phone_area=#{phone_area} AND phone_number=#{phone_number} 
+		and not exists
+		(select * from user where user_name=#{user_name})
 	</select>
-	<select id="findUsersByEmail" parameterType="java.util.Map" resultType="com.HairStyle.springmvc.model.User">
-		select * from user
-		where email=#{email}
+	<select id="findUsersByEmailDao" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select COUNT(*) 
+		FROM 
+		user
+		WHERE 
+		email=#{email,jdbcType=VARCHAR} and not exists
+		(select * from user where user_name=#{user_name})
 	</select>
 	
 	<!--修改资料 -->
-	<update id="modifyPasswordByUser_name" parameterType="com.HairStyle.springmvc.model.User">
+	<update id="modifyPasswordByUsernameDao"  parameterType="java.util.Map" >
 		update user set password=#{password} where user_name=#{user_name}
 	</update>
 	
-	<update id="modifyUser_dataByUser_name" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
-		update user set email=#{email,jdbcType=VARCHAR},gender=#{gender,jdbcType=VARCHAR},birth_date=#{birth_date,jdbcType=DATE},
-		phone_area=#{phone_area,jdbcType=VARCHAR},phone_number=#{phone_number,jdbcType=VARCHAR},face_type=#{face_type,jdbcType=VARCHAR},career=#{career,jdbcType=VARCHAR}			
+	<update id="modifyUser_dataByUsernameDao" parameterType="java.util.Map" >
+		update user set email=#{email},gender=#{gender},birth_date=#{birth_date},
+		phone_area=#{phone_area},phone_number=#{phone_number},face_type=#{face_type},career=#{career}
+		where user_name=#{user_name}			
 	</update>
 
 	<!-- 获取用户个人资料 -->
-	<select id="get_user_data" resultType="com.HairStyle.springmvc.model.User">
+	<select id="get_user_dataDao" parameterType="java.lang.String" resultMap="BaseResultMap">
 		SELECT
 		*
 		FROM
 		user
 		WHERE
 		user_name=#{user_name,jdbcType=VARCHAR}
-
 	</select>
 
 </mapper>  

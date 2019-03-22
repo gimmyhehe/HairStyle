@@ -27,6 +27,7 @@ import com.HairStyle.springmvc.service.IUserService;
  *
  */
 @Controller
+@RequestMapping(value="api")
 public class LogoutController {
 
     @Resource
@@ -39,7 +40,7 @@ public class LogoutController {
      * @param 
      * @return
      */    
-    @RequestMapping("/api/logout")
+    @RequestMapping("logout")
     @ResponseBody
     public Map<String, String> logout(HttpServletRequest req,HttpServletResponse response){
     	String user_name=req.getParameter("user_name");

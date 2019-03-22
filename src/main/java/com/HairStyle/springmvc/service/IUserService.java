@@ -14,11 +14,12 @@ public interface IUserService {
 	 * @return
 	 */
 	public User login(Map<String, String> map);
-	public User register(Map<String, String> map);
+	public boolean register(Map<String, Object> map);
 	public boolean isUserExist(String username);
-	public boolean isEmailExist(String email);
-	public boolean isPhoneExist(String phone_area,String phone_number);
-	public void modifyPasswordByUsername(String username, String newpassword); 
-	public User modifyUser_dataByUsername(Map<String, String> map);
+	public boolean isEmailExist(Map<String, String> map);
+	public boolean isPhoneExist(Map<String, String> map);
+	public boolean modifyPasswordByUsername(Map<String, String> map); 
+	public boolean modifyUser_dataByUsername(Map<String, Object> map);
 	public User get_user_data(String user_name);
+
 }

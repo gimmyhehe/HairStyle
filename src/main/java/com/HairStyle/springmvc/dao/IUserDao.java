@@ -13,17 +13,19 @@ public interface IUserDao {
 
 
 	/**
-	 * 登录
+	 * 
 	 * 
 	 * @param map
 	 * @return
 	 */
-	public User findUsersByUsername(String user_name);
-	public User findUsersByEmail(String email);
-	public User findUsersByPhone(String phone_area,String phone_number);
-	public User login(Map<String, String> map);
-	public User register(Map<String, String> map);
-	public int modifyPasswordByUsername(String user_name,String newpassword);
-	public User modifyUser_dataByUsername(Map<String, String> map);
-	public User get_user_data(String user_name);
+	public User findUsersByUsernameDao(String user_name);
+	public int findUsersByEmailDao(Map<String, String> map);
+	public int findUsersByPhoneDao(Map<String, String> map);
+	public User loginDao(Map<String, String> map);
+	public boolean registerDao(Map<String, Object> map);
+	public boolean modifyPasswordByUsernameDao(Map<String, String> map);
+	public boolean modifyUser_dataByUsernameDao(Map<String, Object> map);
+	public User get_user_dataDao(String user_name);
+
+
 }

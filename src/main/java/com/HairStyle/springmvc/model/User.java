@@ -1,6 +1,7 @@
 package com.HairStyle.springmvc.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,40 +17,46 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class User implements Serializable {
 	
-	@Size(min=3, max=30)
+	
 	private String user_id;
 	
-	@Size(min=3, max=30)
+	
 	private String user_name;
 
-	@Size(min=3, max=30)
+	
 	private String password;
+	
+	
+	private String new_password;
 
-	@NotEmpty
+	
 	private String gender;
 
 	
-    @NotNull
-	private String birth_date;
+    
+	private Date birth_date;
 
-	@Email @NotEmpty
+	
 	private String email;
 
-	@NotEmpty
+	
 	private String phone_number;
 
-	@NotEmpty
+	
 	private String phone_area;
 
-	@NotEmpty
+	
 	private String face_type;
 	
-	@NotEmpty
+	
 	private String career;
 	
 	
-	@NotNull
-	private String create_date;
+	
+	private Date create_time;
+	
+
+    private List<Poster> posters;
 	
 
 	public String getUser_id() {
@@ -68,6 +75,14 @@ public class User implements Serializable {
 		this.password = password;
 	}
 	
+	public String getNew_Password() {
+		return new_password;
+	}
+
+	public void setNew_Password(String new_password) {
+		this.new_password = new_password;
+	}
+	
 	public String getUser_name() {
 		return user_name;
 	}
@@ -84,11 +99,11 @@ public class User implements Serializable {
 		this.gender = gender;
 	}
 
-	public String getBirth_date() {
+	public Date getBirth_date() {
 		return birth_date;
 	}
 
-	public void setBirth_date(String birth_date) {
+	public void setBirth_date(Date birth_date) {
 		this.birth_date = birth_date;
 	}
 
@@ -132,21 +147,33 @@ public class User implements Serializable {
 		this.career = career;
 	}
 	
-	public String getCreate_date() {
-		return create_date;
+	public Date getCreate_time() {
+
+        return create_time;
+    }
+
+	public void setCreate_time(Date create_time) {
+		this.create_time = create_time;
 	}
 
-	public void setCreate_date(String Create_date) {
-		this.create_date = create_date;
-	}
+	public List<Poster> getPosters() {
+        return posters;
+    }
+ 
+    public void setStudents(List<Poster> posters) {
+        this.posters = posters;
+    }
 
+
+	
 	@Override
 	public String toString() {
-		return "User [user_id=" + user_id + ", user_name" + user_name
-				+ ", gender=" + gender + ", birth_date=" + birth_date + ", email=" + email
+		return "User [user_id=" + user_id + ", user_name" + user_name + "new_password=" + new_password 
+				+ ", gender=" + gender + ", birth_date=" + birth_date + ", email=" + email + "password=" + password
 				+ ", phone_area=" + phone_area + ", phone_number=" + phone_number
 				+ ", face_type=" + face_type + ", career=" + career
-				+ "create_date="+create_date+"]";
+				+ ", create_time="+ create_time
+				+ ", posters="+ posters + "]";
 	}
 
 

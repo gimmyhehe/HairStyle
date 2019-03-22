@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.HairStyle.springmvc.model.User;
 import com.HairStyle.springmvc.service.impl.UserServiceImpl;
 
-
-@RequestMapping(value = "/api/modifyUser_data")
+@Controller
+@RequestMapping(value = "api")
 public class ModifyUser_DataController {
+	
+	@Resource
 	private UserServiceImpl UserService;
 	
 	/**
@@ -32,54 +35,50 @@ public class ModifyUser_DataController {
      * @param 
      * @return
      */
-	@RequestMapping(method = RequestMethod.GET)
-	public Map<String, String> initUser_data(HttpServletRequest req) {
-		String user_name=req.getParameter("user_name");
-		
-		User user=UserService.get_user_data(user_name);
-		
-			Map<String, String> map = new HashMap<String, String>();
 
-			map.put("phone_area",user.getPhone_area());
-			map.put("phone_number", user.getPhone_number());
-			map.put("email", user.getEmail());
-			map.put("gender", user.getGender());
-			map.put("birth_date", user.getBirth_date());
-			map.put("face_type", user.getFace_type());
-			map.put("career", user.getCareer());
-			
-			return map;
-	}
-	
-
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value="modifyUser_data",method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> modifyUser_data(HttpServletRequest req) {
-		String user_name=req.getParameter("user_name");
-		String phone_area=req.getParameter("phone_area");
-    	String phone_number=req.getParameter("phone_number");
-    	String email=req.getParameter("email");
-    	Map<String, String> modifyUser_data_state = new HashMap<String, String>();
-    	if (UserService.isEmailExist(email)) {
-    		modifyUser_data_state.put("msg", "该邮件已注册！");
-    		modifyUser_data_state.put("status", "1");
-		}
-    	else if (UserService.isPhoneExist(phone_area,phone_number)) {
+	public Map<String, Object> modifyUser_data(User user) {
+		String user_name=user.getUser_name();
+		String phone_area=user.getPhone_area();
+    	String phone_number=user.getPhone_number();
+    	String email=user.getEmail();
+    	String face_type=user.getFace_type();
+    	String gender=user.getGender();
+    	String career=user.getCareer();
+    	Date birth_date=user.getBirth_date();
+    	Map<String, Object> modifyUser_data_state = new HashMap<String,Object>();
+    	Map<String, String> phone=new HashMap<String, String>();
+    	Map<String, String> mail_map=new HashMap<String, String>();
+    	phone.put("phone_area", phone_area);
+    	phone.put("phone_number", phone_number);
+    	phone.put("user_name", user_name);
+    	mail_map.put("email", email);
+    	
+    	if(phone_area==null||phone_number==null||email==null||face_type==null||gender==null||career==null){
+    		modifyUser_data_state.put("msg", "信息未完善！");
+    		modifyUser_data_state.put("status", 4);
+    	}
+    	else if (UserService.isPhoneExist(phone)) {
 			modifyUser_data_state.put("msg", "该手机已注册！");
-			modifyUser_data_state.put("status", "2");
+			modifyUser_data_state.put("status", 2);
+		}
+    	else if (UserService.isEmailExist(mail_map)) {
+    		modifyUser_data_state.put("msg", "该邮件已注册！");
+    		modifyUser_data_state.put("status", 1);
 		}else{
-			Map<String, String> map = new HashMap<String, String>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("user_name",user_name);
 			map.put("phone_area",phone_area);
 			map.put("phone_number", phone_number);
 			map.put("email", email);
-			map.put("gender", req.getParameter("gender"));
-			map.put("birth_date", req.getParameter("birth_date"));
-			map.put("face_type", req.getParameter("face_type"));
-			map.put("career", req.getParameter("career"));
+			map.put("gender", gender);
+			map.put("birth_date", birth_date);
+			map.put("face_type", face_type);
+			map.put("career", career);
 			UserService.modifyUser_dataByUsername(map);
 			modifyUser_data_state.put("msg", "修改资料成功！");
-			modifyUser_data_state.put("status", "0");
+			modifyUser_data_state.put("status", 0);
 			
 	}
     	return modifyUser_data_state;

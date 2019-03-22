@@ -17,23 +17,23 @@ public class UserServiceImpl implements IUserService  {
 	private IUserDao userDao;
 	
 	public boolean isUserExist(String username) {
-		if (userDao.findUsersByUsername(username) == null) {
+		if (userDao.findUsersByUsernameDao(username) == null) {
 			return false;
 		} else {
 			return true;
 		}
 	}
 	
-	public boolean isEmailExist(String email) {
-		if (userDao.findUsersByEmail(email) == null) {
+	public boolean isEmailExist(Map<String, String> map) {
+		if (userDao.findUsersByEmailDao(map) <1) {
 			return false;
 		} else {
 			return true;
 		}
 	}
 	
-	public boolean isPhoneExist(String phone_area,String phone_number) {
-		if (userDao.findUsersByPhone(phone_area,phone_number) == null) {
+	public boolean isPhoneExist(Map<String, String> map) {
+		if (userDao.findUsersByPhoneDao(map) <1) {
 			return false;
 		} else {
 			return true;
@@ -42,31 +42,35 @@ public class UserServiceImpl implements IUserService  {
 	
 	public User login(Map<String, String> map) {
 		// TODO Auto-generated method stub
-		return userDao.login(map);
+		return userDao.loginDao(map);
 	}
 	
-	public User register(Map<String, String> map) {
+	public boolean register(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		
-		return userDao.register(map);
+		return userDao.registerDao(map);
 	}
 	
 
 	
-	public void modifyPasswordByUsername(String user_name, String newpassword) {
+	public boolean modifyPasswordByUsername(Map<String, String> map) {
 		
-		userDao.modifyPasswordByUsername(user_name,newpassword);
+		return userDao.modifyPasswordByUsernameDao(map);
 	}
 	
-	public User modifyUser_dataByUsername(Map<String, String> map) {
+	public boolean modifyUser_dataByUsername(Map<String, Object> map) {
 
 		
-		 return userDao.modifyUser_dataByUsername(map);
+		 return userDao.modifyUser_dataByUsernameDao(map);
 	}
 
 	public User get_user_data(String user_name){
 		
-		return userDao.get_user_data(user_name);
+		return userDao.get_user_dataDao(user_name);
 	}
+
+
+
+
 
 }

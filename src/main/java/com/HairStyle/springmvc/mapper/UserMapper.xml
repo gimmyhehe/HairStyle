@@ -14,19 +14,7 @@
 		<result column="career" property="career" jdbcType="VARCHAR" />
 		<result column="create_time" property="create_time"  />
 	</resultMap>
-	
-	
-	
-	
-	<!-- 贴文靠用户id找用户名 -->
-	<select id="findUser_nameByUser_idDao" resultMap="BaseResultMap">
-		SELECT
-		user_name
-		FROM
-		user
-		WHERE
-		user_id=#{user_id}		
-	</select>
+
 
 	<!--用户登录 -->
 	<select id="loginDao" parameterType="java.util.Map" resultMap="BaseResultMap">

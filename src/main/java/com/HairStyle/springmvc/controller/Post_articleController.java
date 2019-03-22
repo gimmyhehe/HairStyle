@@ -84,10 +84,6 @@ public class Post_articleController {
 			    String pic_path="src/main/resources/picture/";
 			    String pic_path_user_post=pic_path+"/"+post_id;
 			    
-			    File logoSaveFile = new File(pic_path_user_post);
-				if (!logoSaveFile.exists()){
-					logoSaveFile.mkdirs();
-				}
 				
 				 try {
 					 	int i=0;

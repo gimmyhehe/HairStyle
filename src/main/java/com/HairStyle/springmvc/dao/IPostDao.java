@@ -22,4 +22,5 @@ public interface IPostDao {
 	public List<Poster> findPostByPost_typeDao(String post_type);
 	public List<Poster> findPostByUser_nameDao(String user_name);
 
+	
 }

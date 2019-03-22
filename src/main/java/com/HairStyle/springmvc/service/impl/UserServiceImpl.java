@@ -25,7 +25,7 @@ public class UserServiceImpl implements IUserService  {
 	}
 	
 	public boolean isEmailExist(Map<String, String> map) {
-		if (userDao.findUsersByEmailDao(map) <1) {
+		if (userDao.findUsersByEmailDao(map) ==0) {
 			return false;
 		} else {
 			return true;
@@ -33,7 +33,7 @@ public class UserServiceImpl implements IUserService  {
 	}
 	
 	public boolean isPhoneExist(Map<String, String> map) {
-		if (userDao.findUsersByPhoneDao(map) <1) {
+		if (userDao.findUsersByPhoneDao(map) ==0) {
 			return false;
 		} else {
 			return true;
@@ -58,10 +58,10 @@ public class UserServiceImpl implements IUserService  {
 		return userDao.modifyPasswordByUsernameDao(map);
 	}
 	
-	public boolean modifyUser_dataByUsername(Map<String, Object> map) {
+	public boolean modifyUser_dataByUserID(Map<String, Object> map) {
 
 		
-		 return userDao.modifyUser_dataByUsernameDao(map);
+		 return userDao.modifyUser_dataByUserIDDao(map);
 	}
 
 	public User get_user_data(String user_name){
@@ -70,7 +70,13 @@ public class UserServiceImpl implements IUserService  {
 	}
 
 
-
+	public boolean upload_new_user_pic(Map<String, Object> map){
+		return userDao.upload_new_user_picDao(map);
+	}
+	
+	public boolean set_user_old_pic(String uploader_id){
+		return userDao.set_user_old_picDao(uploader_id);
+	}
 
 
 }

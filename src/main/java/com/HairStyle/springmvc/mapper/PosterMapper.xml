@@ -1,62 +1,374 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.HairStyle.springmvc.dao.IPosterDao">
-	<resultMap id="BaseResultMap" type="com.HairStyle.springmvc.model.Poster">
-		<result column="post_user_id" property="post_user_name" jdbcType="VARCHAR" />
-		<result column="post_id" property="post_id" jdbcType="VARCHAR" />
-		<result column="post_type" property="post_type" jdbcType="VARCHAR" />
-		<result column="post_content" property="post_content" jdbcType="VARCHAR" />
-		<result column="post_time" property="post_time" jdbcType="DATE" />
-		<result column="last_edit_time" property="last_edit_time" jdbcType="DATE" />
-		<collection property="post_pic_collect" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">
-            <result column="idpost_pic" property="idpost_pic" jdbcType="VARCHAR" />
-            <result column="seq_id" property="seq_id" jdbcType="VARCHAR" />
-            <result column="post_pic_dir" property="post_pic_dir" jdbcType="VARCHAR" />
-            <result column="pic_post_id" property="pic_post_id" jdbcType="VARCHAR" />
-            <result column="is_active" property="is_active" />
+<mapper namespace="com.HairStyle.springmvc.dao.IPostDao">
+	
+	<resultMap id="APostbyPostIDResultMap" type="com.HairStyle.springmvc.model.Poster">
+		<id property="post_id" column="post_id" />
+		<result column="post_type" property="post_type" />
+		<result column="post_content" property="post_content" />
+		<result column="post_time" property="post_time" />
+		<result column="last_edit_time" property="last_edit_time" />
+		<result column="islike_id" property="like_id" jdbcType="INTEGER" />
+		<result column="iscollect_id" property="collect_id" jdbcType="INTEGER" />
+		<result column="like_num" property="like_num" jdbcType="INTEGER" />
+		<result column="collect_num" property="collect_num" jdbcType="INTEGER" />
+		<association property="user" column="user_id" javaType="com.HairStyle.springmvc.model.User" resultMap="UserMap"/>
+		<collection property="post_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">         
+            	<id column="idpost_pic" property="idpost_pic" />
+            	<result column="seq_id" property="seq_id"  />
+            	<result column="post_pic_dir" property="post_pic_dir"  />
+        </collection>
+        <collection property="common" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Common">         
+            	<id column="common_id" property="common_id" />
+            	<result column="common_content" property="common_content"  />
+            	<result column="common_time" property="common_time"  />
+            	<result column="common_user_id" property="common_user_id"  />
+            	<result column="common_user_name" property="common_user_name"  />
+            	<result column="common_user_pic" property="common_user_pic"  />
+            	<collection property="reply" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Reply">
+            		<id column="reply_id" property="reply_id" />
+            		<result column="reply_user_id" property="reply_user_id"  />
+            		<result column="reply_user_name" property="reply_user_name"  />
+            		<result column="replyed_user_id" property="replyed_user_id"  />
+            		<result column="replyed_user_name" property="replyed_user_name"  />
+            		<result column="reply_content" property="reply_content"  />
+            		<result column="reply_time" property="reply_time"  />          		            		
+            	</collection>
+        </collection>
+        <collection property="like_table" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.like_table">
+        	<id column="like_id" property="like_id" />
+        	<result column="like_user_id" property="like_user_id"  />
+            <result column="liker_name" property="liker_name"  />
+            <result column="liker_pic" property="liker_pic"  />
+            <result column="like_time" property="like_time"  />
         </collection>
 	</resultMap>
 
+	<resultMap id="PostByUserResultMap" type="com.HairStyle.springmvc.model.User">
+		<id property="user_id" column="user_id" />
+		<result column="user_name" property="user_name" />
+		<association property="user_pic" column="pic_id" javaType="com.HairStyle.springmvc.model.User_Pic" resultMap="User_PicMap"/>
+		<collection property="posters" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Poster">
+			<id property="post_id" column="post_id" />
+			<result column="post_type" property="post_type" />
+			<result column="post_content" property="post_content" />
+			<result column="post_time" property="post_time" />
+			<result column="last_edit_time" property="last_edit_time" />
+			<result column="like_id" property="like_id" jdbcType="INTEGER" />
+			<result column="collect_id" property="collect_id" jdbcType="INTEGER" />
+			<result column="like_num" property="like_num" jdbcType="INTEGER" />
+			<result column="collect_num" property="collect_num" jdbcType="INTEGER" />
+			<collection property="post_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">         
+            	<id column="idpost_pic" property="idpost_pic" />
+            	<result column="seq_id" property="seq_id"  />
+            	<result column="post_pic_dir" property="post_pic_dir"  />
+        	</collection>
+        </collection>
+	</resultMap>
+	
+	<resultMap id="PostByTypeResultMap" type="com.HairStyle.springmvc.model.Post_Type">
+		<id property="post_type" column="post_type" />
+		<collection property="poster" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Poster">
+			<id property="post_id" column="post_id" />
+			<result column="post_type" property="post_type" jdbcType="VARCHAR" />
+			<result column="post_content" property="post_content" jdbcType="VARCHAR" />
+			<result column="post_time" property="post_time" jdbcType="DATE" />
+			<result column="last_edit_time" property="last_edit_time" jdbcType="DATE" />
+			<result column="like_id" property="like_id" jdbcType="INTEGER" />
+			<result column="collect_id" property="collect_id" jdbcType="INTEGER" />
+			<result column="like_num" property="like_num" jdbcType="INTEGER" />
+			<result column="collect_num" property="collect_num" jdbcType="INTEGER" />
+			<association property="user" column="user_id" javaType="com.HairStyle.springmvc.model.User" resultMap="UserMap"/>		
+			<collection property="post_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">         
+            	<id column="idpost_pic" property="idpost_pic" />
+            	<result column="seq_id" property="seq_id"  />
+            	<result column="post_pic_dir" property="post_pic_dir"  />
+        	</collection>
+        </collection>
+	</resultMap>
+	
+	<resultMap id="PostBylikeResultMap" type="com.HairStyle.springmvc.model.User">
+		<id property="user_id" column="user_id" />
+		<result column="user_name" property="user_name" />
+		<association property="user_pic" column="pic_id" javaType="com.HairStyle.springmvc.model.User_Pic" resultMap="User_PicMap"/>
+		<collection property="lt" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.like_table">	
+			<id property="like_id" column="like_id" />
+			<result column="like_time" property="like_time" />
+			<association property="poster" column="post_id" javaType="com.HairStyle.springmvc.model.Poster" resultMap="PostMap"/>				
+	    </collection>
+	</resultMap>
+	
+	
+	<resultMap id="PostBycollectResultMap" type="com.HairStyle.springmvc.model.User">
+		<id property="user_id" column="user_id" />
+		<result column="user_name" property="user_name" />
+		<association property="user_pic" column="pic_id" javaType="com.HairStyle.springmvc.model.User_Pic" resultMap="User_PicMap"/>
+		<collection property="ct" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Collection">	
+			<id property="collect_id" column="collect_id" />
+			<result column="collect_time" property="collect_time" />
+			<association property="poster" column="post_id" javaType="com.HairStyle.springmvc.model.Poster" resultMap="PostMap"/>				
+	    </collection>
+	</resultMap>
+	
+	<resultMap id="PostMap" type="com.HairStyle.springmvc.model.Poster">
+		<id property="post_id" column="post_id" />
+				<result column="post_type" property="post_type" />
+				<result column="post_content" property="post_content" />
+				<result column="post_time" property="post_time" />
+				<result column="last_edit_time" property="last_edit_time" />
+				<result column="islike_id" property="like_id" jdbcType="INTEGER" />
+				<result column="iscollect_id" property="collect_id" jdbcType="INTEGER" />
+				<result column="like_num" property="like_num" jdbcType="INTEGER" />
+				<result column="collect_num" property="collect_num" jdbcType="INTEGER" />
+				<collection property="post_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">         
+	            	<id column="idpost_pic" property="idpost_pic" />
+	            	<result column="seq_id" property="seq_id"  />
+	            	<result column="post_pic_dir" property="post_pic_dir"  />
+	        	</collection>
+	</resultMap>
+	
+	
+	
+	<resultMap id="UserMap" type="com.HairStyle.springmvc.model.User">
+		<id property="user_id" column="user_id"/>
+		<result column="user_name" property="user_name"/>
+		<association property="user_pic" column="pic_id" javaType="com.HairStyle.springmvc.model.User_Pic" resultMap="User_PicMap"/>
+	</resultMap>
+	
+	<resultMap id="User_PicMap" type="com.HairStyle.springmvc.model.User_Pic">
+		<id property="pic_id" column="pic_id"/>
+		<result column="user_pic_dir" property="user_pic_dir"/>
+	</resultMap>
 
 	<!--用户发布贴文 -->
 	<insert id="post_articleDao" parameterType="java.util.Map">
-		insert into poster (post_user_id,post_id,post_type,post_content,post_time,pic_one,pic_two,pic_three,pic_four,pic_five,pic_six,pic_seven,pic_eight,pic_nine)
+		insert into post (post_user_id,post_id,post_type,post_content,post_time,is_active)
 		VALUES
-		(#{post_user_id},#{post_id},#{post_type},#{post_content},#{post_time})	
+		(#{post_user_id},#{post_id},#{post_type},#{post_content},#{post_time},1)	
 	</insert>
 	
-	<insert id="insert_post_pic" parameterType="java.util.Map">
+	<insert id="insert_post_picDao" parameterType="java.util.Map">
 		insert into post_pic (idpost_pic,seq_id,post_pic_dir,pic_post_id,is_active)
 		VALUES
 		(#{idpost_pic},#{seq_id},#{post_pic_dir},#{pic_post_id},1)
 	</insert>
 		
 	<!--按帖子类型展示所有贴文 -->
-	<select id="findPostByPost_typeDao" resultMap="BaseResultMap">
-		select post.*,post_pic.*,user.user_name 
-		from post,post_pic,user
+	<select id="findPostByPost_typeDao" parameterType="java.util.Map" resultMap="PostByTypeResultMap">
+		select post.*,post_pic.idpost_pic,post_pic.seq_id,post_pic.post_pic_dir,user.user_name,user.user_id,user_pic.user_pic_dir,like_table.like_id,collect_table.collect_id,
+		(select count(like_user_id) 
+			from like_table 
+			where like_table.like_post_id=post.post_id and post.post_type=#{post_type} and like_table.is_active=1
+		) as like_num, 
+		(select count(collect_user_id) 
+			from collect_table 
+			where collect_table.collect_post_id=post.post_id and post.post_type=#{post_type} and collect_table.is_active=1
+		) as collect_num 
+		from post
+        left join (user left join user_pic on user.user_id=user_pic.uploader_id and user_pic.is_active=1)
+        on post.post_user_id=user.user_id
+        left join post_pic on post.post_id=post_pic.pic_post_id and post_pic.is_active=1
+		left join like_table on like_table.like_post_id=post.post_id and like_table.like_user_id=#{user_id}
+		left join collect_table on collect_table.collect_post_id=post.post_id and collect_table.collect_user_id=#{user_id}
 		where 
-		post.post_type=#{post_type} and post_pic.pic_post_id=post.post_id and post.post_user_id=user.user_id 
-		and post_pic.is_active=1
+		post.post_type=#{post_type} and post.is_active=1
+		
 	</select>
 	
-	
-	<select id="findPostByUser_nameDao" resultMap="BaseResultMap">
-		select post.*,post_pic.*,user.user_name 
-		from post,post_pic,user
-		where user.user_name=#{user_name} and post_pic.pic_post_id=post.post_id and post.post_user_id=user.user_id and post_pic.is_active=1
+	<!--按用户ID展示其发表所有贴文 -->
+	<select id="findPostByUser_idDao" parameterType="java.util.Map" resultMap="PostByUserResultMap">
+		select post.*,post_pic.idpost_pic,post_pic.seq_id,post_pic.post_pic_dir,user.user_name,user.user_id,user_pic.user_pic_dir,like_table.like_id,collect_table.collect_id,
+		(select count(like_user_id) 
+			from like_table 
+			where like_table.like_post_id=post.post_id and like_table.is_active=1
+		) as like_num, 
+		(select count(collect_user_id) 
+			from collect_table 
+			where collect_table.collect_post_id=post.post_id and collect_table.is_active=1
+		) as collect_num  
+		from user
+        left join user_pic on user.user_id=user_pic.uploader_id and user_pic.is_active=1
+        left join (post 
+        	left join post_pic on post.post_id=post_pic.pic_post_id and post_pic.is_active=1
+        	left join like_table on like_table.like_post_id=post.post_id and like_table.like_user_id=#{userd_id} and like_table.is_active=1
+			left join collect_table on collect_table.collect_post_id=post.post_id and collect_table.collect_user_id=#{userd_id} and collect_table.is_active=1
+		) 
+        on post.post_user_id=user.user_id and post.is_active=1       
+		where 
+		user.user_id=#{user_id}
 	</select>
 	
-	
+	<!-- 单个帖子展示评论回复 -->
+	<select id="findPostByPost_idDao" parameterType="java.util.Map" resultMap="APostbyPostIDResultMap">
+		select post.post_id,post.post_type,post.post_content,post.post_time,post.last_edit_time,
+		post_pic.idpost_pic,post_pic.seq_id,post_pic.post_pic_dir,
+        user.user_id,user.user_name,
+        user_pic.pic_id as user_pic_id,
+        user_pic.user_pic_dir,
+        common.common_id,common.common_user_id,common.common_content,common.common_time,
+        cm_user.user_id as common_user_id,
+        cm_user.user_name as common_user_name,
+        cm_user_pic.user_pic_dir as common_user_pic,
+        reply.reply_id,reply.reply_user_id,reply.replyed_user_id,reply.reply_time,reply.reply_content,
+        re_user.user_name as reply_user_name,
+        re_user_pic.user_pic_dir as re_user_pic,
+        red_user.user_name as replyed_user_name,
+        like_table.like_id,
+        like_table.like_user_id,
+        like_user.user_name as liker_name,
+        like_user_pic.user_pic_dir as liker_pic,
+        like_table.like_time as like_time,
+        (select count(like_user_id) 
+			from like_table 
+			where like_table.like_post_id=post.post_id and like_table.is_active=1
+		) as like_num, 
+		(select count(collect_user_id) 
+			from collect_table 
+			where collect_table.collect_post_id=post.post_id and collect_table.is_active=1
+		) as collect_num,
+		(select like_id as islike_id 
+			from like_table 
+			where like_table.like_post_id=post.post_id and like_table.is_active=1 and like_table.like_user_id=#{user_id}
+		) as islike_id,
+		(select collect_id 
+			from collect_table 
+			where collect_table.collect_post_id=post.post_id and collect_table.is_active=1 and collect_table.collect_user_id=#{user_id}
+		) as iscollect_id  
+from post
+left join post_pic on post.post_id=post_pic.pic_post_id and post_pic.is_active=1  
+left join (user inner join user_pic on user.user_id=user_pic.uploader_id) 
+			on post.post_user_id=user.user_id
+left join ((common left join (user as cm_user left join user_pic as cm_user_pic 
+			on cm_user.user_id=cm_user_pic.uploader_id and cm_user_pic.is_active=1) 
+			on common.common_user_id=cm_user.user_id)			
+            left join reply 
+						left join(user as re_user left join user_pic as re_user_pic
+						on re_user.user_id=re_user_pic.uploader_id and re_user_pic.is_active=1)
+						on reply.reply_user_id=re_user.user_id
+						left join user as red_user
+						on reply.replyed_user_id=red_user.user_id
+            on common.common_id=reply.reply_common_id and reply.is_active=1)
+            on common.common_post_id=post.post_id and common.is_active=1
+left join (like_table left join (user as like_user left join user_pic as like_user_pic 
+			on like_user.user_id=like_user_pic.uploader_id and like_user_pic.is_active=1) 
+			on like_table.like_user_id=like_user.user_id)			
+		on like_table.like_post_id=post.post_id and like_table.is_active=1
+where post.post_id=#{post_id}
+	</select>
 	<!--修改帖子 -->
-	<update id="modifyPosterByPoster_id" parameterType="java.util.Map">
-		update poster set post_type=#{post_type},post_content=#{post_content},
+	<update id="update_articleDao" parameterType="java.util.Map">
+		update post set post_type=#{post_type},post_content=#{post_content},
 		last_edit_time=#{last_edit_time} where post_id=#{post_id}
 	</update>
 	
-	<update id="modifyPhotoCancelActive" parameterType="java.util.Map">
-		update post_pic set is_active=0, where pic_post_id=#{pic_post_id} and seq_id=#{pic_post_id} and is_active=1
+	<update id="delete_post_picDao" parameterType="java.util.Map">
+		update post_pic set is_active=0 where pic_post_id=#{pic_post_id} and seq_id=#{seq_id} and is_active=1 or idpost_pic=#{idpost_pic}
 	</update>
 	
-
-
+	<update id="delete_articleDao" parameterType="java.util.Map">
+		update post set is_active=0,last_edit_time=#{last_edit_time} 
+		where post_id=#{post_id}
+	</update>
+	
+	<!--评论 -->
+	<insert id="makeCommonDao" parameterType="com.HairStyle.springmvc.model.Common">
+		insert into common (common_id,common_post_id,common_user_id,common_content,common_time,is_active)
+		VALUES
+		(#{common_id},#{common_post_id},#{common_user_id},#{common_content},#{common_time},1)	
+	</insert>
+	
+	<update id="delete_commonDao" parameterType="java.lang.String">
+		update common set is_active=0 
+		where common_id=#{common_id}
+	</update>
+	
+	<!-- 回复 -->
+	<insert id="makeReplyDao" parameterType="java.util.Map">
+		insert into reply (reply_id,reply_common_id,reply_user_id,replyed_user_id,reply_content,reply_time,is_active)
+		VALUES
+		(#{reply_id},#{reply_common_id},#{reply_user_id},#{replyed_user_id},#{reply_content},#{reply_time},1)	
+	</insert>
+	
+	<update id="delete_ReplyDao" parameterType="java.lang.String">
+		update reply set is_active=0 
+		where reply_id=#{reply_id}
+	</update>
+	
+	<select id="search_post_picDao" parameterType="java.util.Map" resultType="com.HairStyle.springmvc.model.Post_Pic">
+		SELECT
+		post_pic.*
+		FROM
+		post_pic
+		WHERE
+		seq_id=#{seq_id} and pic_post_id=#{pic_post_id}
+	</select>
+	
+	<!-- 点赞 -->
+	<insert id="makelikeDao" parameterType="com.HairStyle.springmvc.model.like_table">
+		insert into like_table (like_post_id,like_user_id,like_time,is_active)
+		VALUES
+		(#{like_post_id},#{like_user_id},#{like_time},1)	
+	</insert>
+	
+	<!-- 取消点赞 -->
+	<update id="deletelikeDao" parameterType="java.lang.String">
+		update like_table set is_active=0 
+		where like_id=#{like_id}
+	</update>
+	
+	<!-- 收藏 -->
+	<insert id="makecollectDao" parameterType="com.HairStyle.springmvc.model.like_table">
+		insert into collect_table (collect_post_id,collect_user_id,collect_time,is_active)
+		VALUES
+		(#{collect_post_id},#{collector_id},#{collect_time},1)	
+	</insert>
+	
+	<!-- 取消收藏 -->
+	<update id="deletecollectDao" parameterType="java.lang.String">
+		update collect_table set is_active=0 
+		where collect_id=#{collect_id}
+	</update>
+	
+	<select id="getuser_likeDao" parameterType="java.util.Map" resultMap="PostBylikeResultMap">
+		select like_table.like_id,like_table.like_time,post.*,post_pic.idpost_pic,post_pic.seq_id,post_pic.post_pic_dir,user.user_name,user.user_id,user_pic.user_pic_dir,lt.like_id as islike_id,ct.collect_id as iscollect_id,
+		(select count(like_user_id) 
+			from like_table 
+			where like_table.like_post_id=post.post_id and like_table.is_active=1
+		) as like_num, 
+		(select count(collect_user_id) 
+			from collect_table 
+			where collect_table.collect_post_id=post.post_id and collect_table.is_active=1
+		) as collect_num  
+		from user
+        left join user_pic on user.user_id=user_pic.uploader_id and user_pic.is_active=1
+        left join like_table left join post 
+        			left join post_pic on post.post_id=post_pic.pic_post_id and post_pic.is_active=1
+        			left join like_table as lt on lt.like_post_id=post.post_id and lt.like_user_id=#{userd_id} and lt.is_active=1
+					left join collect_table as ct on ct.collect_post_id=post.post_id and ct.collect_user_id=#{userd_id} and ct.is_active=1
+					on like_table.like_post_id=post.post_id  
+                    on like_table.like_user_id=user.user_id and like_table.is_active=1
+		where user.user_id=#{user_id}
+	</select>
+	
+	
+	<select id="getuser_collectDao" parameterType="java.util.Map" resultMap="PostBycollectResultMap">
+		select collect_table.collect_id,collect_table.collect_time,post.*,post_pic.idpost_pic,post_pic.seq_id,post_pic.post_pic_dir,user.user_name,user.user_id,user_pic.user_pic_dir,lt.like_id as islike_id,ct.collect_id as iscollect_id,
+		(select count(like_user_id) 
+			from like_table 
+			where like_table.like_post_id=post.post_id and like_table.is_active=1
+		) as like_num, 
+		(select count(collect_user_id) 
+			from collect_table 
+			where collect_table.collect_post_id=post.post_id and collect_table.is_active=1
+		) as collect_num  
+		from user
+        left join user_pic on user.user_id=user_pic.uploader_id and user_pic.is_active=1
+        left join collect_table left join post 
+        			left join post_pic on post.post_id=post_pic.pic_post_id and post_pic.is_active=1
+        			left join like_table as lt on lt.like_post_id=post.post_id and lt.like_user_id=#{userd_id} and lt.is_active=1
+					left join collect_table as ct on ct.collect_post_id=post.post_id and ct.collect_user_id=#{userd_id} and ct.is_active=1
+					on collect_table.collect_post_id=post.post_id  
+                    on collect_table.collect_user_id=user.user_id and collect_table.is_active=1
+		where user.user_id=#{user_id}
+	</select>
+	
 </mapper>  

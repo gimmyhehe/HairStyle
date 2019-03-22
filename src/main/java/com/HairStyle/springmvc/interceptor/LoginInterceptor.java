@@ -14,7 +14,7 @@ public class LoginInterceptor implements HandlerInterceptor {
       Cookie[] cookies = request.getCookies();//这里是取出Cookie
         if ((cookies!=null)){//判断Cookie是否为空
             for (Cookie cookie : cookies){//遍历Cookie判断有没有对应的name
-                if (cookie.getName().equals("user_name")){//有就直接return true
+                if (cookie.getName().equals("user_info")){//有就直接return true
                       return true;
                 }
             }

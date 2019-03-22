@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.HairStyle.springmvc.dao.ICompanyDao">
+
+
+
+	<!--商户注册-->
+	<insert id="regicompanyDao" parameterType="com.HairStyle.springmvc.model.Company">
+		insert into company (company_name,company_user_id,location,company_intr)
+		VALUES
+		(#{company_name},#{company_user_id},#{location},#{company_intr})
+	</insert>
+	
+	<!--商户信息修改-->
+	<update id="modifycompanyDao" parameterType="com.HairStyle.springmvc.model.Company">
+		update company set company_name=#{company_name},location=#{location},company_intr=#{company_intr}
+		where company_id=#{company_id}
+	</update>
+	
+	<!--商户信息查看-->
+	
+	<!--发型师信息录入-->
+	<insert id="regiHairstyleDao" parameterType="com.HairStyle.springmvc.model.Hairstyler">
+		insert into hairstylist (hairstyle_name,hairstyle_intr,hairstyle_pic,hairstyle_level,hairstyle_company_id)
+		VALUES
+		(#{hairstyle_name},#{hairstyle_intr},#{hairstyle_pic},#{hairstyle_level},#{hairstyle_company_id})
+	</insert>
+	
+	<!--发型师信息修改-->
+	<update id="modifyHairstyleDao" parameterType="com.HairStyle.springmvc.model.Company">
+		
+		update hairstylist set hairstyle_name=#{hairstyle_name},hairstyle_intr=#{hairstyle_intr}
+		<if test="hairstyle_pic != null">
+            ,hairstyle_pic=#{hairstyle_pic}
+        </if>		
+		where hairstyle_id=#{hairstyle_id}
+	</update>
+	
+	
+	<!--删除发型师-->
+	<delete id="deleteHairstyleDao" parameterType="java.lang.String">  
+        DELETE FROM hairstylist WHERE hairstyle_id = #{hairstyle_id}  
+	</delete>  
+	
+</mapper>

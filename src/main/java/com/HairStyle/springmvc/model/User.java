@@ -12,9 +12,12 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 
-
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class User implements Serializable {
 	
 	
@@ -31,7 +34,6 @@ public class User implements Serializable {
 
 	
 	private String gender;
-
 	
     
 	private Date birth_date;
@@ -51,13 +53,24 @@ public class User implements Serializable {
 	
 	private String career;
 	
+	private String country;
 	
+	private String province;
+	
+	private String area;
+	
+	private int user_type;
+	
+	private User_Pic user_pic;
 	
 	private Date create_time;
 	
-
-    private List<Poster> posters;
+	private Company company;
 	
+	private MultipartFile user_img;
+    private List<Poster> posters;
+    private List<like_table> lt;
+    private List<Collection> ct;
 
 	public String getUser_id() {
 		return user_id;
@@ -119,6 +132,14 @@ public class User implements Serializable {
 		return phone_number;
 	}
 	
+	public void setUser_Pic(User_Pic user_pic) {
+		this.user_pic = user_pic;
+	}
+
+	public User_Pic getUser_Pic() {
+		return user_pic;
+	}
+	
 	public void setPhone_number(String phone_number) {
 		this.phone_number = phone_number;
 	}
@@ -147,6 +168,38 @@ public class User implements Serializable {
 		this.career = career;
 	}
 	
+	public String getCountry() {
+		return country;
+	}
+	
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	
+	public String getProvince() {
+		return province;
+	}
+	
+	public void setArea(String area) {
+		this.area = area;
+	}
+	
+	public String getArea() {
+		return area;
+	}	
+	
+	public void setUser_type(int user_type) {
+		this.user_type = user_type;
+	}
+	
+	public int getUser_type() {
+		return user_type;
+	}
+	
 	public Date getCreate_time() {
 
         return create_time;
@@ -160,11 +213,41 @@ public class User implements Serializable {
         return posters;
     }
  
-    public void setStudents(List<Poster> posters) {
+    public void setPosters(List<Poster> posters) {
         this.posters = posters;
     }
+    
+    public List<like_table> getLT() {
+        return lt;
+    }
+ 
+    public void setLT(List<like_table> lt) {
+        this.lt = lt;
+    }
+    
+    public List<Collection> getCT() {
+        return ct;
+    }
+ 
+    public void setCT(List<Collection> ct) {
+        this.ct = ct;
+    }
 
+    public MultipartFile getUser_img() {
+        return user_img;
+    }
+ 
+    public void setUser_img(MultipartFile user_img) {
+        this.user_img = user_img;
+    }
 
+    public void setCompany(Company company) {
+		this.company = company;
+	}
+	
+	public Company getCompany() {
+		return company;
+	}
 	
 	@Override
 	public String toString() {
@@ -173,7 +256,9 @@ public class User implements Serializable {
 				+ ", phone_area=" + phone_area + ", phone_number=" + phone_number
 				+ ", face_type=" + face_type + ", career=" + career
 				+ ", create_time="+ create_time
-				+ ", posters="+ posters + "]";
+				+ ", posters="+ posters + ", user_pic="+ user_pic+ ", country=" +country
+				+ ", province=" + province + ", area=" +area + ",user_type="+user_type
+				+", user_img=" + user_img + ", lt=" + lt +", ct=" + ct +", company=" + company +"]";
 	}
 
 

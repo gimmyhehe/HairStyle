@@ -2,50 +2,74 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.HairStyle.springmvc.dao.IUserDao">
 	<resultMap id="BaseResultMap" type="com.HairStyle.springmvc.model.User">
-		<result column="user_id" property="user_id" jdbcType="VARCHAR" />
-		<result column="user_name" property="user_name" jdbcType="VARCHAR" />
-		<result column="password" property="password" jdbcType="VARCHAR" />
-		<result column="email" property="email" jdbcType="VARCHAR" />
-		<result column="gender" property="gender" jdbcType="VARCHAR" />
-		<result column="birth_date" property="birth_date"  />
-		<result column="phone_area" property="phone_area" jdbcType="VARCHAR" />
-		<result column="phone_number" property="phone_number" jdbcType="VARCHAR" />
-		<result column="face_type" property="face_type" jdbcType="VARCHAR" />
-		<result column="career" property="career" jdbcType="VARCHAR" />
-		<result column="create_time" property="create_time"  />
+  		<id property="user_id" column="user_id" />
+		<result column="user_name" property="user_name" />
+		<result column="password" property="password" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+		<result column="birth_date" property="birth_date" />
+		<result column="phone_area" property="phone_area" />
+		<result column="phone_number" property="phone_number" />
+		<result column="face_type" property="face_type" />
+		<result column="career" property="career" />
+		<result column="create_time" property="create_time" />
+		<result column="country" property="country" />
+		<result column="province" property="province" />
+		<result column="area" property="area" />
+		<result column="user_type" property="user_type" />
 	</resultMap>
 	
+	<resultMap id="WithUser_PicResultMap" type="com.HairStyle.springmvc.model.User">
+  		<id property="user_id" column="user_id" />
+		<result column="user_name" property="user_name" />
+		<result column="password" property="password" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+		<result column="birth_date" property="birth_date" />
+		<result column="phone_area" property="phone_area" />
+		<result column="phone_number" property="phone_number" />
+		<result column="face_type" property="face_type" />
+		<result column="career" property="career" />
+		<result column="create_time" property="create_time"  />
+		<result column="country" property="country" />
+		<result column="province" property="province" />
+		<result column="area" property="area" />
+		<result column="user_type" property="user_type" />
+		<association property="company" column="company_id" javaType="com.HairStyle.springmvc.model.Company" resultMap="CompanyMap"/>
+		<association property="user_pic" column="pic_id" javaType="com.HairStyle.springmvc.model.User_Pic" resultMap="User_PicMap"/>		
+	</resultMap>
 	
+	<resultMap id="User_PicMap" type="com.HairStyle.springmvc.model.User_Pic">
+		<id property="pic_id" column="pic_id"/>
+		<result column="user_pic_dir" property="user_pic_dir"/>
+	</resultMap>
 	
-	
-	<!-- 贴文靠用户id找用户名 -->
-	<select id="findUser_nameByUser_idDao" resultMap="BaseResultMap">
-		SELECT
-		user_name
-		FROM
-		user
-		WHERE
-		user_id=#{user_id}		
-	</select>
+	<resultMap id="CompanyMap" type="com.HairStyle.springmvc.model.Company">
+		<id property="company_id" column="company_id"/>
+	</resultMap>
+
+		
+
+
 
 	<!--用户登录 -->
-	<select id="loginDao" parameterType="java.util.Map" resultMap="BaseResultMap">
+	<select id="loginDao" parameterType="java.util.Map" resultMap="WithUser_PicResultMap">
 		SELECT
-		*
+		user.*,user_pic.*,company.company_id
 		FROM
-		user
+		(user,user_pic)
+		left join company on company.company_user_id=user.user_id
 		WHERE
-		user_name=#{user_name}
-		AND
-		password=#{password}
+		user.user_name=#{user_name} and user.user_id=user_pic.uploader_id
+		and user.password=#{password}
 	</select>
 	
 	<!--用户注册 -->
 	<insert id="registerDao" parameterType="java.util.Map">
-		insert into user (user_id,user_name,password,email,gender,birth_date,phone_area,phone_number,face_type,career,create_time)
+		insert into user (user_id,user_name,password,email,gender,birth_date,phone_area,phone_number,face_type,career,create_time,country,province,area,user_type)
 		VALUES
 		(#{user_id},#{user_name},#{password},#{email},#{gender},#{birth_date},
-		#{phone_area},#{phone_number},#{face_type},#{career},#{create_time})	
+		#{phone_area},#{phone_number},#{face_type},#{career},#{create_time},#{country},#{province},#{area},#{user_type})	
 	</insert>
 	
 	<!-- 查找重复 -->
@@ -57,7 +81,7 @@
 		select COUNT(*) from user
 		where phone_area=#{phone_area} AND phone_number=#{phone_number} 
 		and not exists
-		(select * from user where user_name=#{user_name})
+		(select * from user where user_id=#{user_id})
 	</select>
 	<select id="findUsersByEmailDao" parameterType="java.util.Map" resultType="java.lang.Integer">
 		select COUNT(*) 
@@ -65,7 +89,7 @@
 		user
 		WHERE 
 		email=#{email,jdbcType=VARCHAR} and not exists
-		(select * from user where user_name=#{user_name})
+		(select * from user where user_id=#{user_id})
 	</select>
 	
 	<!--修改资料 -->
@@ -73,20 +97,46 @@
 		update user set password=#{password} where user_name=#{user_name}
 	</update>
 	
-	<update id="modifyUser_dataByUsernameDao" parameterType="java.util.Map" >
+	<update id="modifyUser_dataByUserIDDao" parameterType="java.util.Map" >
 		update user set email=#{email},gender=#{gender},birth_date=#{birth_date},
-		phone_area=#{phone_area},phone_number=#{phone_number},face_type=#{face_type},career=#{career}
-		where user_name=#{user_name}			
+		phone_area=#{phone_area},phone_number=#{phone_number},face_type=#{face_type},career=#{career},
+		country=#{country},province=#{province},area=#{area}
+		where user_ID=#{user_ID}			
 	</update>
 
 	<!-- 获取用户个人资料 -->
-	<select id="get_user_dataDao" parameterType="java.lang.String" resultMap="BaseResultMap">
-		SELECT
-		*
-		FROM
-		user
+	<select id="get_user_dataDao" parameterType="java.lang.String" resultMap="WithUser_PicResultMap">
+		select
+		u.user_id as user_id,
+		u.user_name as user_name,
+		u.gender as gender,
+		u.email as email,
+		u.birth_date as birth_date,
+		u.face_type as face_type,
+		u.phone_area as phone_area,
+		u.phone_number as phone_number,
+		u.career as career,
+		u.create_time as create_time,
+		u.country as country,
+		u.province as province,
+		u.area as area,
+		u.user_type as user_type,
+		p.pic_id as pic_id, 
+		p.user_pic_dir as user_pic_dir 
+		from user u left outer join user_pic p on u.user_id=p.uploader_id
 		WHERE
-		user_name=#{user_name,jdbcType=VARCHAR}
+		u.user_name=#{user_name} and p.is_active=1
 	</select>
 
+
+	<!--上传新图像-->
+	<insert id="upload_new_user_picDao" parameterType="java.util.Map">
+		insert into user_pic (pic_id,uploader_id,is_active,pic_date,user_pic_dir)
+		VALUES
+		(#{pic_id},#{uploader_id},1,#{pic_date},#{user_pic_dir})	
+	</insert>
+	
+	<update id="set_user_old_picDao" parameterType="java.lang.String">
+		update user_pic set is_active=0 where uploader_id=#{uploader_id} and is_active=1 	
+	</update>
 </mapper>  

@@ -19,7 +19,8 @@ public interface IUserService {
 	public boolean isEmailExist(Map<String, String> map);
 	public boolean isPhoneExist(Map<String, String> map);
 	public boolean modifyPasswordByUsername(Map<String, String> map); 
-	public boolean modifyUser_dataByUsername(Map<String, Object> map);
+	public boolean modifyUser_dataByUserID(Map<String, Object> map);
 	public User get_user_data(String user_name);
-
+	public boolean upload_new_user_pic(Map<String, Object> map);
+	public boolean set_user_old_pic(String uploader_id);
 }

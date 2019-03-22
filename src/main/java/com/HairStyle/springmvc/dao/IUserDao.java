@@ -24,8 +24,9 @@ public interface IUserDao {
 	public User loginDao(Map<String, String> map);
 	public boolean registerDao(Map<String, Object> map);
 	public boolean modifyPasswordByUsernameDao(Map<String, String> map);
-	public boolean modifyUser_dataByUsernameDao(Map<String, Object> map);
+	public boolean modifyUser_dataByUserIDDao(Map<String, Object> map);
 	public User get_user_dataDao(String user_name);
-
+	public boolean upload_new_user_picDao(Map<String, Object> map);
+	public boolean set_user_old_picDao(String user_name);
 
 }

@@ -1,5 +1,5 @@
 package com.HairStyle.springmvc.controller;
 
-public class ModifyPostController {
+public class FaceChangeController {
 
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.HairStyle.springmvc.model.Company;
 import com.HairStyle.springmvc.model.Hairstyler;
+import com.HairStyle.springmvc.model.Product;
+import com.HairStyle.springmvc.model.Product_Pic;
 
 @Repository
 public interface ICompanyDao {
@@ -15,5 +17,9 @@ public interface ICompanyDao {
 	public boolean modifycompanyDao(Company cp);
 	public boolean regiHairstyleDao(Hairstyler hs);
 	public boolean modifyHairstyleDao(Hairstyler hs);
+	public boolean deleteHairstyleDao(String hairstyle_id);
+	public Company getHairstylistDao(String company_id);
+	public Integer addproductDao(Product product);
+	public boolean addproduct_picDao(Product_Pic pp);
 	
 }

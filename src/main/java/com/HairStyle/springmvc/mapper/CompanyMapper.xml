@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.HairStyle.springmvc.dao.ICompanyDao">
-
+	
+	<resultMap id="PostByUserResultMap" type="com.HairStyle.springmvc.model.Company">
+		<id property="user_id" column="user_id" />
+		<result column="user_name" property="user_name" />
+		<association property="user_pic" column="pic_id" javaType="com.HairStyle.springmvc.model.User_Pic" resultMap="User_PicMap"/>
+		<collection property="posters" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Poster">
+			<id property="post_id" column="post_id" />
+			<result column="post_type" property="post_type" />
+			<result column="post_content" property="post_content" />
+			<result column="post_time" property="post_time" />
+			<result column="last_edit_time" property="last_edit_time" />
+			<result column="like_id" property="like_id" jdbcType="INTEGER" />
+			<result column="collect_id" property="collect_id" jdbcType="INTEGER" />
+			<result column="like_num" property="like_num" jdbcType="INTEGER" />
+			<result column="collect_num" property="collect_num" jdbcType="INTEGER" />
+			<collection property="post_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">         
+            	<id column="idpost_pic" property="idpost_pic" />
+            	<result column="seq_id" property="seq_id"  />
+            	<result column="post_pic_dir" property="post_pic_dir"  />
+        	</collection>
+        </collection>
+	</resultMap>
 
 
 	<!--商户注册-->
@@ -39,7 +60,29 @@
 	
 	<!--删除发型师-->
 	<delete id="deleteHairstyleDao" parameterType="java.lang.String">  
-        DELETE FROM hairstylist WHERE hairstyle_id = #{hairstyle_id}  
+        delete from hairstylist where hairstyle_id = #{hairstyle_id}  
 	</delete>  
+	
+	<!-- 查看商家下的发型师 -->
+	<select id="getHairstylistDao" parameterType="java.lang.String" resultMap="PostByTypeResultMap">
+		select company.*,hairstylist.* 
+		from company
+		left join hairstylist on company.company_id=hairstylist.hairstyle_company_id    		
+		where company_id=#{company_id}
+	</select>
+	
+	<!-- 录入商品 -->
+	<insert id="addproductDao" useGeneratedKeys="true" keyProperty="product_id" parameterType="com.HairStyle.springmvc.model.Hairstyler">
+		insert into product (product_company_id,product_name,product_price,product_intr,product_amount,product_time)
+		VALUES
+		(#{product_company_id},#{product_name},#{product_price},#{product_intr},#{product_amount},#{product_time})
+	</insert>
+	
+	<!-- 录入商品图片 -->
+	<insert id="addproduct_picDao" parameterType="com.HairStyle.springmvc.model.Hairstyler">
+		insert into product_pic (product_pic_id,product_seq_id,product_pic_dir,be_product_id,is_active)
+		VALUES
+		(#{product_pic_id},#{product_seq_id},#{product_pic_dir},#{be_product_id},1)
+	</insert>
 	
 </mapper>

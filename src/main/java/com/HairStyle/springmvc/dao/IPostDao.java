@@ -33,7 +33,7 @@ public interface IPostDao {
 	public User findPostByUser_idDao(Map<String, Object> map);
 	public Poster findPostByPost_idDao(Map<String, Object> map);
 	
-<<<<<<< HEAD
+
 	
 	
 	public boolean makeCommonDao(Common common) ;
@@ -48,10 +48,10 @@ public interface IPostDao {
 	
 	public User getuser_likeDao(Map<String, Object> map);
 	public User getuser_collectDao(Map<String, Object> map);
-=======
+
 	public List<Poster> findPostByPost_typeDao(String post_type);
 	public List<Poster> findPostByUser_nameDao(String user_name);
 
 	
->>>>>>> 463aca1a58acb90118fd10d7d325fe8e6bbb56ca
+
 }

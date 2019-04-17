@@ -191,11 +191,11 @@ public class UserController {
 	    			String user_info=null;
 	    			if(user_type==1){
 	    				int company_id=user1.getCompany().getCompany_id();
-	    				user_info=user_id+String.valueOf(company_id);
+	    				user_info=user_id+String.valueOf(user_type)+String.valueOf(company_id);
 	    			}
 	    			else{
 	    				int company_id=0;
-	    				user_info=user_id+String.valueOf(company_id);
+	    				user_info=user_id+String.valueOf(user_type)+String.valueOf(company_id);
 	    			}
 	    			User_Pic user_pic=user1.getUser_Pic();
 
@@ -203,6 +203,8 @@ public class UserController {
 	    			cookie1.setMaxAge(60*60);
 	                cookie1.setPath("/HairStyle");
 	                response.addCookie(cookie1);
+	                response.addHeader("user_info",user_info);
+
 	                loginstate.put("status", 0);
 	                loginstate.put("user_type",user_type);
 	                loginstate.put("user_pic",user_pic.getUser_pic_dir());

@@ -18,8 +18,8 @@
 		<result column="area" property="area" />
 		<result column="user_type" property="user_type" />
 	</resultMap>
-<<<<<<< HEAD
 	
+
 	<resultMap id="WithUser_PicResultMap" type="com.HairStyle.springmvc.model.User">
   		<id property="user_id" column="user_id" />
 		<result column="user_name" property="user_name" />
@@ -51,8 +51,6 @@
 
 		
 
-=======
->>>>>>> 463aca1a58acb90118fd10d7d325fe8e6bbb56ca
 
 
 	<!--用户登录 -->

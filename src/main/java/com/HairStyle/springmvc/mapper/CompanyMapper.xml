@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.HairStyle.springmvc.dao.ICompanyDao">
-	
-	<resultMap id="PostByUserResultMap" type="com.HairStyle.springmvc.model.Company">
-		<id property="user_id" column="user_id" />
-		<result column="user_name" property="user_name" />
-		<association property="user_pic" column="pic_id" javaType="com.HairStyle.springmvc.model.User_Pic" resultMap="User_PicMap"/>
-		<collection property="posters" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Poster">
-			<id property="post_id" column="post_id" />
-			<result column="post_type" property="post_type" />
-			<result column="post_content" property="post_content" />
-			<result column="post_time" property="post_time" />
-			<result column="last_edit_time" property="last_edit_time" />
-			<result column="like_id" property="like_id" jdbcType="INTEGER" />
-			<result column="collect_id" property="collect_id" jdbcType="INTEGER" />
-			<result column="like_num" property="like_num" jdbcType="INTEGER" />
-			<result column="collect_num" property="collect_num" jdbcType="INTEGER" />
-			<collection property="post_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">         
-            	<id column="idpost_pic" property="idpost_pic" />
-            	<result column="seq_id" property="seq_id"  />
-            	<result column="post_pic_dir" property="post_pic_dir"  />
+<mapper namespace="com.HairStyle.springmvc.dao.ICompanyDao">	
+	<resultMap id="ProductByCompanyMap" type="com.HairStyle.springmvc.model.Company">
+		<id property="company_id" column="company_id" />
+		<result column="company_intr" property="company_intr" />
+		<result column="company_name" property="company_name" />
+		<result column="company_user_id" property="company_user_id" />
+		<collection property="product" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product">
+			<id property="product_id" column="product_id" />
+			<result column="product_intr" property="product_intr" />
+			<result column="product_name" property="product_name" />
+			<result column="product_price" property="product_price" />
+			<result column="product_time" property="product_time" />
+			<result column="product_amount" property="product_amount" />
+			<collection property="product_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product_Pic">         
+            	<id column="product_pic_id" property="product_pic_id" />
+            	<result column="product_seq_id" property="product_seq_id"  />
+            	<result column="product_pic_dir" property="product_pic_dir"  />
         	</collection>
         </collection>
 	</resultMap>
-
+	
+	<resultMap id="HairstyleByCompanyMap" type="com.HairStyle.springmvc.model.Company">
+		<id property="company_id" column="company_id" />
+		<result column="company_intr" property="company_intr" />
+		<result column="company_name" property="company_name" />
+		<result column="company_user_id" property="company_user_id" />
+		<collection property="lh" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Hairstyler">
+			<id property="hairstyle_id" column="hairstyle_id" />
+			<result column="hairstyle_intr" property="hairstyle_intr" />
+			<result column="hairstyle_level" property="hairstyle_level" />
+			<result column="hairstyle_name" property="hairstyle_name" />
+			<result column="hairstyle_pic" property="hairstyle_pic" />
+        </collection>
+	</resultMap>
 
 	<!--商户注册-->
 	<insert id="regicompanyDao" parameterType="com.HairStyle.springmvc.model.Company">
@@ -64,7 +74,7 @@
 	</delete>  
 	
 	<!-- 查看商家下的发型师 -->
-	<select id="getHairstylistDao" parameterType="java.lang.String" resultMap="PostByTypeResultMap">
+	<select id="getHairstylistDao" parameterType="java.lang.String" resultMap="HairstyleByCompanyMap">
 		select company.*,hairstylist.* 
 		from company
 		left join hairstylist on company.company_id=hairstylist.hairstyle_company_id    		
@@ -72,17 +82,45 @@
 	</select>
 	
 	<!-- 录入商品 -->
-	<insert id="addproductDao" useGeneratedKeys="true" keyProperty="product_id" parameterType="com.HairStyle.springmvc.model.Hairstyler">
+	<insert id="addproductDao" useGeneratedKeys="true" keyProperty="product_id" parameterType="com.HairStyle.springmvc.model.Product">
 		insert into product (product_company_id,product_name,product_price,product_intr,product_amount,product_time)
 		VALUES
 		(#{product_company_id},#{product_name},#{product_price},#{product_intr},#{product_amount},#{product_time})
 	</insert>
 	
 	<!-- 录入商品图片 -->
-	<insert id="addproduct_picDao" parameterType="com.HairStyle.springmvc.model.Hairstyler">
+	<insert id="addproduct_picDao" parameterType="com.HairStyle.springmvc.model.Product_Pic">
 		insert into product_pic (product_pic_id,product_seq_id,product_pic_dir,be_product_id,is_active)
 		VALUES
 		(#{product_pic_id},#{product_seq_id},#{product_pic_dir},#{be_product_id},1)
 	</insert>
+	
+	<!-- 查找商品图片是否存在 -->
+	<select id="search_product_picDao" parameterType="java.util.Map" resultType="com.HairStyle.springmvc.model.Product_Pic">
+		SELECT
+		product_pic.*
+		FROM
+		product_pic
+		WHERE
+		product_seq_id=#{product_seq_id} and be_product_id=#{be_product_id}
+	</select>
+	
+	<!-- 删除商品图片 -->
+	<update id="deleteproduct_picDao" parameterType="java.util.Map">
+		update product_pic set is_active=0 where be_product_id=#{be_product_id} and product_seq_id=#{product_seq_id} and is_active=1 or product_pic_id=#{product_pic_id}
+	</update>
+	
+	<!-- 更新商品信息 -->
+	<update id="modifyproductDao" parameterType="com.HairStyle.springmvc.model.Product">
+		update product set product_name=#{product_name},product_intr=#{product_intr},
+		product_amount=#{product_amount},product_price=#{product_price} 		
+		where product_id=#{product_id}
+	</update>
+	
+	<select id="findproductbycomDao" parameterType="java.util.Map" resultMap="ProductByCompanyMap">
+		select 
+		
+	</select>
+	
 	
 </mapper>

@@ -141,7 +141,7 @@ public class PostController {
 	//删除帖文图片
 		 @RequestMapping(value="delete_post_pic",method=RequestMethod.POST)
 		 @ResponseBody
-		 public Map<String, Object> ModifyPost(@RequestParam("idpost_pic") String idpost_pic, 
+		 public Map<String, Object> delete_post_pic(@RequestParam("idpost_pic") String idpost_pic, 
 		    		HttpServletRequest request) {
 			 Map<String, Object> delete_post_pic_state = new HashMap<String, Object>();		
 			 Map<String, Object> mapforcancelpic = new HashMap<String, Object>();

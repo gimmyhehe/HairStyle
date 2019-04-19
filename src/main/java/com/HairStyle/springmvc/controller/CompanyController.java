@@ -380,25 +380,43 @@ public class CompanyController {
 	    	return new_product_state;
 	    }
 		
+		//删除帖文图片
+		 @RequestMapping(value="delete_product_pic",method=RequestMethod.POST)
+		 @ResponseBody
+		 public Map<String, Object> delete_product_pic(@RequestParam("product_pic_id") String product_pic_id, 
+		    		HttpServletRequest request) {
+			 Map<String, Object> delete_product_pic_state = new HashMap<String, Object>();		
+			 Map<String, Object> mapforcancelpic = new HashMap<String, Object>();
+			 mapforcancelpic.put("product_pic_id", product_pic_id);
+			 if(CompanyService.deleteproduct_pic(mapforcancelpic)){
+				 delete_product_pic_state.put("msg", "删除成功！");
+				 delete_product_pic_state.put("status", 0);
+			 	 }
+			 else{
+				 delete_product_pic_state.put("msg", "删除失败！");
+				 delete_product_pic_state.put("status", 1);
+			 }
+		    	return delete_product_pic_state;
+		    }
 		
 		
 		@RequestMapping(value="modify_product",method=RequestMethod.POST)
 		 @ResponseBody
-		 public Map<String, Object> ModifyPost(@RequestParam(value="fileImg0",required = false) MultipartFile product_pic0,
+		 public Map<String, Object> ModifyProduct(@RequestParam(value="fileImg0",required = false) MultipartFile product_pic0,
 		    		@RequestParam(value="fileImg1",required = false) MultipartFile product_pic1,
-		    		@RequestParam(value="fileImg2",required = false) MultipartFile product,
+		    		@RequestParam(value="fileImg2",required = false) MultipartFile product_pic2,
 		    		@RequestParam(value="fileImg3",required = false) MultipartFile product_pic3,
 		    		@RequestParam(value="fileImg4",required = false) MultipartFile product_pic4,
 		    		@RequestParam(value="fileImg5",required = false) MultipartFile product_pic5,
-		    		@RequestParam(value="fileImg6",required = false) MultipartFile productic6,
-		    		@RequestParam(value="fileImg7",required = false) MultipartFile post_pic7,
+		    		@RequestParam(value="fileImg6",required = false) MultipartFile product_pic6,
+		    		@RequestParam(value="fileImg7",required = false) MultipartFile product_pic7,
 		    		@RequestParam(value="fileImg8",required = false) MultipartFile product_pic8,
 		    		@RequestParam String product_id,
 		    		@RequestParam String product_name, @RequestParam String product_price, 
 		    		@RequestParam String product_intr, @RequestParam String product_amount, 
 		    		HttpServletRequest request) {
 		    		
-		    		Map<String, Object> edit_post_state = new HashMap<String, Object>();
+		    		Map<String, Object> edit_product_state = new HashMap<String, Object>();
 		    	
 		    		Date date = new Date();
 		    		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
@@ -408,8 +426,8 @@ public class CompanyController {
 		    		Random random = new Random();	    		 
 		    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 				    
-				    String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/post";;
-				    String pic_path_user_post=pic_path+"/"+post_id;
+				    String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/product";;
+
 					
 				     MultipartFile[] imgs=new MultipartFile[9];
 		             imgs[0]=product_pic0;
@@ -430,46 +448,46 @@ public class CompanyController {
 
 					        		String imagename = new SimpleDateFormat("yyyyMMddHHmmss")
 					        				.format(new Date()).concat(imgs[i].getOriginalFilename());
-					        		String filename = pic_path_user_post + File.separator +imagename;
+					        		String filename = pic_path + File.separator +imagename;
 					        		File file = new File(filename);				        		
 					        		imgs[i].transferTo(file);//上传至服务器
 				        			//将文件图片插入数据库
 				        			Map<String, Object> mapforcancelpic = new HashMap<String, Object>();
-				        			mapforcancelpic.put("seq_id",i);
-				        			mapforcancelpic.put("pic_post_id",post_id);
-				        			if(PostService.search_post_picture(mapforcancelpic)){
-				        			PostService.delete_post_picture(mapforcancelpic);	
+				        			mapforcancelpic.put("product_seq_id",i);
+				        			mapforcancelpic.put("be_product_id",Integer.parseInt(product_id));
+				        			if(CompanyService.search_product_pic(mapforcancelpic)){
+				        				CompanyService.deleteproduct_pic(mapforcancelpic);	
 				        			}
 				        			
-				        			Map<String, Object> mapforpic = new HashMap<String, Object>();
-				        			mapforpic.put("idpost_pic", "pic"+str+String.valueOf(i));
-				        			mapforpic.put("seq_id",String.valueOf(i));
-				        			mapforpic.put("post_pic_dir",imagename);
-				        			mapforpic.put("pic_post_id",post_id);
-				        			PostService.insert_post_picture(mapforpic);				        	
+				        			Product_Pic pp=new Product_Pic();
+				        			pp.setProduct_pic_id(str+String.valueOf(i));
+				        			pp.setProduct_seq_id(i);
+				        			pp.setProduct_pic_dir(imagename);
+				        			pp.setbe_product_id(Integer.parseInt(product_id));
+				        			CompanyService.addproduct_pic(pp);					        	
 					        }
 					        else continue;
 			            }
-					        Map<String, Object> map = new HashMap<String, Object>();
-				    		map.put("post_id", post_id);
-				    		map.put("post_type", post_type);
-				    		map.put("post_content", post_content);
-				    		map.put("last_edit_time", last_edit_time);
-				    		
-				    		PostService.Update_article(map);
-				    		edit_post_state.put("msg", "修改成功！");
-				    		edit_post_state.put("status", 0);
+					        Product product=new Product();
+				    		product.setProduct_name(product_name);
+				    		product.setProduct_intr(product_intr);
+				    		product.setProduct_amount(Integer.parseInt(product_amount));
+				    		product.setProduct_price(Double.parseDouble(product_price));
+				    		product.setProduct_id(Integer.parseInt(product_id));					        				    						    		
+				    		CompanyService.modifyproduct(product);
+				    		edit_product_state.put("msg", "修改商品成功！");
+				    		edit_product_state.put("status", 0);
 				        } catch (IllegalStateException e) {
 							e.printStackTrace();
-							edit_post_state.put("msg", "修改失败！");
-							edit_post_state.put("status", 1);
+							edit_product_state.put("msg", "修改商品失败！");
+							edit_product_state.put("status", 1);
 						} catch (IOException e) {
 							e.printStackTrace();
-							edit_post_state.put("msg", "输入有误！");
-							edit_post_state.put("status", 2);
+							edit_product_state.put("msg", "输入有误！");
+							edit_product_state.put("status", 2);
 						}	
 		    	
-		    	return edit_post_state;
+		    	return edit_product_state;
 		    }
 		
 }

@@ -232,6 +232,7 @@ public class UserController {
 	        Map<String, String> logoutstate = new HashMap<String, String>(); 
 	        for (Cookie cookie :cookies){//遍历所有Cookie
 	            if(cookie.getName().equals("user_info")){//找到对应的cookie
+	            	cookie.setValue(null);
 	                cookie.setMaxAge(0);//Cookie并不能根本意义上删除，只需要这样设置为0
 	                cookie.setPath("/");//
 	                response.addCookie(cookie);//重新响应                

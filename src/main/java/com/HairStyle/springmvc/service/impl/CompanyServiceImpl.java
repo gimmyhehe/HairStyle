@@ -76,6 +76,27 @@ public class CompanyServiceImpl implements ICompanyService{
 		return companyDao.addproduct_picDao(pp);
 	}
 
+	public boolean search_product_pic(Map<String, Object> mapforcancelpic) {
+		// TODO Auto-generated method stub
+		if(companyDao.search_product_picDao(mapforcancelpic)!=null)
+			return true;
+		else return false;
+	}
+
+	public boolean deleteproduct_pic(Map<String, Object> mapforcancelpic) {
+		// TODO Auto-generated method stub
+		return companyDao.deleteproduct_picDao(mapforcancelpic);
+	}
+
+	public boolean modifyproduct(Product product) {
+		// TODO Auto-generated method stub
+		return companyDao.modifyproductDao(product);
+	}
+
+	public Company findproductbycom(String company_id) {
+		// TODO Auto-generated method stub
+		return companyDao.findproductbycomDao(company_id);
+	}
 
 	
 }

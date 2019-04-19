@@ -15,11 +15,13 @@ public class LoginInterceptor implements HandlerInterceptor {
         if ((cookies!=null)){//判断Cookie是否为空
             for (Cookie cookie : cookies){//遍历Cookie判断有没有对应的name
                 if (cookie.getName().equals("user_info")){//有就直接return true
+                	  if (cookie.getValue()!=null){
                       return true;
+                	  }
+                else return false;
                 }
             }
         }
-        request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request,response);
         return false;
     }
 

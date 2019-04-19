@@ -19,4 +19,8 @@ public interface ICompanyService {
 	
 	public Integer addproduct(Product product); 
 	public boolean addproduct_pic(Product_Pic pp);
+	public boolean search_product_pic(Map<String, Object> mapforcancelpic);
+	public boolean deleteproduct_pic(Map<String, Object> mapforcancelpic);
+	public boolean modifyproduct(Product product); 
+	public Company findproductbycom(String company_id);
 }

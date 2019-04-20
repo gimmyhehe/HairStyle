@@ -19,14 +19,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-
 public class Product_Pic implements Serializable {
 	
 	private String product_pic_id;
 	private int product_seq_id;
 	private String product_pic_dir;
+	
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	private int be_product_id;
-	private boolean is_active;
 
 	public String getProduct_pic_id() {
 		return product_pic_id;
@@ -60,18 +60,10 @@ public class Product_Pic implements Serializable {
 		this.be_product_id = be_product_id;
 	}
 	
-	public boolean getIs_active() {
-		return is_active;
-	}
-
-	public void setIs_active(boolean is_active) {
-		this.is_active = is_active;
-	}
-	
 
 	@Override
 	public String toString() {
 		return "Product_Pic [product_pic_id=" + product_pic_id + ", product_seq_id=" + product_seq_id + ", product_pic_dir=" + product_pic_dir + ",be_product_id=" + be_product_id 
-				+ ", is_active=" + is_active + "]";
+				+ "]";
 	}
 }

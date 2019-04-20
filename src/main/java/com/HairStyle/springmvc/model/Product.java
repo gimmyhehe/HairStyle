@@ -23,13 +23,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class Product implements Serializable {
 	
 	private int product_id;
+	
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	private int product_company_id;
+	
 	private String product_name;
 	private double product_price;
 	private String product_intr;
 	private int product_amount;
 	private Date product_time;
-
+	private List<Product_Pic> pp;
+	
 	public int getProduct_id() {
 		return product_id;
 	}
@@ -86,9 +90,17 @@ public class Product implements Serializable {
 		this.product_time = product_time;
 	}
 	
+	public List<Product_Pic> getProduct_Pic() {
+		return pp;
+	}
+
+	public void setProduct_Pic(List<Product_Pic> pp) {
+		this.pp = pp;
+	}
+	
 	@Override
 	public String toString() {
 		return "Product [product_id=" + product_id + ", product_company_id" + product_company_id + ", product_name" + product_name + ",product_price=" + product_price 
-				+ ", product_intr=" + product_intr + ", product_amount=" + product_amount + ",product_time="+product_time+"]";
+				+ ", product_intr=" + product_intr + ", product_amount=" + product_amount + ",product_time="+product_time+ ", pp="+pp+ "]";
 	}
 }

@@ -6,14 +6,14 @@
 		<result column="company_intr" property="company_intr" />
 		<result column="company_name" property="company_name" />
 		<result column="company_user_id" property="company_user_id" />
-		<collection property="product" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product">
+		<collection property="LP" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product">
 			<id property="product_id" column="product_id" />
 			<result column="product_intr" property="product_intr" />
 			<result column="product_name" property="product_name" />
 			<result column="product_price" property="product_price" />
 			<result column="product_time" property="product_time" />
 			<result column="product_amount" property="product_amount" />
-			<collection property="product_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product_Pic">         
+			<collection property="pp" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product_Pic">         
             	<id column="product_pic_id" property="product_pic_id" />
             	<result column="product_seq_id" property="product_seq_id"  />
             	<result column="product_pic_dir" property="product_pic_dir"  />
@@ -58,8 +58,7 @@
 	</insert>
 	
 	<!--发型师信息修改-->
-	<update id="modifyHairstyleDao" parameterType="com.HairStyle.springmvc.model.Company">
-		
+	<update id="modifyHairstyleDao" parameterType="com.HairStyle.springmvc.model.Company">		
 		update hairstylist set hairstyle_name=#{hairstyle_name},hairstyle_intr=#{hairstyle_intr}
 		<if test="hairstyle_pic != null">
             ,hairstyle_pic=#{hairstyle_pic}
@@ -118,8 +117,14 @@
 	</update>
 	
 	<select id="findproductbycomDao" parameterType="java.util.Map" resultMap="ProductByCompanyMap">
-		select 
-		
+		select company.company_id,company.company_name,company.company_user_id,company.company_intr,
+			product.product_id,product.product_name,product.product_price,product.product_intr,product.product_amount,product.product_time,
+			product_pic.product_pic_id,product_pic.product_seq_id,product_pic.product_pic_dir
+		from company
+		left join (product 
+			left join product_pic on product_pic.be_product_id=product.product_id and product_pic.is_active=1)
+		on product.product_company_id=company.company_id
+		where company_id=#{company_id}		
 	</select>
 	
 	

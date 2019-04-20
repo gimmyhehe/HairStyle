@@ -86,6 +86,6 @@
 	</mvc:message-converters>
 	</mvc:annotation-driven>
     
-	<mvc:resources mapping="/pic/*" location="file:D:\HairStyle\HairStyle\src\main\resources\picture\" cache-period="3155926"/>
+	<mvc:resources mapping="/pic/**/" location="file:D:/HairStyle/HairStyle/src/main/resources/picture" cache-period="3155926"/>
     
 </beans>

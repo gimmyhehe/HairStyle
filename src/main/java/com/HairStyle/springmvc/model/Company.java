@@ -27,6 +27,8 @@ public class Company implements Serializable {
 	private String company_intr;
 	private String location;
 	private List<Hairstyler> lh;
+	private List<Product> LP;
+	
 	public int getCompany_id() {
 		return company_id;
 	}
@@ -75,9 +77,17 @@ public class Company implements Serializable {
 		this.lh = lh;
 	}
 	
+	public List<Product> getProductlist() {
+		return LP;
+	}
+
+	public void setProductlist(List<Product> LP) {
+		this.LP = LP;
+	}
+	
 	@Override
 	public String toString() {
 		return "Company [company_id=" + company_id + ", company_name" + company_name + ", company_user_id" + company_user_id + ",company_intr=" + company_intr 
-				+ ", location=" + location + ", lh=" + lh + "]";
+				+ ", location=" + location + ", lh=" + lh + ", LP=" + LP + "]";
 	}
 }

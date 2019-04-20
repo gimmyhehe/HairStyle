@@ -36,6 +36,7 @@ import com.HairStyle.springmvc.model.Company;
 import com.HairStyle.springmvc.model.Hairstyler;
 import com.HairStyle.springmvc.model.Product;
 import com.HairStyle.springmvc.model.Product_Pic;
+import com.HairStyle.springmvc.model.User;
 import com.HairStyle.springmvc.service.impl.CompanyServiceImpl;
 import com.HairStyle.springmvc.service.impl.UserServiceImpl;
 
@@ -403,7 +404,7 @@ public class CompanyController {
 		    }
 		
 		
-		@RequestMapping(value="modify_product",method=RequestMethod.POST)
+		 @RequestMapping(value="modify_product",method=RequestMethod.POST)
 		 @ResponseBody
 		 public Map<String, Object> ModifyProduct(@RequestParam(value="fileImg0",required = false) MultipartFile product_pic0,
 		    		@RequestParam(value="fileImg1",required = false) MultipartFile product_pic1,
@@ -492,5 +493,15 @@ public class CompanyController {
 		    	
 		    	return edit_product_state;
 		    }
-		
+		 
+		 
+		 	@RequestMapping(value="scan_products",method=RequestMethod.GET)
+		    @ResponseBody
+		    public Company findproductbycom(@RequestParam("company_id") String company_id,HttpServletRequest request) {
+					
+					
+					Company company_product=CompanyService.findproductbycom(company_id);
+				
+					return company_product;
+			}
 }

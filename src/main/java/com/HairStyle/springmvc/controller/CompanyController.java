@@ -154,7 +154,8 @@ public class CompanyController {
 					 	hs.setHairstyle_level(hairstyle_level);
 					 	hs.setHairstyle_name(hairstyle_name);
 					 	hs.setHairstyle_pic(imagename);
-			    		if(CompanyService.regiHairstyle(hs)){			    		
+			    		if(CompanyService.regiHairstyle(hs)){	
+			    			hairstyler_state.put("msgg", imagename);
 			    			hairstyler_state.put("msg", "发布成功！");
 			    			hairstyler_state.put("status", 0);
 			    		}
@@ -166,6 +167,7 @@ public class CompanyController {
 						hairstyler_state.put("msg", "发布失败！");
 						hairstyler_state.put("status", 1);
 					} catch (IOException e) {
+						
 						hairstyler_state.put("msg", "输入有误！");
 						hairstyler_state.put("status", 2);
 					}	
@@ -176,7 +178,7 @@ public class CompanyController {
 	    	return hairstyler_state;
 	    }
 		
-		//录入发型师信息
+		//修改发型师信息
 		@RequestMapping(value="modifyhairstyle",method=RequestMethod.POST)
 		@ResponseBody
 		public Map<String, Object> modifyHairstyle(@RequestParam(value="fileImg",required = false) MultipartFile hairstyle_pic,
@@ -215,7 +217,8 @@ public class CompanyController {
 					   hairstyle_pic.transferTo(file);//将图片保存下来
 				       hs.setHairstyle_pic(imagename);
 
-					   if(CompanyService.modifyHairstyle(hs)){			    		
+					   if(CompanyService.modifyHairstyle(hs)){		
+						   	hairstyler_state.put("msgg", imagename);
 					    	hairstyler_state.put("msg", "修改成功！");
 					    	hairstyler_state.put("status", 0);
 					   }

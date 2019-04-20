@@ -69,7 +69,7 @@ public class Hairstyler implements Serializable {
 	}
 	
 	public String getHairstyle_pic() {
-		return hairstyle_company_id;
+		return hairstyle_pic;
 	}
 
 	public void setHairstyle_pic(String hairstyle_pic) {

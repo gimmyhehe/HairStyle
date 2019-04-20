@@ -47,7 +47,7 @@ public class CompanyServiceImpl implements ICompanyService{
 	
 	public boolean modifyHairstyle(Hairstyler hs) {
 		// TODO Auto-generated method stub
-		if(companyDao.regiHairstyleDao(hs)){
+		if(companyDao.modifyHairstyleDao(hs)){
 			return true;
 		}
 		else return false;

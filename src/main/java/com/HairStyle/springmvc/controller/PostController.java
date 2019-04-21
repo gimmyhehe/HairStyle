@@ -42,7 +42,7 @@ public class PostController {
 	
 	@Resource
     private PostServiceImpl PostService;
-	
+	public String PicPath=ConfigPath.getConfigPath();
 	
 	//通过帖文类型帖文集
 	@RequestMapping(value="getpostbytype",method=RequestMethod.GET)
@@ -191,7 +191,7 @@ public class PostController {
 	    		Random random = new Random();	    		 
 	    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 			    
-			    String pic_path="E:/workspace/HairStyle/src/main/resources/picture/post";;
+			    String pic_path=PicPath+"post";
 			    String pic_path_user_post=pic_path+"/"+post_id;
 				
 			     MultipartFile[] imgs=new MultipartFile[9];
@@ -299,7 +299,7 @@ public class PostController {
 	    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 	    		String post_id="post"+str+rannum;
 			    
-			    String pic_path="E:/workspace/HairStyle/src/main/resources/picture/post";
+			    String pic_path=PicPath+"post";
 			    String pic_path_user_post=pic_path+"/"+post_id;
 			    
 			    File myPath = new File( pic_path_user_post );  

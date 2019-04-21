@@ -128,7 +128,7 @@ public class CompanyController {
 			        }
 			     }            
 			   
-			    String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/HairStyle";
+			    String pic_path="E:/workspace/HairStyle/src/main/resources/picture/HairStyle";
 			    String pic_path_company=pic_path+"/"+company_id;
 			    
 			    File myPath = new File( pic_path_company );  
@@ -208,7 +208,7 @@ public class CompanyController {
 					      }
 					}            
 					   
-				String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/HairStyle";
+				String pic_path="E:/workspace/HairStyle/src/main/resources/picture/HairStyle";
 				String pic_path_company=pic_path+"/"+company_id;					    					       				
 				String imagename = new SimpleDateFormat("yyyyMMddHHmmss")
 					        				.format(new Date()).concat(hairstyle_pic.getOriginalFilename());
@@ -320,7 +320,7 @@ public class CompanyController {
 	    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 
 			    
-			    String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/product";
+			    String pic_path="E:/workspace/HairStyle/src/main/resources/picture/product";
 			    
 			    File myPath = new File( pic_path );  
 	            if ( !myPath.exists()){//若此目录不存在，则创建  
@@ -430,7 +430,7 @@ public class CompanyController {
 		    		Random random = new Random();	    		 
 		    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 				    
-				    String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/product";;
+				    String pic_path="E:/workspace/HairStyle/src/main/resources/picture/product";;
 
 					
 				     MultipartFile[] imgs=new MultipartFile[9];

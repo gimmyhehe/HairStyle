@@ -102,7 +102,7 @@ public class UserController {
 	    		
 	    		String user_id=str+rannum;
 			    
-			    String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/user";
+			    String pic_path="E:/workspace/HairStyle/src/main/resources/picture/user";
 			    String pic_path_user_head=pic_path+File.separator+user_id;
 			    
 			    File myPath = new File( pic_path_user_head );  
@@ -204,6 +204,8 @@ public class UserController {
 	                cookie1.setPath("/HairStyle");
 	                response.addCookie(cookie1);
 	                response.addHeader("user_info",user_info);
+	                response.addHeader("user_name",user_name);
+	                response.addHeader("user_id",user_id);
 
 	                loginstate.put("status", 0);
 	                loginstate.put("user_type",user_type);
@@ -217,7 +219,7 @@ public class UserController {
 	    		}
 	    	}else{
 	    		loginstate.put("status", 2);
-	    		loginstate.put("msg", "用户名或密码不为空。");
+	    		loginstate.put("msg", "用户名或密码不为空!");
 
 	    	}
 	    	return loginstate;
@@ -349,7 +351,7 @@ public class UserController {
 	        Random random = new Random();	    		 
 	        int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数            
 		    
-	        String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/user";
+	        String pic_path="E:/workspace/HairStyle/src/main/resources/picture/user";
 	        String pic_path_user_head=pic_path+File.separator+user_id;
 		    
 		    try {

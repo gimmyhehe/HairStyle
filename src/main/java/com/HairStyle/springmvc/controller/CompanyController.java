@@ -47,7 +47,7 @@ public class CompanyController {
 	
 	@Resource
     private CompanyServiceImpl CompanyService;
-	
+	public String PicPath=ConfigPath.getConfigPath();
 	
 	//注册商家信息
 	@RequestMapping(value="bussinessregi",method=RequestMethod.POST)
@@ -128,7 +128,7 @@ public class CompanyController {
 			        }
 			     }            
 			   
-			    String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/HairStyle";
+			    String pic_path=PicPath+"HairStyle";
 			    String pic_path_company=pic_path+"/"+company_id;
 			    
 			    File myPath = new File( pic_path_company );  
@@ -208,7 +208,7 @@ public class CompanyController {
 					      }
 					}            
 					   
-				String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/HairStyle";
+				String pic_path=PicPath+"HairStyle";
 				String pic_path_company=pic_path+"/"+company_id;					    					       				
 				String imagename = new SimpleDateFormat("yyyyMMddHHmmss")
 					        				.format(new Date()).concat(hairstyle_pic.getOriginalFilename());
@@ -320,7 +320,7 @@ public class CompanyController {
 	    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 
 			    
-			    String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/product";
+			    String pic_path=PicPath+"product";
 			    
 			    File myPath = new File( pic_path );  
 	            if ( !myPath.exists()){//若此目录不存在，则创建  
@@ -384,7 +384,7 @@ public class CompanyController {
 	    	return new_product_state;
 	    }
 		
-		//删除帖文图片
+		//删除商品图片
 		 @RequestMapping(value="delete_product_pic",method=RequestMethod.POST)
 		 @ResponseBody
 		 public Map<String, Object> delete_product_pic(@RequestParam("product_pic_id") String product_pic_id, 
@@ -403,7 +403,7 @@ public class CompanyController {
 		    	return delete_product_pic_state;
 		    }
 		
-		
+		 //修改商品
 		 @RequestMapping(value="modify_product",method=RequestMethod.POST)
 		 @ResponseBody
 		 public Map<String, Object> ModifyProduct(@RequestParam(value="fileImg0",required = false) MultipartFile product_pic0,
@@ -430,7 +430,7 @@ public class CompanyController {
 		    		Random random = new Random();	    		 
 		    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 				    
-				    String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/product";;
+				    String pic_path=PicPath+"product";
 
 					
 				     MultipartFile[] imgs=new MultipartFile[9];
@@ -494,7 +494,7 @@ public class CompanyController {
 		    	return edit_product_state;
 		    }
 		 
-		 
+		 	//查看商家下的商品
 		 	@RequestMapping(value="scan_products",method=RequestMethod.GET)
 		    @ResponseBody
 		    public Company findproductbycom(@RequestParam("company_id") String company_id,HttpServletRequest request) {
@@ -504,4 +504,6 @@ public class CompanyController {
 				
 					return company_product;
 			}
+		 	
+		 	//查看单个商品下联同订单信息
 }

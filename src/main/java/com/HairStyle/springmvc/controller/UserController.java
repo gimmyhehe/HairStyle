@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -36,14 +37,16 @@ import org.springframework.web.servlet.ModelAndView;
 import com.HairStyle.springmvc.model.User;
 import com.HairStyle.springmvc.model.User_Pic;
 import com.HairStyle.springmvc.service.impl.UserServiceImpl;
+import com.HairStyle.springmvc.controller.ConfigPath;
 
 @Controller
 @RequestMapping(value="api")
 public class UserController {
 	
-	 @Resource
+	 	@Resource
 	    private UserServiceImpl UserService;
-
+	 	ConfigPath cfp=new ConfigPath();
+	 	public String PicPath=ConfigPath.getConfigPath();
 	    /**
 	     * 
 	     * 
@@ -102,7 +105,7 @@ public class UserController {
 	    		
 	    		String user_id=str+rannum;
 			    
-			    String pic_path="d:/HairStyle/HairStyle/src/main/resources/picture/user";
+			    String pic_path=PicPath+"user";
 			    String pic_path_user_head=pic_path+File.separator+user_id;
 			    
 			    File myPath = new File( pic_path_user_head );  
@@ -145,10 +148,10 @@ public class UserController {
 			        			file.createNewFile();   
 				            }  
 			        		user_img.transferTo(file);//上传至服务器
-			        		
+			        		register_state.put("loc", filename);
 			        		int rannum_pic = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;
 		        			//将文件图片插入数据库
-		        			mapforpic.put("pic_id", "pic"+str+rannum_pic);
+		        			mapforpic.put("pic_id", str+rannum_pic);
 		        			mapforpic.put("uploader_id",user_id);
 		        			mapforpic.put("pic_date",create_time);
 		        			mapforpic.put("user_pic_dir",imagename);
@@ -157,6 +160,7 @@ public class UserController {
 			    
 	    		register_state.put("msg", "注册成功！");
 	    		register_state.put("user_id", user_id);
+	    		
 	    		register_state.put("status", 0);		
 	    	} catch (IllegalStateException e) {
 				register_state.put("msg", "注册失败！");

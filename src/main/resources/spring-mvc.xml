@@ -41,6 +41,9 @@
 			<value>utf-8</value>
 		</property>
 	</bean>
+	
+	
+	
 	<mvc:interceptors>
         <!-- <mvc:interceptor>
             <mvc:mapping path="/download/**" />
@@ -83,9 +86,8 @@
 	</bean>
 	</property>
 	</bean>
-	</mvc:message-converters>
+	
+	</mvc:message-converters>		
 	</mvc:annotation-driven>
-    
-	<mvc:resources mapping="/pic/**/" location="file:D:/HairStyle/HairStyle/src/main/resources/picture" cache-period="3155926"/>
-    
-</beans>
+    <mvc:resources mapping="/pic/**/" location="file:D:/HairStyle/HairStyle/src/main/resources/picture"/>
+</beans>  

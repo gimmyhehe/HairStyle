@@ -154,4 +154,36 @@ public class OrderController {
     		}
     		return order_state;
 	    }	
+	 
+	//用户订单表
+	 	@RequestMapping(value="findorderbyuser_id",method=RequestMethod.GET)
+	    @ResponseBody
+	    public User findorderbyuser_id(HttpServletRequest request) {
+	 		String user_id=null;
+			Cookie[] cookies = request.getCookies();
+			for(Cookie cookie : cookies){
+	          		if(cookie.getName().equals("user_info")){
+	          			String loginInfo = cookie.getValue();
+	          			user_id = loginInfo.substring(0,19);
+	          			break;
+	          		}
+			}																
+				return OrderService.findorderbyuser_id(user_id);
+		}
+	 	
+	 	//商家订单表
+	 	@RequestMapping(value="findorderbycompany_id",method=RequestMethod.GET)
+	    @ResponseBody
+	    public Company findorderbycompany_id(HttpServletRequest request) {
+	 		String company_id=null;
+			Cookie[] cookies = request.getCookies();
+			for(Cookie cookie : cookies){
+	          		if(cookie.getName().equals("user_info")){
+	          			String loginInfo = cookie.getValue();
+	          			company_id = loginInfo.substring(19,20);
+	          			break;
+	          		}
+			}																
+				return OrderService.findorderbycompany_id(company_id);
+		}
 }

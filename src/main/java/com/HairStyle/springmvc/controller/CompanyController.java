@@ -720,7 +720,7 @@ public class CompanyController {
 		 	//查看单个商品
 		 	@RequestMapping(value="oneproduct",method=RequestMethod.GET)
 		    @ResponseBody
-		    public Product getoneproduct(@RequestParam("product_id") String product_id) {
+		    public Product getoneproduct(@RequestParam("product_id") String product_id,HttpServletRequest request) {
 																					
 					return CompanyService.getoneproduct(product_id);
 			}

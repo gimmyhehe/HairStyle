@@ -27,7 +27,8 @@ public class Order implements Serializable{
 	private Date order_finish_time;
 	private boolean is_common;
 	private boolean is_active;
-	
+	private User user;
+	private Product product;
 	public String getOrder_id() {
 		return order_id;
 	}
@@ -100,13 +101,28 @@ public class Order implements Serializable{
 		this.is_active = is_active;
 	}
 	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
 	
 	@Override
 	public String toString() {
 		return "Order [order_id=" + order_id + ", order_product_id" + order_product_id
 				+ ", order_user_id=" + order_user_id + ", product_amount=" + product_amount + ", order_price=" + order_price
 				+", order_create_time="+order_create_time+", order_finish_time="+order_finish_time+", is_common="+is_common+",is_active="+is_active
-				+"]";
+				+", user="+user+", product="+product+"]";
 	}
 		
 }

@@ -67,6 +67,8 @@ public class User implements Serializable {
 	
 	private Company company;
 	
+	private List<Order> order;
+	
 	private MultipartFile user_img;
     private List<Poster> posters;
     private List<like_table> lt;
@@ -249,6 +251,14 @@ public class User implements Serializable {
 		return company;
 	}
 	
+	public void setOrder(List<Order> order) {
+		this.order = order;
+	}
+	
+	public List<Order> getOrder() {
+		return order;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [user_id=" + user_id + ", user_name" + user_name + "new_password=" + new_password 
@@ -258,7 +268,7 @@ public class User implements Serializable {
 				+ ", create_time="+ create_time
 				+ ", posters="+ posters + ", user_pic="+ user_pic+ ", country=" +country
 				+ ", province=" + province + ", area=" +area + ",user_type="+user_type
-				+", user_img=" + user_img + ", lt=" + lt +", ct=" + ct +", company=" + company +"]";
+				+", user_img=" + user_img + ", lt=" + lt +", ct=" + ct +", company=" + company +", order=" + order +"]";
 	}
 
 

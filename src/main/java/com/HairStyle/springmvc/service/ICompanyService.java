@@ -16,7 +16,7 @@ public interface ICompanyService {
 	public boolean deleteHairstyle(String hairstyle_id);
 	
 	public Company getHairstylist(String company_id);
-	
+	public Hairstyler getHairstyle(String hairstyle_id);
 	public Integer addproduct(Product product); 
 	public boolean addproduct_pic(Product_Pic pp);
 	public boolean search_product_pic(Map<String, Object> mapforcancelpic);

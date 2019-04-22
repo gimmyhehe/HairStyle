@@ -25,5 +25,6 @@ public interface ICompanyDao {
 	public boolean deleteproduct_picDao(Map<String, Object> mapforcancelpic);
 	public boolean modifyproductDao(Product product);
 	public Company findproductbycomDao(String company_id);
+	public Hairstyler getHairstyleDao(String hairstyle_id);
 
 }

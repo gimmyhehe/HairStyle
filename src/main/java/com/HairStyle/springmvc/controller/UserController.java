@@ -45,7 +45,7 @@ public class UserController {
 	
 	 	@Resource
 	    private UserServiceImpl UserService;
-	 	ConfigPath cfp=new ConfigPath();
+
 	 	public String PicPath=ConfigPath.getConfigPath();
 	    /**
 	     * 
@@ -354,7 +354,7 @@ public class UserController {
 	        Random random = new Random();	    		 
 	        int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数            
 		    
-	        String pic_path="E:/workspace/HairStyle/src/main/resources/picture/user";
+	        String pic_path=PicPath+"user";
 	        String pic_path_user_head=pic_path+File.separator+user_id;
 		    
 		    try {

@@ -66,6 +66,11 @@ public class CompanyServiceImpl implements ICompanyService{
 		return companyDao.getHairstylistDao(company_id);
 	}
 
+	public Hairstyler getHairstyle(String hairstyle_id) {
+		// TODO Auto-generated method stub
+		return companyDao.getHairstyleDao(hairstyle_id);
+	}
+	
 	public Integer addproduct(Product product) {
 		// TODO Auto-generated method stub
 		return companyDao.addproductDao(product);
@@ -97,6 +102,8 @@ public class CompanyServiceImpl implements ICompanyService{
 		// TODO Auto-generated method stub
 		return companyDao.findproductbycomDao(company_id);
 	}
+
+
 
 	
 }

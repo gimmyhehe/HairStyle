@@ -276,6 +276,13 @@ public class CompanyController {
 				return CompanyService.getHairstylist(company_id);
 		}
 		
+		@RequestMapping(value="onehairstyle",method=RequestMethod.GET)
+	    @ResponseBody
+	    public Hairstyler getHairstyle(@RequestParam("hairstyle_id") String hairstyle_id) {
+																				
+				return CompanyService.getHairstyle(hairstyle_id);
+		}
+		
 		@RequestMapping(value="addproduct",method=RequestMethod.POST)
 	    @ResponseBody
 	    public Map<String, Object> addproduct(@RequestParam(value="fileImg0",required = false) MultipartFile product_pic0,

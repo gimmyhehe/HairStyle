@@ -80,6 +80,13 @@
 		where company_id=#{company_id}
 	</select>
 	
+	
+	<select id="getHairstyleDao" parameterType="java.lang.String" resultType="com.HairStyle.springmvc.model.Hairstyler">
+		select hairstylist.* 
+		from hairstylist
+		where hairstyle_id=#{hairstyle_id}
+	</select>
+	
 	<!-- 录入商品 -->
 	<insert id="addproductDao" useGeneratedKeys="true" keyProperty="product_id" parameterType="com.HairStyle.springmvc.model.Product">
 		insert into product (product_company_id,product_name,product_price,product_intr,product_amount,product_time)

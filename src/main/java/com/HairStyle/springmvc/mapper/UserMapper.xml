@@ -20,7 +20,7 @@
 	</resultMap>
 	
 
-	<resultMap id="WithUser_PicResultMap" type="com.HairStyle.springmvc.model.User">
+	<resultMap id="LoginResultMap" type="com.HairStyle.springmvc.model.User">
   		<id property="user_id" column="user_id" />
 		<result column="user_name" property="user_name" />
 		<result column="password" property="password" />
@@ -54,7 +54,7 @@
 
 
 	<!--用户登录 -->
-	<select id="loginDao" parameterType="java.util.Map" resultMap="WithUser_PicResultMap">
+	<select id="loginDao" parameterType="java.util.Map" resultMap="LoginResultMap">
 		SELECT
 		user.*,user_pic.*,company.company_id
 		FROM
@@ -106,7 +106,7 @@
 	</update>
 
 	<!-- 获取用户个人资料 -->
-	<select id="get_user_dataDao" parameterType="java.lang.String" resultMap="WithUser_PicResultMap">
+	<select id="get_user_dataDao" parameterType="java.lang.String" resultMap="LoginResultMap">
 		select
 		u.user_id as user_id,
 		u.user_name as user_name,

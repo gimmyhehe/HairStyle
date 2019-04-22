@@ -46,6 +46,8 @@ public class Poster implements Serializable{
 	private int like_id;
 	
 	private int collect_id;
+	
+	private boolean is_active;
     
 	public int getLike_id() {
 		return like_id;
@@ -160,12 +162,21 @@ public class Poster implements Serializable{
 		this.collect_num=collect_num;
 	}
 	
+	public boolean getIs_active() {
+		return is_active;
+	}
+
+	public void setIs_active(boolean is_active) {
+		this.is_active = is_active;
+	}
+	
 	@Override
 	public String toString() {
 		return "Poster [post_user_name=" + post_user_name + ", post_id" + post_id
 				+ ", post_type=" + post_type + ", post_content=" + post_content + ", post_time=" + post_time
 				+", last_edit_time="+last_edit_time+", post_pic="+post_pic+", common="+common+",user="+user
-				+", like_table=" + like_table + ", like_num="+like_num+", like_num="+like_num+ ", like_id="+like_id+", collect_id="+collect_id+"]";
+				+", like_table=" + like_table + ", like_num="+like_num+", like_num="+like_num+ ", like_id="+like_id+", collect_id="+collect_id
+				+", is_active=" + is_active + "]";
 	}
 
 }

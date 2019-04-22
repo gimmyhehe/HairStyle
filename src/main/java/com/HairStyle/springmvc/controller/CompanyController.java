@@ -47,62 +47,230 @@ public class CompanyController {
 	
 	@Resource
     private CompanyServiceImpl CompanyService;
+	private UserServiceImpl UserService;
 	public String PicPath=ConfigPath.getConfigPath();
 	
 	//注册商家信息
 	@RequestMapping(value="bussinessregi",method=RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> register(HttpServletRequest request) {
-    		String company_user_id=request.getParameter("user_id");
-    		String company_name=request.getParameter("company_name");
-    		String location=request.getParameter("location");
-    		String company_intr=request.getParameter("company_intr");
-    		Map<String, Object> register_state = new HashMap<String, Object>();    	    		
-			Company cp= new Company(); 	    			    		
-    		cp.setCompany_user_id(company_user_id);
+    public Map<String, Object> register(HttpServletRequest request,HttpServletRequest response) {
+    	String user_name=request.getParameter("user_name");
+    	String phone_area=request.getParameter("phone_area");
+    	String phone_number=request.getParameter("phone_number");
+    	String email=request.getParameter("email");
+    	
+    	String company_name=request.getParameter("company_name");
+		String location=request.getParameter("location");
+		String company_intr=request.getParameter("company_intr");
+    	
+    	Map<String, Object> register_state = new HashMap<String, Object>();
+    	Map<String, String> phone_map=new HashMap<String, String>();
+    	Map<String, String> email_map=new HashMap<String, String>();
+    	phone_map.put("phone_area", phone_area);
+    	phone_map.put("phone_number", phone_number);
+    	phone_map.put("user_name", user_name);
+    	email_map.put("email", email);
+    	email_map.put("user_name", user_name);
+    	if (UserService.isUserExist(user_name)) {
+    		register_state.put("msg", "用户名已存在！");
+    		register_state.put("status", 3);
+    	}
+    	else if (UserService.isEmailExist(email_map)) {
+    		register_state.put("msg", "该邮件已注册！");
+    		register_state.put("status", 4);
+
+		}
+    	else if (UserService.isPhoneExist(phone_map)) {
+    		register_state.put("msg", "该手机已注册！");
+    		register_state.put("status", 5);
+
+		}
+    	else{
+    		
+    		Date date = new Date();
+    		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");  
+    		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMddHHmmss");  
+    		String create_time_tmp = sdf1.format(date);
+    		Date create_time = null;
+			try {
+				create_time = sdf1.parse(create_time_tmp);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		String str = sdf2.format(date);
+    		Random random = new Random();	    		 
+    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
+    		
+    		
+    		String user_id=str+rannum;
+		    
+		    String pic_path=PicPath+"user";
+		    String pic_path_user_head=pic_path+File.separator+user_id;
+		    
+		    File myPath = new File( pic_path_user_head );  
+            if ( !myPath.exists()){//若此目录不存在，则创建之  
+                myPath.mkdirs();   
+            }  
+            MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest) request;
+            MultipartFile user_img = multipartRequest.getFile("fileImg");
+
+			 	    			    		
+    		Map<String, Object> map = new HashMap<String, Object>();
+    		map.put("user_id", user_id);
+    		map.put("user_name", user_name);
+    		map.put("password", request.getParameter("password"));
+    		map.put("phone_area", phone_area);
+    		map.put("phone_number", phone_number);
+    		map.put("email", email);
+    		map.put("gender", request.getParameter("gender"));
+    		map.put("birth_date", request.getParameter("birth_date"));
+    		map.put("face_type", request.getParameter("face_type"));
+    		map.put("career", request.getParameter("career"));
+    		map.put("create_time", create_time);
+			map.put("country", request.getParameter("country"));
+			map.put("province", request.getParameter("province"));
+			map.put("area", request.getParameter("area"));
+			map.put("user_type", request.getParameter("user_type"));
+    		UserService.register(map);
+    		
+    		Company cp= new Company(); 	    			    		
+    		cp.setCompany_user_id(user_id);
     		cp.setCompany_intr(company_intr);
     		cp.setLocation(location);
     		cp.setCompany_name(company_name);
-    		if(CompanyService.regicompany(cp)){   			    					   		    
-    			register_state.put("msg", "注册成功！");
-    			register_state.put("status", 0);
-    		}
-    		else{
-    			register_state.put("msg", "注册失败！");
-        		register_state.put("status", 1);
-    		}
-    
+    		CompanyService.regicompany(cp);
+    		try {
+			 	Map<String, Object> mapforpic = new HashMap<String, Object>(); 
+		        if(null != user_img && null != user_img.getOriginalFilename()
+		                && !"".equals(user_img.getOriginalFilename().trim())
+		                && !"null".equals(user_img.getOriginalFilename().trim())){
+
+		        		String imagename = new SimpleDateFormat("yyyyMMddHHmmss")
+		        				.format(new Date()).concat(user_img.getOriginalFilename());
+		        		String filename = pic_path_user_head + File.separator +imagename;
+		        		File file = new File(filename);		
+		        		if ( !file.exists()){//若此目录不存在，则创建 
+		        			file.createNewFile();   
+			            }  
+		        		user_img.transferTo(file);//上传至服务器
+		        		register_state.put("loc", filename);
+		        		int rannum_pic = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;
+	        			//将文件图片插入数据库
+	        			mapforpic.put("pic_id", str+rannum_pic);
+	        			mapforpic.put("uploader_id",user_id);
+	        			mapforpic.put("pic_date",create_time);
+	        			mapforpic.put("user_pic_dir","/HairStyle/pic/picture/user/"+user_id+"/"+imagename);
+	        			UserService.upload_new_user_pic(mapforpic);				        					        
+            }	    			    			    					   		    
+    		register_state.put("msg", "注册成功！");
+    		register_state.put("user_id", user_id);
+    		
+    		register_state.put("status", 0);		
+    	} catch (IllegalStateException e) {
+			register_state.put("msg", "注册失败！");
+			register_state.put("status", 1);
+		} catch (IOException e) {
+			register_state.put("msg", "输入信息有误！");
+			register_state.put("status", 2);
+			
+		}	
+    	
+    }
     	return register_state;
     }
-
-	
 	
 	
 	//修改商家信息
-		@RequestMapping(value="businessmodify",method=RequestMethod.POST)
-	    @ResponseBody
-	    public Map<String, Object> modifyCompany(HttpServletRequest request) {
-	    		String company_id=request.getParameter("company_id");
-	    		String company_name=request.getParameter("company_name");
+		 @RequestMapping(value="businessmodify",method = RequestMethod.POST)
+			@ResponseBody
+			public Map<String, Object> modifyCompany(HttpServletRequest request,HttpServletRequest response) {
+		    	
+		    	String user_id=null;
+		    	String company_id=null;
+				Cookie[] cookies = request.getCookies();
+			    for(Cookie cookie : cookies){
+			              if(cookie.getName().equals("user_info")){
+			            	  String loginInfo = cookie.getValue();
+			                  user_id = loginInfo.substring(0,19);
+			                  company_id = loginInfo.substring(19,20);
+			                  break;
+			        }
+			     }      
+		    	
+				String phone_area=request.getParameter("phone_area");
+		    	String phone_number=request.getParameter("phone_number");
+		    	String email=request.getParameter("email");
+		    	String face_type=request.getParameter("face_type");
+		    	String gender=request.getParameter("gender");
+		    	String career=request.getParameter("career");
+		    	String country=request.getParameter("country");
+		    	String province=request.getParameter("province");
+		    	String area=request.getParameter("area");
+		    	String company_name=request.getParameter("company_name");
 	    		String location=request.getParameter("location");
 	    		String company_intr=request.getParameter("company_intr");
-	    		Map<String, Object> register_state = new HashMap<String, Object>();    	    		
-				Company cp= new Company(); 	    			    		
-	    		cp.setCompany_id(Integer.parseInt(company_id));
-	    		cp.setCompany_intr(company_intr);
-	    		cp.setLocation(location);
-	    		cp.setCompany_name(company_name);
-	    		if(CompanyService.modifycompany(cp)){   			    					   		    
-	    			register_state.put("msg", "修改成功！");
-	    			register_state.put("status", 0);
-	    		}
-	    		else{
-	    			register_state.put("msg", "修改失败！");
-	        		register_state.put("status", 1);
-	    		}
-	    
-	    	return register_state;
-	    }
+		    	Date birth_date = null;
+		    	
+		    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		    	try {
+		    		birth_date=sdf.parse(request.getParameter("birth_date"));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    	
+		    	Map<String, Object> modifyCompany_data_state = new HashMap<String,Object>();
+		    	Map<String, String> phone=new HashMap<String, String>();
+		    	Map<String, String> mail_map=new HashMap<String, String>();
+		    	phone.put("phone_area", phone_area);
+		    	phone.put("phone_number", phone_number);
+		    	phone.put("user_id", user_id);
+		    	mail_map.put("email", email);
+		    	mail_map.put("user_id", user_id);
+		    	
+		    	if(phone_area==null||phone_number==null||email==null||face_type==null||gender==null||career==null){
+		    		modifyCompany_data_state.put("msg", "信息未完善！");
+		    		modifyCompany_data_state.put("status", 3);
+		    	}
+		    	else if (UserService.isPhoneExist(phone)) {
+					modifyCompany_data_state.put("msg", "该手机已注册！");
+					modifyCompany_data_state.put("status", 2);
+				}
+		    	else if (UserService.isEmailExist(mail_map)) {
+		    		modifyCompany_data_state.put("msg", "该邮件已注册！");
+		    		modifyCompany_data_state.put("status", 1);
+				}else{
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("user_id",user_id);
+					map.put("phone_area",phone_area);
+					map.put("phone_number", phone_number);
+					map.put("email", email);
+					map.put("gender", gender);
+					map.put("birth_date", birth_date);
+					map.put("face_type", face_type);
+					map.put("career", career);
+					map.put("country", country);
+					map.put("province", province);
+					map.put("area", area);
+					Company cp= new Company(); 	    			    		
+		    		cp.setCompany_id(Integer.parseInt(company_id));
+		    		cp.setCompany_intr(company_intr);
+		    		cp.setLocation(location);
+		    		cp.setCompany_name(company_name);
+					if(UserService.modifyUser_dataByUserID(map)&&CompanyService.modifycompany(cp)){;
+					modifyCompany_data_state.put("msg", "修改资料成功！");
+					modifyCompany_data_state.put("status", 0);
+					}
+					else {
+						modifyCompany_data_state.put("msg", "修改资料失败！");
+						modifyCompany_data_state.put("status", 1);
+					}
+					
+			}
+		    	return modifyCompany_data_state;
+			}
+
 		
 		//查看商家
 		//查看附近商家
@@ -144,7 +312,20 @@ public class CompanyController {
 			    String imagename = new SimpleDateFormat("yyyyMMddHHmmss")
 			        				.format(new Date()).concat(hairstyle_pic.getOriginalFilename());
 			    String filename = pic_path_company + File.separator +imagename;
-			    File file = new File(filename);				        		
+			    File file = new File(filename);			
+			    
+			    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+
+			    Date date = new Date();
+	    		String create = sdf1.format(date);
+	    		Date create_time = null;
+				try {
+					create_time = sdf1.parse(create);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			    
 			    try {
 			    		hairstyle_pic.transferTo(file);//将图片保存下来
 		        					        	
@@ -154,7 +335,8 @@ public class CompanyController {
 					 	hs.setHairstyle_intr(hairstyle_intr);
 					 	hs.setHairstyle_level(hairstyle_level);
 					 	hs.setHairstyle_name(hairstyle_name);
-					 	hs.setHairstyle_pic(imagename);
+					 	hs.setHairstyle_pic("/HairStyle/pic/picture/HairStyle/"+company_id+"/"+imagename);
+					 	hs.setCreate_time(create_time);
 			    		if(CompanyService.regiHairstyle(hs)){	
 			    			hairstyler_state.put("msgg", imagename);
 			    			hairstyler_state.put("msg", "发布成功！");
@@ -216,7 +398,7 @@ public class CompanyController {
 				File file = new File(filename);				        		
 				try {
 					   hairstyle_pic.transferTo(file);//将图片保存下来
-				       hs.setHairstyle_pic(imagename);
+				       hs.setHairstyle_pic("/HairStyle/pic/picture/HairStyle/"+company_id+"/"+imagename);
 
 					   if(CompanyService.modifyHairstyle(hs)){		
 						   	hairstyler_state.put("msgg", imagename);
@@ -327,7 +509,7 @@ public class CompanyController {
 	    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 
 			    
-			    String pic_path=PicPath+"product";
+	    		String pic_path=PicPath+"product"+ File.separator+company_id;
 			    
 			    File myPath = new File( pic_path );  
 	            if ( !myPath.exists()){//若此目录不存在，则创建  
@@ -370,7 +552,7 @@ public class CompanyController {
 				        			//将文件图片插入数据库
 			 	        			pp.setProduct_pic_id(str+String.valueOf(i));
 				        			pp.setProduct_seq_id(i);
-				        			pp.setProduct_pic_dir(imagename);
+				        			pp.setProduct_pic_dir("/HairStyle/pic/picture/product/"+company_id+"/"+imagename);
 				        			pp.setbe_product_id(product.getProduct_id());
 				        			CompanyService.addproduct_pic(pp);				        	
 					        }
@@ -437,8 +619,21 @@ public class CompanyController {
 		    		Random random = new Random();	    		 
 		    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 				    
-				    String pic_path=PicPath+"product";
-
+		    		String user_id=null;
+					String company_id=null;
+					Cookie[] cookies = request.getCookies();
+				    for(Cookie cookie : cookies){
+				              if(cookie.getName().equals("user_info")){
+				            	  String loginInfo = cookie.getValue();
+				                  user_id = loginInfo.substring(0,19);
+				                  company_id=loginInfo.substring(20,21);
+				                  break;
+				        }
+				     }       
+		    		
+		    		
+				    String pic_path=PicPath+"product"+ File.separator+company_id;
+				    
 					
 				     MultipartFile[] imgs=new MultipartFile[9];
 		             imgs[0]=product_pic0;
@@ -473,7 +668,7 @@ public class CompanyController {
 				        			Product_Pic pp=new Product_Pic();
 				        			pp.setProduct_pic_id(str+String.valueOf(i));
 				        			pp.setProduct_seq_id(i);
-				        			pp.setProduct_pic_dir(imagename);
+				        			pp.setProduct_pic_dir("/HairStyle/pic/picture/product/"+company_id+"/"+imagename);
 				        			pp.setbe_product_id(Integer.parseInt(product_id));
 				        			CompanyService.addproduct_pic(pp);					        	
 					        }

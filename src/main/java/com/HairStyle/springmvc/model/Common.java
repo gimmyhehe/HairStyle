@@ -37,7 +37,7 @@ public class Common implements Serializable{
 	private Date common_time;
 	
 	private List<Reply> reply;
-	
+	private boolean is_active;
     
     public String getCommon_id() {
 		return common_id;
@@ -103,11 +103,19 @@ public class Common implements Serializable{
 		this.common_user_pic = common_user_pic;
 	}
 	
+	public boolean getIs_active() {
+		return is_active;
+	}
+
+	public void setIs_active(boolean is_active) {
+		this.is_active = is_active;
+	}
+	
 	@Override
 	public String toString() {
 		return "Common [common_id=" + common_id + ", common_post_id" + common_post_id
 				+ ", common_user_id=" + common_user_id + ", common_content=" + common_content 
 				+ ", common_time=" + common_time +", reply=" + reply +", common_user_name=" + common_user_name 
-				+", common_user_pic=" + common_user_pic+"]";
+				+", common_user_pic=" + common_user_pic+", is_active=" + is_active+"]";
 	}
 }

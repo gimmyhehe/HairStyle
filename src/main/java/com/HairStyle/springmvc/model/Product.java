@@ -33,6 +33,7 @@ public class Product implements Serializable {
 	private int product_amount;
 	private Date product_time;
 	private List<Product_Pic> pp;
+	private boolean is_active;
 	
 	public int getProduct_id() {
 		return product_id;
@@ -98,9 +99,17 @@ public class Product implements Serializable {
 		this.pp = pp;
 	}
 	
+	public boolean getIs_active() {
+		return is_active;
+	}
+
+	public void setIs_active(boolean is_active) {
+		this.is_active = is_active;
+	}
+	
 	@Override
 	public String toString() {
 		return "Product [product_id=" + product_id + ", product_company_id" + product_company_id + ", product_name" + product_name + ",product_price=" + product_price 
-				+ ", product_intr=" + product_intr + ", product_amount=" + product_amount + ",product_time="+product_time+ ", pp="+pp+ "]";
+				+ ", product_intr=" + product_intr + ", product_amount=" + product_amount + ",product_time="+product_time+ ", pp="+pp+ ", is_active="+is_active+"]";
 	}
 }

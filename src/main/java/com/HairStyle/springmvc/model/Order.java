@@ -26,4 +26,87 @@ public class Order implements Serializable{
 	private Date order_create_time;
 	private Date order_finish_time;
 	private boolean is_common;
+	private boolean is_active;
+	
+	public String getOrder_id() {
+		return order_id;
+	}
+
+	public void setOrder_id(String order_id) {
+		this.order_id = order_id;
+	}
+	
+	public int getOrder_product_id() {
+		return order_product_id;
+	}
+
+	public void setOrder_product_id(int order_product_id) {
+		this.order_product_id = order_product_id;
+	}
+	
+	public String getOrder_user_id() {
+		return order_user_id;
+	}
+
+	public void setOrder_user_id(String order_user_id) {
+		this.order_user_id = order_user_id;
+	}
+	
+	public int getProduct_amount() {
+		return product_amount;
+	}
+
+	public void setProduct_amount(int order_product_id) {
+		this.product_amount = product_amount;
+	}
+	
+	public double getOrder_price() {
+		return order_price;
+	}
+
+	public void setOrder_price(double order_price) {
+		this.order_price = order_price;
+	}
+	
+	public Date getOrder_create_time() {
+		return order_create_time;
+	}
+
+	public void setOrder_create_time(Date order_create_time) {
+		this.order_create_time = order_create_time;
+	}
+	
+	public Date getOrder_finish_time() {
+		return order_finish_time;
+	}
+
+	public void setOrder_finish_time(Date order_finish_time) {
+		this.order_finish_time = order_finish_time;
+	}
+	
+	public boolean getIs_common() {
+		return is_common;
+	}
+
+	public void setIs_common(boolean is_common) {
+		this.is_common = is_common;
+	}
+	
+	public boolean getIs_active() {
+		return is_active;
+	}
+
+	public void setIs_active(boolean is_active) {
+		this.is_active = is_active;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return "Order [order_id=" + order_id + ", order_product_id" + order_product_id
+				+ ", order_user_id=" + order_user_id + ", product_amount=" + product_amount + ", order_price=" + order_price
+				+", order_create_time="+order_create_time+", order_finish_time="+order_finish_time+", is_common="+is_common+",is_active="+is_active
+				+"]";
+	}
+		
 }

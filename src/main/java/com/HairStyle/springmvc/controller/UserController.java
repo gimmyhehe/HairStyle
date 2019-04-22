@@ -154,7 +154,7 @@ public class UserController {
 		        			mapforpic.put("pic_id", str+rannum_pic);
 		        			mapforpic.put("uploader_id",user_id);
 		        			mapforpic.put("pic_date",create_time);
-		        			mapforpic.put("user_pic_dir",imagename);
+		        			mapforpic.put("user_pic_dir","/HairStyle/pic/picture/user/"+user_id+"/"+imagename);
 		        			UserService.upload_new_user_pic(mapforpic);				        					        
 	            }	    			    			    					   
 			    
@@ -302,7 +302,8 @@ public class UserController {
 	    	else if (UserService.isEmailExist(mail_map)) {
 	    		modifyUser_data_state.put("msg", "该邮件已注册！");
 	    		modifyUser_data_state.put("status", 1);
-			}else{
+			}
+	    	else{
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("user_id",user_id);
 				map.put("phone_area",phone_area);
@@ -315,9 +316,14 @@ public class UserController {
 				map.put("country", country);
 				map.put("province", province);
 				map.put("area", area);
-				UserService.modifyUser_dataByUserID(map);
+				if(UserService.modifyUser_dataByUserID(map)){
 				modifyUser_data_state.put("msg", "修改资料成功！");
 				modifyUser_data_state.put("status", 0);
+				}
+				else {
+					modifyUser_data_state.put("msg", "修改资料失败！");
+					modifyUser_data_state.put("status", 1);
+				}
 				
 		}
 	    	return modifyUser_data_state;
@@ -376,7 +382,7 @@ public class UserController {
 	        			mapforpic.put("pic_id", "pic"+str+rannum_pic);
 	        			mapforpic.put("uploader_id",user_id);
 	        			mapforpic.put("pic_date",create_time);
-	        			mapforpic.put("user_pic_dir",imagename);
+	        			mapforpic.put("user_pic_dir","/HairStyle/pic/picture/user/"+user_id+"/"+imagename);
 	        			
 	        			UserService.set_user_old_pic(user_id);
 	        			

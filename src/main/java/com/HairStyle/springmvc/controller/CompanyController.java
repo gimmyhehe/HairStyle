@@ -272,7 +272,17 @@ public class CompanyController {
 			}
 
 		
-		//查看商家
+		//查看商家基本信息
+		 @RequestMapping(value="scan_business",method = RequestMethod.GET)
+			@ResponseBody
+			public User scan_business(HttpServletRequest request,HttpServletRequest response) {
+			 	String company_id=request.getParameter("company_id");
+			 	
+					
+		    	return CompanyService.scan_business(company_id);
+			}
+		 
+		 
 		//查看附近商家
 		
 		//录入发型师信息

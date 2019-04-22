@@ -9,6 +9,7 @@ import com.HairStyle.springmvc.model.Company;
 import com.HairStyle.springmvc.model.Hairstyler;
 import com.HairStyle.springmvc.model.Product;
 import com.HairStyle.springmvc.model.Product_Pic;
+import com.HairStyle.springmvc.model.User;
 
 @Repository
 public interface ICompanyDao {
@@ -26,5 +27,6 @@ public interface ICompanyDao {
 	public boolean modifyproductDao(Product product);
 	public Company findproductbycomDao(String company_id);
 	public Hairstyler getHairstyleDao(String hairstyle_id);
+	public User scan_businessDao(String company_id);
 
 }

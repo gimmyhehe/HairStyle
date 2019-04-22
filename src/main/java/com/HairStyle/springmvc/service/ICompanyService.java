@@ -6,6 +6,7 @@ import com.HairStyle.springmvc.model.Company;
 import com.HairStyle.springmvc.model.Hairstyler;
 import com.HairStyle.springmvc.model.Product;
 import com.HairStyle.springmvc.model.Product_Pic;
+import com.HairStyle.springmvc.model.User;
 
 public interface ICompanyService {
 
@@ -23,4 +24,5 @@ public interface ICompanyService {
 	public boolean deleteproduct_pic(Map<String, Object> mapforcancelpic);
 	public boolean modifyproduct(Product product); 
 	public Company findproductbycom(String company_id);
+	public User scan_business(String company_id);
 }

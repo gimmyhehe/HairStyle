@@ -36,6 +36,38 @@
 			<result column="is_active" property="is_active" />
         </collection>
 	</resultMap>
+	
+	<resultMap id="CompanyByUserMap" type="com.HairStyle.springmvc.model.User">
+  		<id property="user_id" column="user_id" />
+		<result column="user_name" property="user_name" />
+		<result column="password" property="password" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+		<result column="birth_date" property="birth_date" />
+		<result column="phone_area" property="phone_area" />
+		<result column="phone_number" property="phone_number" />
+		<result column="face_type" property="face_type" />
+		<result column="career" property="career" />
+		<result column="create_time" property="create_time"  />
+		<result column="country" property="country" />
+		<result column="province" property="province" />
+		<result column="area" property="area" />
+		<result column="user_type" property="user_type" />
+		<association property="company" column="company_id" javaType="com.HairStyle.springmvc.model.Company" resultMap="CompanyMap"/>
+		<association property="user_pic" column="pic_id" javaType="com.HairStyle.springmvc.model.User_Pic" resultMap="User_PicMap"/>		
+	</resultMap>
+	
+	<resultMap id="User_PicMap" type="com.HairStyle.springmvc.model.User_Pic">
+		<id property="pic_id" column="pic_id"/>
+		<result column="user_pic_dir" property="user_pic_dir"/>
+	</resultMap>
+	
+	<resultMap id="CompanyMap" type="com.HairStyle.springmvc.model.Company">
+		<id property="company_id" column="company_id"/>
+		<id property="company_name" column="company_name"/>
+		<id property="location" column="location"/>
+		<id property="company_intr" column="company_intr"/>
+	</resultMap>
 
 	<!--商户注册-->
 	<insert id="regicompanyDao" parameterType="com.HairStyle.springmvc.model.Company">
@@ -142,5 +174,16 @@
 		where company_id=#{company_id}		
 	</select>
 	
+	<!-- 查看商家基本信息 -->
+	<select id="scan_businessDao" parameterType="java.lang.String" resultMap="CompanyByUserMap">
+		SELECT
+		user.*,user_pic.*,company.*
+		FROM
+		company
+		left join user left join user_pic on user.user_id=user_pic.uploader_id
+		on user.user_id=company.company_user_id
+		WHERE
+		company.company_id=#{company_id}
+	</select>
 	
 </mapper>

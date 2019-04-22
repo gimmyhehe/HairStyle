@@ -4,6 +4,7 @@ import com.HairStyle.springmvc.model.Company;
 import com.HairStyle.springmvc.model.Hairstyler;
 import com.HairStyle.springmvc.model.Product;
 import com.HairStyle.springmvc.model.Product_Pic;
+import com.HairStyle.springmvc.model.User;
 
 import java.util.Map;
 
@@ -101,6 +102,11 @@ public class CompanyServiceImpl implements ICompanyService{
 	public Company findproductbycom(String company_id) {
 		// TODO Auto-generated method stub
 		return companyDao.findproductbycomDao(company_id);
+	}
+
+	public User scan_business(String company_id) {
+		// TODO Auto-generated method stub
+		return companyDao.scan_businessDao(company_id);
 	}
 
 

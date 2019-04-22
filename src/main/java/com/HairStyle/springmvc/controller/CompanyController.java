@@ -320,7 +320,11 @@ public class CompanyController {
 	    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 
 			    
+			    String pic_path=PicPath+"product";
 			    
+			    File myPath = new File( pic_path );  
+	            if ( !myPath.exists()){//若此目录不存在，则创建  
+	                myPath.mkdir();   
 	            }  
 			    
 	             MultipartFile[] imgs=new MultipartFile[9];

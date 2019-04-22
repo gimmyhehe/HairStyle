@@ -89,5 +89,5 @@
 	
 	</mvc:message-converters>		
 	</mvc:annotation-driven>
-    <mvc:resources mapping="/pic/**/" location="file:D:/HairStyle/HairStyle/src/main/resources/picture"/>
+    <mvc:resources mapping="/pic/**/" location="file:E:/workspace/HairStyle/src/main/resources/picture"/>
 </beans>  

@@ -205,7 +205,6 @@ public class UserController {
 
 	    			Cookie cookie1 = new Cookie("user_info",user_info);
 	    			cookie1.setMaxAge(60*60);
-	                cookie1.setPath("/HairStyle");
 	                response.addCookie(cookie1);
 	                response.addHeader("user_info",user_info);
 	                response.addHeader("user_name",user_name);

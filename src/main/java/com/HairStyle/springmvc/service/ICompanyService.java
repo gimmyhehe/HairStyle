@@ -25,4 +25,5 @@ public interface ICompanyService {
 	public boolean modifyproduct(Product product); 
 	public Company findproductbycom(String company_id);
 	public User scan_business(String company_id);
+	public Product getoneproduct(String product_id);
 }

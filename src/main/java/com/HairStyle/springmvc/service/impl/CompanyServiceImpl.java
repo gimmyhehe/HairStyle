@@ -109,6 +109,11 @@ public class CompanyServiceImpl implements ICompanyService{
 		return companyDao.scan_businessDao(company_id);
 	}
 
+	public Product getoneproduct(String product_id) {
+		// TODO Auto-generated method stub
+		return companyDao.getoneproductDao(product_id);
+	}
+
 
 
 	

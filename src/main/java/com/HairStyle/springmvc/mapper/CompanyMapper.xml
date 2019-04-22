@@ -69,6 +69,21 @@
 		<id property="company_intr" column="company_intr"/>
 	</resultMap>
 
+	<resultMap id="ProductByIDMap" type="com.HairStyle.springmvc.model.Product">
+			<id property="product_id" column="product_id" />
+			<result column="product_intr" property="product_intr" />
+			<result column="product_name" property="product_name" />
+			<result column="product_price" property="product_price" />
+			<result column="product_time" property="product_time" />
+			<result column="product_amount" property="product_amount" />
+			<result column="is_active" property="is_active" />
+			<collection property="pp" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product_Pic">         
+            	<id column="product_pic_id" property="product_pic_id" />
+            	<result column="product_seq_id" property="product_seq_id"  />
+            	<result column="product_pic_dir" property="product_pic_dir"  />
+        	</collection>
+     </resultMap>
+
 	<!--商户注册-->
 	<insert id="regicompanyDao" parameterType="com.HairStyle.springmvc.model.Company">
 		insert into company (company_name,company_user_id,location,company_intr)
@@ -185,5 +200,14 @@
 		WHERE
 		company.company_id=#{company_id}
 	</select>
-	
+		
+	<select id="getoneproductDao" parameterType="java.lang.String" resultMap="ProductByIDMap">
+		SELECT
+		product.*,product_pic.*
+		FROM
+		product
+		left join product_pic on product.product_id=product_pic.be_product_id
+		WHERE
+		product.product_id=#{product_id}
+	</select>
 </mapper>

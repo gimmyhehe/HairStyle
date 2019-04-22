@@ -717,5 +717,11 @@ public class CompanyController {
 					return company_product;
 			}
 		 	
-		 	//查看单个商品下联同订单信息
+		 	//查看单个商品
+		 	@RequestMapping(value="oneproduct",method=RequestMethod.GET)
+		    @ResponseBody
+		    public Product getoneproduct(@RequestParam("product_id") String product_id) {
+																					
+					return CompanyService.getoneproduct(product_id);
+			}
 }

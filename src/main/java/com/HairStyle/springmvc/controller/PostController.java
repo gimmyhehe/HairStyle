@@ -227,7 +227,7 @@ public class PostController {
 			        			Map<String, Object> mapforpic = new HashMap<String, Object>();
 			        			mapforpic.put("idpost_pic", "pic"+str+String.valueOf(i));
 			        			mapforpic.put("seq_id",String.valueOf(i));
-			        			mapforpic.put("post_pic_dir",imagename);
+			        			mapforpic.put("post_pic_dir","/HairStyle/pic/picture/post/"+post_id+"/"+imagename);
 			        			mapforpic.put("pic_post_id",post_id);
 			        			PostService.insert_post_picture(mapforpic);				        	
 				        }
@@ -341,7 +341,7 @@ public class PostController {
 				        			//将文件图片插入数据库
 				        			mapforpic.put("idpost_pic", "pic"+str+String.valueOf(i));
 				        			mapforpic.put("seq_id",String.valueOf(i));
-				        			mapforpic.put("post_pic_dir",imagename);
+				        			mapforpic.put("post_pic_dir","/HairStyle/pic/picture/post/"+post_id+"/"+imagename);
 				        			mapforpic.put("pic_post_id",post_id);
 				        			PostService.insert_post_picture(mapforpic);				        	
 					        }

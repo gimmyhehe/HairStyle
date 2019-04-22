@@ -27,6 +27,8 @@ public class Hairstyler implements Serializable {
 	private String hairstyle_level;
 	private String hairstyle_company_id;
 	private String hairstyle_pic;
+	private Date create_time;
+	private boolean is_active;
 	
 	public int getHairstyle_id() {
 		return hairstyle_id;
@@ -76,11 +78,26 @@ public class Hairstyler implements Serializable {
 		this.hairstyle_pic = hairstyle_pic;
 	}
 	
+	public Date getCreate_time() {
+		return create_time;
+	}
+
+	public void setCreate_time(Date create_time) {
+		this.create_time = create_time;
+	}
+	
+	public boolean getIs_active() {
+		return is_active;
+	}
+
+	public void setIs_active(boolean is_active) {
+		this.is_active = is_active;
+	}
 	
 	@Override
 	public String toString() {
 		return "Company [hairstyle_id=" + hairstyle_id + ", hairstyle_name" + hairstyle_name + ", hairstyle_intr" + hairstyle_intr + ", hairstyle_level =" + hairstyle_level 
-				+ ", hairstyle_company_id=" + hairstyle_company_id + ", hairstyle_pic =" + hairstyle_pic 
+				+ ", hairstyle_company_id=" + hairstyle_company_id + ", hairstyle_pic =" + hairstyle_pic +", create_time =" + create_time + ", is_active =" + is_active
 				+ "]";
 	}
 }

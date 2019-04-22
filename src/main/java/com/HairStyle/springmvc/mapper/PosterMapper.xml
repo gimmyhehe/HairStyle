@@ -11,6 +11,7 @@
 		<result column="iscollect_id" property="collect_id" jdbcType="INTEGER" />
 		<result column="like_num" property="like_num" jdbcType="INTEGER" />
 		<result column="collect_num" property="collect_num" jdbcType="INTEGER" />
+		<result column="post_is_active" property="is_active" />
 		<association property="user" column="user_id" javaType="com.HairStyle.springmvc.model.User" resultMap="UserMap"/>
 		<collection property="post_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">         
             	<id column="idpost_pic" property="idpost_pic" />
@@ -24,6 +25,7 @@
             	<result column="common_user_id" property="common_user_id"  />
             	<result column="common_user_name" property="common_user_name"  />
             	<result column="common_user_pic" property="common_user_pic"  />
+            	<result column="common_is_active" property="is_active" />
             	<collection property="reply" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Reply">
             		<id column="reply_id" property="reply_id" />
             		<result column="reply_user_id" property="reply_user_id"  />
@@ -31,7 +33,8 @@
             		<result column="replyed_user_id" property="replyed_user_id"  />
             		<result column="replyed_user_name" property="replyed_user_name"  />
             		<result column="reply_content" property="reply_content"  />
-            		<result column="reply_time" property="reply_time"  />          		            		
+            		<result column="reply_time" property="reply_time"  />
+            		<result column="reply_is_active" property="reply_is_active" />          		            		
             	</collection>
         </collection>
         <collection property="like_table" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.like_table">
@@ -57,6 +60,7 @@
 			<result column="collect_id" property="collect_id" jdbcType="INTEGER" />
 			<result column="like_num" property="like_num" jdbcType="INTEGER" />
 			<result column="collect_num" property="collect_num" jdbcType="INTEGER" />
+			<result column="is_active" property="is_active" />
 			<collection property="post_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">         
             	<id column="idpost_pic" property="idpost_pic" />
             	<result column="seq_id" property="seq_id"  />
@@ -77,6 +81,7 @@
 			<result column="collect_id" property="collect_id" jdbcType="INTEGER" />
 			<result column="like_num" property="like_num" jdbcType="INTEGER" />
 			<result column="collect_num" property="collect_num" jdbcType="INTEGER" />
+			<result column="is_active" property="is_active" />
 			<association property="user" column="user_id" javaType="com.HairStyle.springmvc.model.User" resultMap="UserMap"/>		
 			<collection property="post_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">         
             	<id column="idpost_pic" property="idpost_pic" />
@@ -119,6 +124,7 @@
 				<result column="iscollect_id" property="collect_id" jdbcType="INTEGER" />
 				<result column="like_num" property="like_num" jdbcType="INTEGER" />
 				<result column="collect_num" property="collect_num" jdbcType="INTEGER" />
+				<result column="post_is_active" property="is_active" />
 				<collection property="post_pic" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Post_Pic">         
 	            	<id column="idpost_pic" property="idpost_pic" />
 	            	<result column="seq_id" property="seq_id"  />
@@ -170,7 +176,7 @@
 		left join like_table on like_table.like_post_id=post.post_id and like_table.like_user_id=#{user_id}
 		left join collect_table on collect_table.collect_post_id=post.post_id and collect_table.collect_user_id=#{user_id}
 		where 
-		post.post_type=#{post_type} and post.is_active=1
+		post.post_type=#{post_type}
 		
 	</select>
 	
@@ -192,23 +198,23 @@
         	left join like_table on like_table.like_post_id=post.post_id and like_table.like_user_id=#{userd_id} and like_table.is_active=1
 			left join collect_table on collect_table.collect_post_id=post.post_id and collect_table.collect_user_id=#{userd_id} and collect_table.is_active=1
 		) 
-        on post.post_user_id=user.user_id and post.is_active=1       
+        on post.post_user_id=user.user_id 
 		where 
 		user.user_id=#{user_id}
 	</select>
 	
 	<!-- 单个帖子展示评论回复 -->
 	<select id="findPostByPost_idDao" parameterType="java.util.Map" resultMap="APostbyPostIDResultMap">
-		select post.post_id,post.post_type,post.post_content,post.post_time,post.last_edit_time,
+		select post.post_id,post.post_type,post.post_content,post.post_time,post.last_edit_time,post.is_active as post_is_active
 		post_pic.idpost_pic,post_pic.seq_id,post_pic.post_pic_dir,
         user.user_id,user.user_name,
         user_pic.pic_id as user_pic_id,
         user_pic.user_pic_dir,
-        common.common_id,common.common_user_id,common.common_content,common.common_time,
+        common.common_id,common.common_user_id,common.common_content,common.common_time,common.is_active as common_is_active
         cm_user.user_id as common_user_id,
         cm_user.user_name as common_user_name,
         cm_user_pic.user_pic_dir as common_user_pic,
-        reply.reply_id,reply.reply_user_id,reply.replyed_user_id,reply.reply_time,reply.reply_content,
+        reply.reply_id,reply.reply_user_id,reply.replyed_user_id,reply.reply_time,reply.reply_content,reply.is_active as reply_is_active
         re_user.user_name as reply_user_name,
         re_user_pic.user_pic_dir as re_user_pic,
         red_user.user_name as replyed_user_name,
@@ -246,8 +252,8 @@ left join ((common left join (user as cm_user left join user_pic as cm_user_pic
 						on reply.reply_user_id=re_user.user_id
 						left join user as red_user
 						on reply.replyed_user_id=red_user.user_id
-            on common.common_id=reply.reply_common_id and reply.is_active=1)
-            on common.common_post_id=post.post_id and common.is_active=1
+            on common.common_id=reply.reply_common_id)
+            on common.common_post_id=post.post_id 
 left join (like_table left join (user as like_user left join user_pic as like_user_pic 
 			on like_user.user_id=like_user_pic.uploader_id and like_user_pic.is_active=1) 
 			on like_table.like_user_id=like_user.user_id)			

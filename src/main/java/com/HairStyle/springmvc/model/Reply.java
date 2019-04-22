@@ -34,7 +34,7 @@ public class Reply implements Serializable{
 	private String reply_content;
 	
 	private Date reply_time;
-	
+	private boolean is_active;
     
     public String getReply_id() {
 		return reply_id;
@@ -99,7 +99,13 @@ public class Reply implements Serializable{
 		this.reply_time = reply_time;
 	}
 	
-	
+	public boolean getIs_active() {
+		return is_active;
+	}
+
+	public void setIs_active(boolean is_active) {
+		this.is_active = is_active;
+	}
 
 	
 	@Override
@@ -108,6 +114,6 @@ public class Reply implements Serializable{
 				+ ", replyed_user_id=" + replyed_user_id + ", reply_content=" + reply_content
 				+ ", replyed_user_name=" + replyed_user_name 
 				+ ", reply_user_name=" + reply_user_name 
-				+ ", reply_time="+ reply_time+ "]";
+				+ ", reply_time="+ reply_time+ ", is_active="+is_active+ "]";
 	}
 }

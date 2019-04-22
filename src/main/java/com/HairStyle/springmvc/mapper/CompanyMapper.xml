@@ -13,6 +13,7 @@
 			<result column="product_price" property="product_price" />
 			<result column="product_time" property="product_time" />
 			<result column="product_amount" property="product_amount" />
+			<result column="is_active" property="is_active" />
 			<collection property="pp" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product_Pic">         
             	<id column="product_pic_id" property="product_pic_id" />
             	<result column="product_seq_id" property="product_seq_id"  />
@@ -32,6 +33,7 @@
 			<result column="hairstyle_level" property="hairstyle_level" />
 			<result column="hairstyle_name" property="hairstyle_name" />
 			<result column="hairstyle_pic" property="hairstyle_pic" />
+			<result column="is_active" property="is_active" />
         </collection>
 	</resultMap>
 
@@ -52,9 +54,9 @@
 	
 	<!--发型师信息录入-->
 	<insert id="regiHairstyleDao" parameterType="com.HairStyle.springmvc.model.Hairstyler">
-		insert into hairstylist (hairstyle_name,hairstyle_intr,hairstyle_pic,hairstyle_level,hairstyle_company_id)
+		insert into hairstylist (hairstyle_name,hairstyle_intr,hairstyle_pic,hairstyle_level,hairstyle_company_id,create_time,is_active)
 		VALUES
-		(#{hairstyle_name},#{hairstyle_intr},#{hairstyle_pic},#{hairstyle_level},#{hairstyle_company_id})
+		(#{hairstyle_name},#{hairstyle_intr},#{hairstyle_pic},#{hairstyle_level},#{hairstyle_company_id},#{create_time},1)
 	</insert>
 	
 	<!--发型师信息修改-->
@@ -68,15 +70,15 @@
 	
 	
 	<!--删除发型师-->
-	<delete id="deleteHairstyleDao" parameterType="java.lang.String">  
-        delete from hairstylist where hairstyle_id = #{hairstyle_id}  
-	</delete>  
+	<update id="deleteHairstyleDao" parameterType="java.lang.String">  
+        update hairstylist set is_active=0 where hairstyle_id = #{hairstyle_id}  
+	</update>  
 	
 	<!-- 查看商家下的发型师 -->
 	<select id="getHairstylistDao" parameterType="java.lang.String" resultMap="HairstyleByCompanyMap">
 		select company.*,hairstylist.* 
 		from company
-		left join hairstylist on company.company_id=hairstylist.hairstyle_company_id    		
+		left join hairstylist on company.company_id=hairstylist.hairstyle_company_id	
 		where company_id=#{company_id}
 	</select>
 	
@@ -89,10 +91,15 @@
 	
 	<!-- 录入商品 -->
 	<insert id="addproductDao" useGeneratedKeys="true" keyProperty="product_id" parameterType="com.HairStyle.springmvc.model.Product">
-		insert into product (product_company_id,product_name,product_price,product_intr,product_amount,product_time)
+		insert into product (product_company_id,product_name,product_price,product_intr,product_amount,product_time,is_active)
 		VALUES
-		(#{product_company_id},#{product_name},#{product_price},#{product_intr},#{product_amount},#{product_time})
+		(#{product_company_id},#{product_name},#{product_price},#{product_intr},#{product_amount},#{product_time},1)
 	</insert>
+	
+	<!--删除商品-->
+	<update id="deleteProductDao" parameterType="java.lang.String">  
+        update product set is_active=0 where product_id=#{product_id}
+	</update> 
 	
 	<!-- 录入商品图片 -->
 	<insert id="addproduct_picDao" parameterType="com.HairStyle.springmvc.model.Product_Pic">
@@ -108,7 +115,7 @@
 		FROM
 		product_pic
 		WHERE
-		product_seq_id=#{product_seq_id} and be_product_id=#{be_product_id}
+		product_seq_id=#{product_seq_id} and be_product_id=#{be_product_id} and is_active=1
 	</select>
 	
 	<!-- 删除商品图片 -->
@@ -123,9 +130,10 @@
 		where product_id=#{product_id}
 	</update>
 	
+	<!-- 商户下的商品 -->
 	<select id="findproductbycomDao" parameterType="java.util.Map" resultMap="ProductByCompanyMap">
 		select company.company_id,company.company_name,company.company_user_id,company.company_intr,
-			product.product_id,product.product_name,product.product_price,product.product_intr,product.product_amount,product.product_time,
+			product.product_id,product.product_name,product.product_price,product.product_intr,product.product_amount,product.product_time,product.is_active
 			product_pic.product_pic_id,product_pic.product_seq_id,product_pic.product_pic_dir
 		from company
 		left join (product 

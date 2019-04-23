@@ -115,9 +115,13 @@ public class CompanyServiceImpl implements ICompanyService{
 		return companyDao.getoneproductDao(product_id);
 	}
 
-	public List<Company> search_business_loca(Map<String, String> location) {
+	public List<Company> search_business_loca(Map<String, String> location,int currPage, int pageSize) {
 		// TODO Auto-generated method stub
-		return companyDao.search_business_locaDao(location);
+		int firstIndex = (currPage - 1) * pageSize;
+        //到第几条数据结束
+        int lastIndex = currPage * pageSize;
+        List<Company> companys = companyDao.search_business_locaDao(location);
+		return companys.subList(firstIndex, lastIndex);
 	}
 
 

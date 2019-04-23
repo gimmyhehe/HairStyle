@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -256,8 +257,6 @@ public class CompanyController {
 		    		cp.setCompany_name(company_name);
 					if(UserService.modifyUser_dataByUserID(map)&&CompanyService.modifycompany(cp)){;
 					modifyCompany_data_state.put("msg", "修改资料成功！");
-					modifyCompany_data_state.put("mshhg", Integer.parseInt(company_id));
-					modifyCompany_data_state.put("ms44hhg", company_id);
 					modifyCompany_data_state.put("status", 0);
 					}
 					else {
@@ -284,7 +283,8 @@ public class CompanyController {
 		//查看附近商家
 		 @RequestMapping(value="search_business_loca",method = RequestMethod.POST)
 		 @ResponseBody
-		 public List<Company> search_business_loca(HttpServletRequest request,HttpServletRequest response) {
+		 public List<Company> search_business_loca(HttpServletRequest request,HttpServletRequest response,
+				 @PathVariable("currPage") int currPage, @PathVariable("pageSize") int pageSize) {
 			 	String country=request.getParameter("country");
 			 	String province=request.getParameter("province");
 			 	String area=request.getParameter("area");
@@ -292,7 +292,7 @@ public class CompanyController {
 			 	location.put("country", country);
 			 	location.put("province", province);
 			 	location.put("area", area);
-			 	return CompanyService.search_business_loca(location);
+			 	return CompanyService.search_business_loca(location,currPage, pageSize);
 
 			} 
 		 

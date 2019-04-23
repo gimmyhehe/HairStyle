@@ -47,6 +47,8 @@ public class CompanyController {
 	
 	@Resource
     private CompanyServiceImpl CompanyService;
+	
+	@Resource
 	private UserServiceImpl UserService;
 	public String PicPath=ConfigPath.getConfigPath();
 	

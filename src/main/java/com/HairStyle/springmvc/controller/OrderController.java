@@ -201,7 +201,7 @@ public class OrderController {
 			for(Cookie cookie : cookies){
 	          		if(cookie.getName().equals("user_info")){
 	          			String loginInfo = cookie.getValue();
-	          			company_id = loginInfo.substring(19,20);
+	          			company_id = loginInfo.substring(20,21);
 	          			break;
 	          		}
 			}																

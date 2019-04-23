@@ -195,7 +195,7 @@ public class CompanyController {
 			              if(cookie.getName().equals("user_info")){
 			            	  String loginInfo = cookie.getValue();
 			                  user_id = loginInfo.substring(0,19);
-			                  company_id = loginInfo.substring(19,20);
+			                  company_id = loginInfo.substring(20,21);
 			                  break;
 			        }
 			     }      
@@ -256,6 +256,8 @@ public class CompanyController {
 		    		cp.setCompany_name(company_name);
 					if(UserService.modifyUser_dataByUserID(map)&&CompanyService.modifycompany(cp)){;
 					modifyCompany_data_state.put("msg", "修改资料成功！");
+					modifyCompany_data_state.put("mshhg", Integer.parseInt(company_id));
+					modifyCompany_data_state.put("ms44hhg", company_id);
 					modifyCompany_data_state.put("status", 0);
 					}
 					else {
@@ -310,7 +312,7 @@ public class CompanyController {
 			    for(Cookie cookie : cookies){
 			              if(cookie.getName().equals("user_info")){
 			            	  String loginInfo = cookie.getValue();
-			            	  company_id = loginInfo.substring(19,20);
+			            	  company_id = loginInfo.substring(20,21);
 
 			                  break;
 			        }

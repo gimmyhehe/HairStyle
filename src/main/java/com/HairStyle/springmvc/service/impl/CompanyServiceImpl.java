@@ -6,6 +6,7 @@ import com.HairStyle.springmvc.model.Product;
 import com.HairStyle.springmvc.model.Product_Pic;
 import com.HairStyle.springmvc.model.User;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -112,6 +113,11 @@ public class CompanyServiceImpl implements ICompanyService{
 	public Product getoneproduct(String product_id) {
 		// TODO Auto-generated method stub
 		return companyDao.getoneproductDao(product_id);
+	}
+
+	public List<Company> search_business_loca(Map<String, String> location) {
+		// TODO Auto-generated method stub
+		return companyDao.search_business_locaDao(location);
 	}
 
 

@@ -210,4 +210,17 @@
 		WHERE
 		product.product_id=#{product_id}
 	</select>
+	
+	<!-- 查看商家基本信息 -->
+	<select id="search_business_locaDao" parameterType="java.util.Map" resultMap="CompanyByUserMap">
+		SELECT
+		user.*,user_pic.*,company.*
+		FROM
+		user
+		left join user_pic on user.user_id=user_pic.uploader_id
+		left join company on user.user_id=company.company_user_id
+		WHERE
+		country=#{country} and province=#{province} and area=#{area} and user_type=1
+	</select>
+	
 </mapper>

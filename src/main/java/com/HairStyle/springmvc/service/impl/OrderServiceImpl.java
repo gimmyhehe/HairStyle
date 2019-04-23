@@ -20,6 +20,7 @@ import com.HairStyle.springmvc.model.Post_Type;
 import com.HairStyle.springmvc.model.Poster;
 import com.HairStyle.springmvc.model.Product;
 import com.HairStyle.springmvc.model.Reply;
+import com.HairStyle.springmvc.model.Reply_Order;
 import com.HairStyle.springmvc.model.User;
 import com.HairStyle.springmvc.model.like_table;
 import com.HairStyle.springmvc.service.IOrderService;
@@ -76,6 +77,18 @@ public class OrderServiceImpl implements IOrderService{
 	public boolean commonorder(Common_Order co) {
 		// TODO Auto-generated method stub
 		return orderDao.commonorderDao(co);
+	}
+
+
+	public boolean replycommonorder(Reply_Order ro) {
+		// TODO Auto-generated method stub
+		return orderDao.replycommonorderDao(ro);
+	}
+
+
+	public boolean setcommontreply(String com_order_id) {
+		// TODO Auto-generated method stub
+		return orderDao.setcommontreplyDao(com_order_id);
 	}
 
 }

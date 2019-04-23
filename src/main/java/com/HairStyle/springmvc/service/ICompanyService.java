@@ -1,5 +1,6 @@
 package com.HairStyle.springmvc.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.HairStyle.springmvc.model.Company;
@@ -26,4 +27,5 @@ public interface ICompanyService {
 	public Company findproductbycom(String company_id);
 	public User scan_business(String company_id);
 	public Product getoneproduct(String product_id);
+	public List<Company> search_business_loca(Map<String, String> location);
 }

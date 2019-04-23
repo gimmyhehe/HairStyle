@@ -39,6 +39,7 @@ import com.HairStyle.springmvc.model.Order;
 import com.HairStyle.springmvc.model.Pic_Common_Order;
 import com.HairStyle.springmvc.model.Product;
 import com.HairStyle.springmvc.model.Product_Pic;
+import com.HairStyle.springmvc.model.Reply_Order;
 import com.HairStyle.springmvc.model.User;
 import com.HairStyle.springmvc.service.impl.CompanyServiceImpl;
 import com.HairStyle.springmvc.service.impl.OrderServiceImpl;
@@ -290,7 +291,6 @@ public class OrderController {
 					        }
 					        else break;
 			            }
-			    		
 			    		new_commont_state.put("msg", "发布评论成功！");
 			    		new_commont_state.put("status", 0);
 			        } catch (IllegalStateException e) {
@@ -332,18 +332,21 @@ public class OrderController {
 	    		Random random = new Random();	    		 
 	    		int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 	    		String order_reply_id=str+rannum;
-			    
 
-				Common_Order co=new Common_Order();
-			    co.setCom_order_id(com_order_id);
-			    
+				Reply_Order ro=new Reply_Order();
+			    ro.setOrder_reply_content(order_reply_content);
+			    ro.setorder_reply_time(create_time);
+			    ro.setOrder_reply_id(order_reply_id);
+			    ro.setReply_o_common_id(com_order_id);			    
 			    		
-			    OrderService.commonorder(co);
-			    Pic_Common_Order pco=new Pic_Common_Order();
-			    		
-			    		
-			    new_reply_state.put("msg", "发布评论成功！");
-			    new_reply_state.put("status", 0);	    	
+			    if(OrderService.replycommonorder(ro)&&OrderService.setcommontreply(com_order_id)){		
+			    new_reply_state.put("msg", "发布回复成功！");
+			    new_reply_state.put("status", 0);
+			    }
+			    else{
+			    	new_reply_state.put("msg", "发布回复失败！");
+				    new_reply_state.put("status", 1);
+			    }
 			    return new_reply_state;
 	    }
 	 	

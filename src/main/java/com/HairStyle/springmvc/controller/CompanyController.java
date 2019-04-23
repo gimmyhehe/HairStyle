@@ -286,6 +286,20 @@ public class CompanyController {
 		 
 		 
 		//查看附近商家
+		 @RequestMapping(value="search_business_loca",method = RequestMethod.POST)
+		 @ResponseBody
+		 public List<Company> search_business_loca(HttpServletRequest request,HttpServletRequest response) {
+			 	String country=request.getParameter("country");
+			 	String province=request.getParameter("province");
+			 	String area=request.getParameter("area");
+			 	Map<String,String> location=new HashMap();
+			 	location.put("country", country);
+			 	location.put("province", province);
+			 	location.put("area", area);
+			 	return CompanyService.search_business_loca(location);
+
+			} 
+		 
 		
 		//录入发型师信息
 		@RequestMapping(value="addhairstyle",method=RequestMethod.POST)

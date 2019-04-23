@@ -9,6 +9,7 @@ import com.HairStyle.springmvc.model.Common_Order;
 import com.HairStyle.springmvc.model.Company;
 import com.HairStyle.springmvc.model.Order;
 import com.HairStyle.springmvc.model.Pic_Common_Order;
+import com.HairStyle.springmvc.model.Reply_Order;
 import com.HairStyle.springmvc.model.User;
 
 
@@ -28,6 +29,10 @@ public interface IOrderDao {
 
 	public boolean insert_commonorder_picDao(Pic_Common_Order pco);
 
-	public boolean commonorderDao(Common_Order co); 
+	public boolean commonorderDao(Common_Order co);
+
+	public boolean replycommonorderDao(Reply_Order ro);
+
+	public boolean setcommontreplyDao(String com_order_id); 
 
 }

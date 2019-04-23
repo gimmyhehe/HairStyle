@@ -117,4 +117,15 @@
 		(#{p_c_o_id},#{p_c_o_seq_id},#{p_c_o_dir},#{p_c_o_common_id})	
 	</insert>
 	
+	<!--回复订单的评论 -->
+	<insert id="replycommonorderDao" parameterType="com.HairStyle.springmvc.model.Reply_Order">
+		insert into reply_order (order_reply_id,reply_o_common_id,order_reply_content,order_peply_time)
+		VALUES
+		(#{order_reply_id},#{reply_o_common_id},#{order_reply_content},#{order_peply_time})	
+	</insert>
+		
+	<!-- 评论已被回复 -->
+	<update id="setcommontreplyDao" parameterType="java.lang.String">
+		update common_order set is_reply=1 where com_order_id=#{com_order_id}
+	</update>
 </mapper>

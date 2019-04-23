@@ -29,5 +29,7 @@ public interface ICompanyDao {
 	public Hairstyler getHairstyleDao(String hairstyle_id);
 	public User scan_businessDao(String company_id);
 	public Product getoneproductDao(String product_id);
+	public List<Company> search_business_locaDao(Map<String, String> location);
+
 
 }

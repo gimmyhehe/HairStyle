@@ -283,7 +283,7 @@ public class CompanyController {
 		//查看附近商家
 		 @RequestMapping(value="search_business_loca",method = RequestMethod.POST)
 		 @ResponseBody
-		 public List<Company> search_business_loca(HttpServletRequest request,HttpServletRequest response,
+		 public Map<String,Object> search_business_loca(HttpServletRequest request,HttpServletRequest response,
 				 @RequestParam("currPage") int currPage, @RequestParam("pageSize") int pageSize) {
 			 	String country=request.getParameter("country");
 			 	String province=request.getParameter("province");

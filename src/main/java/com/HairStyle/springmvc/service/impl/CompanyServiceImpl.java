@@ -6,6 +6,7 @@ import com.HairStyle.springmvc.model.Product;
 import com.HairStyle.springmvc.model.Product_Pic;
 import com.HairStyle.springmvc.model.User;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -115,13 +116,28 @@ public class CompanyServiceImpl implements ICompanyService{
 		return companyDao.getoneproductDao(product_id);
 	}
 
-	public List<Company> search_business_loca(Map<String, String> location,int currPage, int pageSize) {
+	public Map<String,Object> search_business_loca(Map<String, String> location,int currPage, int pageSize) {
 		// TODO Auto-generated method stub
 		int firstIndex = (currPage - 1) * pageSize;
         //到第几条数据结束
         int lastIndex = currPage * pageSize;
         List<Company> companys = companyDao.search_business_locaDao(location);
-		return companys.subList(firstIndex, lastIndex);
+        int total=companys.size();
+        int totalPage; 
+        if(total%pageSize==0){
+        	totalPage=total/pageSize;
+        }
+        else totalPage=total/pageSize+1;
+        Map<String,Object>companys_data=new HashMap();
+        if(currPage==totalPage){
+        companys_data.put("Result", companys);
+        companys_data.put("hasMore", 0);
+        }
+        else{
+        	companys_data.put("Result", companys);
+            companys_data.put("hasMore", 1);
+        }
+		return companys_data;
 	}
 
 

@@ -27,5 +27,5 @@ public interface ICompanyService {
 	public Company findproductbycom(String company_id);
 	public User scan_business(String company_id);
 	public Product getoneproduct(String product_id);
-	public List<Company> search_business_loca(Map<String, String> location,int currPage, int pageSize);
+	public Map<String,Object> search_business_loca(Map<String, String> location,int currPage, int pageSize);
 }

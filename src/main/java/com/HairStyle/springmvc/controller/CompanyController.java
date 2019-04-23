@@ -212,15 +212,9 @@ public class CompanyController {
 		    	String company_name=request.getParameter("company_name");
 	    		String location=request.getParameter("location");
 	    		String company_intr=request.getParameter("company_intr");
-		    	Date birth_date = null;
+		    	String birth_date = request.getParameter("birth_date");
 		    	
-		    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		    	try {
-		    		birth_date=sdf.parse(request.getParameter("birth_date"));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		    	
 		    	
 		    	Map<String, Object> modifyCompany_data_state = new HashMap<String,Object>();
 		    	Map<String, String> phone=new HashMap<String, String>();

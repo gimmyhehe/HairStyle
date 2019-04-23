@@ -59,8 +59,6 @@ public class UserServiceImpl implements IUserService  {
 	}
 	
 	public boolean modifyUser_dataByUserID(Map<String, Object> map) {
-
-		
 		 return userDao.modifyUser_dataByUserIDDao(map);
 	}
 

@@ -102,7 +102,7 @@
 		update user set email=#{email},gender=#{gender},birth_date=#{birth_date},
 		phone_area=#{phone_area},phone_number=#{phone_number},face_type=#{face_type},career=#{career},
 		country=#{country},province=#{province},area=#{area}
-		where user_ID=#{user_ID}			
+		where user_id=#{user_id}			
 	</update>
 
 	<!-- 获取用户个人资料 -->

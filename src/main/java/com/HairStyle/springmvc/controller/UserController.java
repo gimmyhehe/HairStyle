@@ -271,16 +271,8 @@ public class UserController {
 	    	String country=request.getParameter("country");
 	    	String province=request.getParameter("province");
 	    	String area=request.getParameter("area");
+	    	String birth_date=request.getParameter("birth_date");
 	    	
-	    	Date birth_date = null;
-	    	
-	    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	    	try {
-	    		birth_date=sdf.parse(request.getParameter("birth_date"));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	    	
 	    	Map<String, Object> modifyUser_data_state = new HashMap<String,Object>();
 	    	Map<String, String> phone=new HashMap<String, String>();

@@ -180,7 +180,7 @@
 	<!-- 商户下的商品 -->
 	<select id="findproductbycomDao" parameterType="java.util.Map" resultMap="ProductByCompanyMap">
 		select company.company_id,company.company_name,company.company_user_id,company.company_intr,
-			product.product_id,product.product_name,product.product_price,product.product_intr,product.product_amount,product.product_time,product.is_active
+			product.product_id,product.product_name,product.product_price,product.product_intr,product.product_amount,product.product_time,product.is_active,
 			product_pic.product_pic_id,product_pic.product_seq_id,product_pic.product_pic_dir
 		from company
 		left join (product 

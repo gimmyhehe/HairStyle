@@ -129,12 +129,13 @@ public class CompanyServiceImpl implements ICompanyService{
         }
         else totalPage=total/pageSize+1;
         Map<String,Object>companys_data=new HashMap();
+        
         if(currPage==totalPage){
-        companys_data.put("Result", companys);
+        companys_data.put("Result", companys.subList(firstIndex, lastIndex));
         companys_data.put("hasMore", 0);
         }
         else{
-        	companys_data.put("Result", companys);
+        	companys_data.put("Result", companys.subList(firstIndex, lastIndex));
             companys_data.put("hasMore", 1);
         }
 		return companys_data;

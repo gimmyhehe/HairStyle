@@ -284,7 +284,7 @@ public class CompanyController {
 		 @RequestMapping(value="search_business_loca",method = RequestMethod.POST)
 		 @ResponseBody
 		 public List<Company> search_business_loca(HttpServletRequest request,HttpServletRequest response,
-				 @PathVariable("currPage") int currPage, @PathVariable("pageSize") int pageSize) {
+				 @RequestParam("currPage") int currPage, @RequestParam("pageSize") int pageSize) {
 			 	String country=request.getParameter("country");
 			 	String province=request.getParameter("province");
 			 	String area=request.getParameter("area");

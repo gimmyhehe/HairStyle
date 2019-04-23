@@ -12,8 +12,10 @@ import com.HairStyle.springmvc.dao.IPostDao;
 import com.HairStyle.springmvc.dao.IUserDao;
 import com.HairStyle.springmvc.model.Collection;
 import com.HairStyle.springmvc.model.Common;
+import com.HairStyle.springmvc.model.Common_Order;
 import com.HairStyle.springmvc.model.Company;
 import com.HairStyle.springmvc.model.Order;
+import com.HairStyle.springmvc.model.Pic_Common_Order;
 import com.HairStyle.springmvc.model.Post_Type;
 import com.HairStyle.springmvc.model.Poster;
 import com.HairStyle.springmvc.model.Product;
@@ -49,7 +51,11 @@ public class OrderServiceImpl implements IOrderService{
 		return orderDao.cancelorderDao(order_id);
 	}
 
-
+	public boolean ordersuccess(String order_id) {
+		// TODO Auto-generated method stub
+		return orderDao.ordersuccessDao(order_id);
+	}
+	
 	public User findorderbyuser_id(String user_id) {
 		// TODO Auto-generated method stub
 		return orderDao.findorderbyuser_idDao(user_id);
@@ -58,6 +64,18 @@ public class OrderServiceImpl implements IOrderService{
 	public Company findorderbycompany_id(String company_id) {
 		// TODO Auto-generated method stub
 		return orderDao.findorderbycompany_idDao(company_id);
+	}
+
+
+	public boolean insert_commonorder_pic(Pic_Common_Order pco) {
+		// TODO Auto-generated method stub
+		return orderDao.insert_commonorder_picDao(pco);
+	}
+
+
+	public boolean commonorder(Common_Order co) {
+		// TODO Auto-generated method stub
+		return orderDao.commonorderDao(co);
 	}
 
 }

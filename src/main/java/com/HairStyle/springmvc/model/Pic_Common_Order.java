@@ -26,8 +26,7 @@ public class Pic_Common_Order implements Serializable {
 	private String p_c_o_dir;
 	private String p_c_o_common_id;
 	
-	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
-	private int be_product_id;
+
 
 	public String getP_c_o_id() {
 		return p_c_o_id;

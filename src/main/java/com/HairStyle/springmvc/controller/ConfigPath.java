@@ -9,8 +9,10 @@ import org.springframework.test.context.ContextConfiguration;
 public class ConfigPath {
 		
 	static String PicPath="D:\\HairStyle\\HairStyle\\src\\main\\resources\\picture\\";
+
 	public static String getConfigPath() {						
 	    return PicPath;
 	}
 	
+
 }

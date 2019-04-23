@@ -1,148 +1,143 @@
-#coding:utf-8
-
+# -*- coding: utf-8 -*-
+from sys import argv
+import os
 import cv2
 import dlib
-import numpy
-import sys
-
-PREDICTOR_PATH="./shape_predictor_68_face_landmarks.dat"
-SCALE_FACTOR=1
-FEATHER_AMOUNT=11
-
-FACE_POINTS=list(range(17,68))
-MOUTH_POINTS=list(range(48,61))
-RIGHT_BROW_POINTS=list(range(42,48))
-LEFT_BROW_POINTS=list(range(22,27))
-RIGHT_EYE_POINTS=list(range(36,42))
-LEFT_EYE_POINTS=list(range(42,48))
-NOSE_POINTS=list(range(27,35))
-JAW_POINTS=list(range(0,17))
-
-ALIGN_POINTS=(LEFT_BROW_POINTS+RIGHT_EYE_POINTS+LEFT_EYE_POINTS+RIGHT_BROW_POINTS+NOSE_POINTS+MOUTH_POINTS)
-
-OVERLAY_POINTS=[LEFT_EYE_POINTS+RIGHT_EYE_POINTS+LEFT_BROW_POINTS+RIGHT_BROW_POINTS+NOSE_POINTS+MOUTH_POINTS]
-
-COLOR_CORRECT_BLUR_FRAC=0.6
-
-detector=dlib.get_frontal_face_detector()
-predictor=dlib.shape_predictor(PREDICTOR_PATH)
-
-class TooManyFaces(Exception):
-    pass
-
-class NoFaces(Exception):
-    pass
-
-def get_landmarks(im):
-    rects=detector(im,1)
-    if len(rects)==0:
-        raise NoFaces
-    if len(rects)>1:
-        raise TooManyFaces
-    return numpy.matrix([[p.x,p.y] for p in predictor(im,rects[0]).parts()])
-
-def annotate_landmarks(im,landmarks):
-    im=im.copy()
-    for idx,point in enumerate(landmarks):
-        pos=(point[0,0],point[0,1])
-        cv2.putText(im,str(idx),pos,fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=0.4,
-                    color=(0,0,255))
-        cv2.circl(im,pos,3,color=(0,255,255))
-    return im
-
-def draw_convex_hull(im,points,color):
-    points=cv2.convexHull(points)
-    cv2.fillConvexPoly(im,points,color=color)
-
-def get_face_mask(im,landmarks):
-    im=numpy.zeros(im.shape[:2],dtype=numpy.float64)
-    for group in OVERLAY_POINTS:
-        draw_convex_hull(im,landmarks[group],color=1)
-
-    im=numpy.array([im,im,im]).transpose((1,2,0))
-    im=(cv2.GaussianBlur(im,(FEATHER_AMOUNT,FEATHER_AMOUNT),0)>0)*1.0
-    im=cv2.GaussianBlur(im,(FEATHER_AMOUNT,FEATHER_AMOUNT),0)
-
-    return im
-
-def transformation_from_points(points1,points2):
-    points1=points1.astype(numpy.float64)
-    points2=points2.astype(numpy.float64)
-    c1=numpy.mean(points2,axis=0)
-    c2=numpy.mean(points2,axis=0)
-
-    points1-=c1
-    points2-=c2
-
-    s1=numpy.std(points1)
-    s2=numpy.std(points2)
-    points1/=s1
-    points2/=s2
-
-    U,S,Vt=numpy.linalg.svd(points1.T*points2)
-
-    R=(U*Vt).T
-
-    return numpy.vstack([numpy.hstack(((s2/s1)*R,c2.T-(s2/s1)*R*c1.T)),numpy.matrix([0.,0.,1.])])
-
-def read_im_and_landmarks(fname):
-    im=cv2.imread(fname,cv2.IMREAD_COLOR)
-    im=cv2.resize(im,(im.shape[1]*SCALE_FACTOR,im.shape[0]*SCALE_FACTOR))
-
-    s=get_landmarks(im)
-
-    return im,s
-
-def warp_im(im,M,dshape):
-    output_im=numpy.zeros(dshape,dtype=im.dtype)
-    cv2.warpAffine(im,
-                   M[:2],
-                   (dshape[1],dshape[0]),
-                   dst=output_im,
-                   borderMode=cv2.BORDER_TRANSPARENT,
-                   flags=cv2.WARP_INVERSE_MAP
-                   )
-    return output_im
-
-def correct_colors(im1,im2,landmarks1):
-    blur_amount=COLOR_CORRECT_BLUR_FRAC*numpy.linalg.norm(
-        numpy.mean(landmarks1[LEFT_EYE_POINTS],axis=0)-
-        numpy.mean(landmarks1[RIGHT_EYE_POINTS],axis=0))
-    blur_amount=int(blur_amount)
-    if blur_amount%2==0:
-        blur_amount+=1
-    im1_blur=cv2.GaussianBlur(im1,(blur_amount,blur_amount),0)
-    im2_blur=cv2.GaussianBlur(im2,(blur_amount,blur_amount),0)
-
-    im2_blur+=(128*(im2_blur<=1.0)).astype(im2_blur.dtype)
-
-    return(im2.astype(numpy.float64)*im1_blur.astype(numpy.float64)/im2_blur.astype(numpy.float64))
-
-'''im1,landmarks1=read_im_and_landmarks(sys.argv[1])
-im2,landmarks2=read_im_and_landmarks(sys.argv[2])'''
-
-def hairChange(pic1,pic2,location):
-    image_path1=pic1
-    image_path2=pic2
-
-    im1,landmarks1=read_im_and_landmarks(image_path2)
-    im2,landmarks2=read_im_and_landmarks(image_path1)
-
-
-    M=transformation_from_points(landmarks1[ALIGN_POINTS],landmarks2[ALIGN_POINTS])
-
-    mask=get_face_mask(im2,landmarks2)
-    warped_mask=warp_im(mask,M,im1.shape)
-    combined_mask=numpy.max([get_face_mask(im1,landmarks1),warped_mask],axis=0)
-    warped_im2=warp_im(im2,M,im1.shape)
-    warped_corrected_im2=correct_colors(im1,warped_im2,landmarks1)
-
-    output_im=im1*(1.0-combined_mask)+warped_corrected_im2*combined_mask
-
-    cv2.imwrite(location+'output.jpg',output_im)
+import numpy as np
 
 
 
 
+def get_image_size(image):
+    """
+    获取图片大小（高度,宽度）
+    :param image: image
+    :return: （高度,宽度）
+    """
+    image_size = (image.shape[0], image.shape[1])
+    return image_size
 
 
+def get_face_landmarks(image, face_detector, shape_predictor):
+    """
+    获取人脸标志，68个特征点
+    :param image: image
+    :param face_detector: dlib.get_frontal_face_detector
+    :param shape_predictor: dlib.shape_predictor
+    :return: np.array([[],[]]), 68个特征点
+    """
+    dets = face_detector(image, 1)
+    num_faces = len(dets)
+    if num_faces == 0:
+        print("Sorry, there were no faces found.")
+        exit()
+    shape = shape_predictor(image, dets[0])
+    face_landmarks = np.array([[p.x, p.y] for p in shape.parts()])
+    return face_landmarks
+
+
+def get_face_mask(image_size, face_landmarks):
+    """
+    获取人脸掩模
+    :param image_size: 图片大小
+    :param face_landmarks: 68个特征点
+    :return: image_mask, 掩模图片
+    """
+    mask = np.zeros(image_size, dtype=np.uint8)
+    points = np.concatenate([face_landmarks[0:16], face_landmarks[26:17:-1]])
+    cv2.fillPoly(img=mask, pts=[points], color=255)
+
+    # mask = np.zeros(image_size, dtype=np.uint8)
+    # points = cv2.convexHull(face_landmarks)  # 凸包
+    # cv2.fillConvexPoly(mask, points, color=255)
+    return mask
+
+
+def get_affine_image(image1, image2, face_landmarks1, face_landmarks2):
+    """
+    获取图片1仿射变换后的图片
+    :param image1: 图片1, 要进行仿射变换的图片
+    :param image2: 图片2, 只要用来获取图片大小，生成与之大小相同的仿射变换图片
+    :param face_landmarks1: 图片1的人脸特征点
+    :param face_landmarks2: 图片2的人脸特征点
+    :return: 仿射变换后的图片
+    """
+    three_points_index = [8, 18, 25]
+    M = cv2.getAffineTransform(face_landmarks1[three_points_index].astype(np.float32),
+                               face_landmarks2[three_points_index].astype(np.float32))
+    dsize = (image2.shape[1], image2.shape[0])
+    affine_image = cv2.warpAffine(image1, M, dsize)
+    return affine_image.astype(np.uint8)
+
+
+def get_mask_center_point(image_mask):
+    """
+    获取掩模的中心点坐标
+    :param image_mask: 掩模图片
+    :return: 掩模中心
+    """
+    image_mask_index = np.argwhere(image_mask > 0)
+    miny, minx = np.min(image_mask_index, axis=0)
+    maxy, maxx = np.max(image_mask_index, axis=0)
+    center_point = ((maxx + minx) // 2, (maxy + miny) // 2)
+    return center_point
+
+
+def get_mask_union(mask1, mask2):
+    """
+    获取两个掩模掩盖部分的并集
+    :param mask1: mask_image, 掩模1
+    :param mask2: mask_image, 掩模2
+    :return: 两个掩模掩盖部分的并集
+    """
+    mask = np.min([mask1, mask2], axis=0)  # 掩盖部分并集
+    mask = ((cv2.blur(mask, (3, 3)) == 255) * 255).astype(np.uint8)  # 缩小掩模大小
+    mask = cv2.blur(mask, (5, 5)).astype(np.uint8)  # 模糊掩模
+    return mask
+
+
+def main(image_path1,image_path2,location):
+    here = os.path.dirname(os.path.abspath(__file__))
+
+    models_folder_path = os.path.join(here, 'models')  # 模型保存文件夹
+    '''faces_folder_path = os.path.join(here, 'faces')'''  # 人脸图片保存文件夹
+    predictor_path = os.path.join(models_folder_path, 'shape_predictor_68_face_landmarks.dat')  # 模型路径
+    '''image_face_path = os.path.join(faces_folder_path, '1.jpg')  # 人脸图片路径'''
+
+    detector = dlib.get_frontal_face_detector()  # dlib的正向人脸检测器
+    predictor = dlib.shape_predictor(predictor_path)  # dlib的人脸形状检测器
+
+
+    im1 = cv2.imread(image_path1)  # face_image
+    im1 = cv2.resize(im1, (600, im1.shape[0] * 600 // im1.shape[1]))
+    landmarks1 = get_face_landmarks(im1, detector, predictor)  # 68_face_landmarks
+    im1_size = get_image_size(im1)  # 脸图大小
+    im1_mask = get_face_mask(im1_size, landmarks1)  # 脸图人脸掩模
+
+    im2 = cv2.imread(image_path2)  # camera_image
+    landmarks2 = get_face_landmarks(im2, detector, predictor)  # 68_face_landmarks
+    im2_size = get_image_size(im2)  # 摄像头图片大小
+    im2_mask = get_face_mask(im2_size, landmarks2)  # 摄像头图片人脸掩模
+
+    affine_im1 = get_affine_image(im1, im2, landmarks1, landmarks2)  # im1（脸图）仿射变换后的图片
+    affine_im1_mask = get_affine_image(im1_mask, im2, landmarks1, landmarks2)  # im1（脸图）仿射变换后的图片的人脸掩模
+
+    # affine_im1_face_image = cv2.bitwise_and(affine_im1, affine_im1, mask=affine_im1_mask)  # im1（脸图）的脸
+    # im2_face_image = cv2.bitwise_and(im2, im2, mask=im2_mask)  # im2（摄像头图片）的脸
+    # cv2.imshow('affine_im1_face_image', affine_im1_face_image)
+    # cv2.imshow('im2_face_image', im2_face_image)
+
+    union_mask = get_mask_union(im2_mask, affine_im1_mask)  # 掩模合并
+    point = get_mask_center_point(affine_im1_mask)  # im1（脸图）仿射变换后的图片的人脸掩模的中心点
+    seamless_im = cv2.seamlessClone(affine_im1, im2, mask=union_mask, p=point, flags=cv2.NORMAL_CLONE)  # 进行泊松融合
+    cv2.imwrite(location+'\\output.jpg', seamless_im)
+
+
+
+
+if __name__ == '__main__':
+    image_path1 = argv[1]
+    image_path2 = argv[2]
+    location=argv[3]
+    main(image_path1,image_path2,location)
+    print(image_path1)

@@ -1,7 +1,9 @@
 package com.HairStyle.springmvc.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,10 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.python.core.Py;
-import org.python.core.PyFunction;
-import org.python.core.PyObject;
-import org.python.util.PythonInterpreter;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -38,7 +37,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class ChangeHairController {
 				
 		public String PicPath=ConfigPath.getConfigPath();
-		
 		 //换发型
 		 @RequestMapping(value="changehair",method=RequestMethod.POST)
 		 @ResponseBody
@@ -56,7 +54,7 @@ public class ChangeHairController {
 	    	 int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 	    	 String filepackname=str+rannum;
 			 String pic_path=PicPath+"HairChange";
-			 String pic_path_Pack=pic_path+"/"+filepackname;
+			 String pic_path_Pack=pic_path+File.separator+filepackname;
 			 
 			 File myPath = new File( pic_path_Pack );  
 	            if ( !myPath.exists()){//若此目录不存在，则创建  
@@ -88,24 +86,19 @@ public class ChangeHairController {
 			        }
 			        
 			        }
+			        try {
+			        String[] args = new String[]{ "python3", PicPath+"change_face.py",arg1[0],arg1[1],arg1[2]};
+			        Process proc = Runtime.getRuntime().exec(args);//执行py文件
+			        proc.waitFor();
+			        } catch (IOException e) {
+			            e.printStackTrace();
+			        } catch (InterruptedException e) {
+			            e.printStackTrace();
+			        }
 			        
-			      //System.setProperty("python.home", "D:\\jython2.7.0");
-		             // 1. Python面向函数式编程: 在Java中调用Python函数
-		             String pythonFunc = PicPath+"change_face.py";
-		             
-		             PythonInterpreter pi1 = new PythonInterpreter();
-		             // 加载python程序
-		             pi1.execfile(pythonFunc);
-		             // 调用Python程序中的函数
-		             
-		             PyFunction pyf = pi1.get("hairChange", PyFunction.class);
-		             PyObject dddRes = pyf.__call__(Py.newString(arg1[0]),Py.newString(arg1[1]),Py.newString(arg1[2]));
-		             pi1.cleanup();
-		             pi1.close();
-		             
-		             HairPic_state.put("msg", "请上传两张图片");
+		             HairPic_state.put("msg", "成功输出合成图");
 		             HairPic_state.put("PicPath", "/HairStyle/pic/picture/HairChange/"+filepackname+"/output.jpg");
-			         HairPic_state.put("status", 1);
+			         HairPic_state.put("status", 0);
 			         
 			         
              }catch (IllegalStateException e) {

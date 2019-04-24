@@ -287,11 +287,14 @@
 	<!-- 查看商家基本信息 -->
 	<select id="search_business_locaDao" parameterType="java.util.Map" resultMap="CompanyByUserMap">
 		SELECT
-		user.*,user_pic.*,company.*
+		user.*,user_pic.*,company.*,product.*,product_pic.*
 		FROM
 		user
 		left join user_pic on user.user_id=user_pic.uploader_id
-		left join company on user.user_id=company.company_user_id
+		left join company left join product left join product_pic 
+			on product_pic.be_product_id=product.product_id and product_pic.is_active=1 
+			on product.product_company_id=company.company_id 
+			on user.user_id=company.company_user_id
 		WHERE
 		country=#{country} and province=#{province} and area=#{area} and user_type=1
 	</select>

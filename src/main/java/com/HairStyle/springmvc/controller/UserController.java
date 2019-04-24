@@ -255,7 +255,7 @@ public class UserController {
 	    	String user_id=null;
 			Cookie[] cookies = request.getCookies();
 		    for(Cookie cookie : cookies){
-		              if(cookie.getName().equals("user_info")){
+		              if(cookie.getName().equals("app_user_info")){
 		            	  String loginInfo = cookie.getValue();
 		                  user_id = loginInfo.substring(0,19);
 		                  break;
@@ -330,7 +330,7 @@ public class UserController {
 			String user_id=null;
 			Cookie[] cookies = request.getCookies();
 			for(Cookie cookie : cookies){
-	            if(cookie.getName().equals("user_info")){
+	            if(cookie.getName().equals("app_user_info")||cookie.getName().equals("admin_user_info")){
 	          	  String loginInfo = cookie.getValue();
 	                user_id = loginInfo.substring(0,19);
 	                break;

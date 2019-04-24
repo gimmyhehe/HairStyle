@@ -193,7 +193,7 @@ public class CompanyController {
 		    	String company_id=null;
 				Cookie[] cookies = request.getCookies();
 			    for(Cookie cookie : cookies){
-			              if(cookie.getName().equals("user_info")){
+			              if(cookie.getName().equals("admin_user_info")){
 			            	  String loginInfo = cookie.getValue();
 			                  user_id = loginInfo.substring(0,19);
 			                  company_id = loginInfo.substring(20,21);
@@ -318,7 +318,7 @@ public class CompanyController {
 
 				Cookie[] cookies = request.getCookies();
 			    for(Cookie cookie : cookies){
-			              if(cookie.getName().equals("user_info")){
+			              if(cookie.getName().equals("admin_user_info")){
 			            	  String loginInfo = cookie.getValue();
 			            	  company_id = loginInfo.substring(20,21);
 
@@ -412,7 +412,7 @@ public class CompanyController {
 
 				Cookie[] cookies = request.getCookies();
 				for(Cookie cookie : cookies){
-					  if(cookie.getName().equals("user_info")){
+					  if(cookie.getName().equals("admin_user_info")){
 						  	String loginInfo = cookie.getValue();
 					        company_id = loginInfo.substring(20,21);
 
@@ -527,7 +527,7 @@ public class CompanyController {
 				String company_id=null;
 				Cookie[] cookies = request.getCookies();
 			    for(Cookie cookie : cookies){
-			              if(cookie.getName().equals("user_info")){
+			              if(cookie.getName().equals("admin_user_info")){
 			            	  String loginInfo = cookie.getValue();
 			                  user_id = loginInfo.substring(0,19);
 			                  company_id=loginInfo.substring(20,21);
@@ -653,7 +653,7 @@ public class CompanyController {
 					String company_id=null;
 					Cookie[] cookies = request.getCookies();
 				    for(Cookie cookie : cookies){
-				              if(cookie.getName().equals("user_info")){
+				              if(cookie.getName().equals("admin_user_info")){
 				            	  String loginInfo = cookie.getValue();
 				                  user_id = loginInfo.substring(0,19);
 				                  company_id=loginInfo.substring(20,21);

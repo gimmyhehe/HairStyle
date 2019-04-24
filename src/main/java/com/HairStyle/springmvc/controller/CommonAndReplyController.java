@@ -57,7 +57,7 @@ public class CommonAndReplyController {
 
 	    	Cookie[] cookies = request.getCookies();
 			for(Cookie cookie : cookies){
-	            if(cookie.getName().equals("user_info")){
+	            if(cookie.getName().equals("app_user_info")){
 	          	  String loginInfo = cookie.getValue();
 	                user_id = loginInfo.substring(0,19);
 
@@ -134,7 +134,7 @@ public class CommonAndReplyController {
 
 	    	Cookie[] cookies = request.getCookies();
 			for(Cookie cookie : cookies){
-	            if(cookie.getName().equals("user_info")){
+	            if(cookie.getName().equals("app_user_info")){
 	          	  String loginInfo = cookie.getValue();
 	                user_id = loginInfo.substring(0,19);
 

@@ -68,7 +68,7 @@ public class OrderController {
 		 	String user_id=null;
 			Cookie[] cookies = request.getCookies();
 			for(Cookie cookie : cookies){
-	          		if(cookie.getName().equals("user_info")){
+	          		if(cookie.getName().equals("app_user_info")){
 	          			String loginInfo = cookie.getValue();
 	          			user_id = loginInfo.substring(0,19);
 	          			break;
@@ -196,7 +196,7 @@ public class OrderController {
 	 		String user_id=null;
 			Cookie[] cookies = request.getCookies();
 			for(Cookie cookie : cookies){
-	          		if(cookie.getName().equals("user_info")){
+	          		if(cookie.getName().equals("app_user_info")){
 	          			String loginInfo = cookie.getValue();
 	          			user_id = loginInfo.substring(0,19);
 	          			break;
@@ -212,7 +212,7 @@ public class OrderController {
 	 		String company_id=null;
 			Cookie[] cookies = request.getCookies();
 			for(Cookie cookie : cookies){
-	          		if(cookie.getName().equals("user_info")){
+	          		if(cookie.getName().equals("admin_user_info")){
 	          			String loginInfo = cookie.getValue();
 	          			company_id = loginInfo.substring(20,21);
 	          			break;

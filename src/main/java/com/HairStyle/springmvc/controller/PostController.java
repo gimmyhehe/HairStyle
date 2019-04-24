@@ -53,7 +53,7 @@ public class PostController {
 			String user_name=null;
 			Cookie[] cookies = request.getCookies();
 			for(Cookie cookie : cookies){
-	              	if(cookie.getName().equals("user_info")){
+	              	if(cookie.getName().equals("app_user_info")){
 	              		String loginInfo = cookie.getValue();
 	              		user_id = loginInfo.substring(0,19);
 	              		break;
@@ -79,7 +79,7 @@ public class PostController {
 			String userd_id=null;
 			Cookie[] cookies = request.getCookies();
 			for(Cookie cookie : cookies){
-              		if(cookie.getName().equals("user_info")){
+              		if(cookie.getName().equals("app_user_info")){
               			String loginInfo = cookie.getValue();
               			userd_id = loginInfo.substring(0,19);
               			break;
@@ -102,7 +102,7 @@ public class PostController {
 
 		Cookie[] cookies = request.getCookies();
 		for(Cookie cookie : cookies){
-          		if(cookie.getName().equals("user_info")){
+          		if(cookie.getName().equals("app_user_info")){
           			String loginInfo = cookie.getValue();
           			user_id = loginInfo.substring(0,19);
           			break;
@@ -297,7 +297,7 @@ public class PostController {
 
 				Cookie[] cookies = request.getCookies();
 			    for(Cookie cookie : cookies){
-			              if(cookie.getName().equals("user_info")){
+			              if(cookie.getName().equals("app_user_info")){
 			            	  String loginInfo = cookie.getValue();
 			                  user_id = loginInfo.substring(0,19);
 

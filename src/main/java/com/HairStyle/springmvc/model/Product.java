@@ -30,9 +30,13 @@ public class Product implements Serializable {
 	private String product_name;
 	private double product_price;
 	private String product_intr;
+	
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	private int product_amount;
 	private Date product_time;
 	private List<Product_Pic> pp;
+	
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	private boolean is_active;
 	private List<Order> order;
 	private Company company;

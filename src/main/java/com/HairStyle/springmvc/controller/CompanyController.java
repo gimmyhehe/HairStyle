@@ -744,4 +744,12 @@ public class CompanyController {
 																					
 					return CompanyService.getoneproduct(product_id);
 			}
+		 	
+		 	//查看单个商品
+		 	@RequestMapping(value="oneproductdetail",method=RequestMethod.GET)
+		    @ResponseBody
+		    public Product getoneproductdetail(@RequestParam("product_id") String product_id,HttpServletRequest request) {
+																					
+					return CompanyService.getoneproductdetail(product_id);
+			}
 }

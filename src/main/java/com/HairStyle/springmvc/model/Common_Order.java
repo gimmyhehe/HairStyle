@@ -24,6 +24,25 @@ public class Common_Order implements Serializable{
 	private String common_order_content;
 	private Date common_time;
 	private boolean is_reply;
+	private Reply_Order ro=new Reply_Order();
+	private List<Pic_Common_Order> lpco;
+	
+	public void setLPCO(List<Pic_Common_Order> lpco) {
+		this.lpco = lpco;
+	}
+	
+	public List<Pic_Common_Order> getLPCO() {
+		return lpco;
+	}
+	
+	public void setRO(Reply_Order ro) {
+		this.ro = ro;
+	}
+	
+	public Reply_Order getRO() {
+		return ro;
+	}
+	
 	
 	public void setCom_order_id(String com_order_id) {
 		this.com_order_id = com_order_id;
@@ -77,7 +96,7 @@ public class Common_Order implements Serializable{
 	public String toString() {
 		return "Common_Order [com_order_id=" + com_order_id + ", common_order_id=" + common_order_id
 				+ ", score=" + score + ", common_order_content=" + common_order_content + ", common_time=" + common_time
-				+", is_reply="+is_reply+ "]";
+				+", is_reply="+is_reply+ ", ro="+ro+", lpco="+lpco+"]";
 	}
 	
 	

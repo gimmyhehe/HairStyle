@@ -18,23 +18,47 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Order implements Serializable{
 	
-	
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	private int hairstyle_id;
+	
 	private String order_id;
+	
 	private String user_phone;
+	
 	private int order_product_id;
+	
 	private String order_user_id;
+	
 	private int product_amount;
+	
 	private double order_price;
+	
 	private Date order_time;
+	
 	private Date order_create_time;
+	
 	private Date order_finish_time;
+	
 	private String other_info;
+	
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	private boolean is_common;
+	
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	private boolean is_active;
 	private User user;
 	private Product product;
 	private Hairstyler hairstyle;
+	private List<Common_Order> LCO;
+	
+	public List<Common_Order> getLCO() {
+		return LCO;
+	}
+
+	public void setLCO(List<Common_Order> LCO) {
+		this.LCO = LCO;
+	}
+	
 	
 	public Hairstyler getHairstyle() {
 		return hairstyle;
@@ -169,7 +193,8 @@ public class Order implements Serializable{
 		return "Order [order_id=" + order_id + ", order_product_id" + order_product_id
 				+ ", order_user_id=" + order_user_id + ", product_amount=" + product_amount + ", order_price=" + order_price
 				+", order_create_time="+order_create_time+", order_finish_time="+order_finish_time+", is_common="+is_common+",is_active="+is_active
-				+", user="+user+", product="+product+", hairstyle_id="+hairstyle_id+", order_time="+order_time+", other_info="+other_info+", user_phone="+user_phone+"]";
+				+", user="+user+", product="+product+", hairstyle_id="+hairstyle_id+", order_time="+order_time+", other_info="+other_info+", user_phone="+user_phone
+				+", LCO="+LCO+"]";
 	}
 	   
 }

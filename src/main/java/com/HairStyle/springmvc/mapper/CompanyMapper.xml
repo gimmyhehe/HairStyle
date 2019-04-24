@@ -92,7 +92,6 @@
 			<result column="product_name" property="product_name" />
 			<result column="product_price" property="product_price" />
 			<result column="product_time" property="product_time" />
-			<result column="product_amount" property="product_amount" />
 			<result column="is_active" property="is_active" />
 			<collection property="pp" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product_Pic">         
             	<id column="product_pic_id" property="product_pic_id" />
@@ -100,6 +99,41 @@
             	<result column="product_pic_dir" property="product_pic_dir"  />
         	</collection>
      </resultMap>
+	
+	<resultMap id="ProductByIDdetailMap" type="com.HairStyle.springmvc.model.Product">
+			<id property="product_id" column="product_id" />
+			<result column="product_intr" property="product_intr" />
+			<result column="product_name" property="product_name" />
+			<result column="product_price" property="product_price" />
+			<result column="product_time" property="product_time" />
+			<result column="is_active" property="is_active" />
+			<collection property="pp" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product_Pic">         
+            	<id column="product_pic_id" property="product_pic_id" />
+            	<result column="product_seq_id" property="product_seq_id"  />
+            	<result column="product_pic_dir" property="product_pic_dir"  />
+        	</collection>
+        	<collection property="order" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Order">         
+            	<id column="order_id" property="order_id" />
+            	<collection property="LCO" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Common_Order">
+            	<id column="com_order_id" property="com_order_id" />
+            	<result column="common_order_content" property="common_order_content"  />
+            	<result column="common_time" property="common_time"  />
+            	<result column="score" property="score"  />
+            	<result column="is_reply" property="is_reply"  />
+            	<association property="ro" column="order_reply_id" javaType="com.HairStyle.springmvc.model.Reply_Order">
+            		<id column="order_reply_id" property="order_reply_id" />
+            		<result column="order_reply_time" property="order_reply_time" />
+            		<result column="order_reply_content" property="order_reply_content" />
+            	</association>
+            	<collection property="lpco" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Pic_Common_Order">
+            		<id column="p_c_o_id" property="p_c_o_id" />
+            		<result column="p_c_o_dir" property="p_c_o_dir"  />
+            		<result column="p_c_o_seq_id" property="p_c_o_seq_id"  />
+            	</collection>
+            	</collection>
+        	</collection>
+     </resultMap>
+	
 	
 	<resultMap id="CompanydetailByUserMap" type="com.HairStyle.springmvc.model.User">
   		<id property="user_id" column="user_id" />
@@ -285,10 +319,25 @@
 			on common_order.common_order_id=order_table.order_id
 			on order_table.order_product_id=product.product_id	
 			on product.product_company_id=company.company_id
-			left join product_pic on product_pic.be_product_id=product.product_id
+			left join product_pic on product_pic.be_product_id=product.product_id and product_pic.is_active=1
 		WHERE
 		company.company_id=#{company_id}
 	</select>
 	
+	
+	<select id="getoneproductdetailDao" parameterType="java.lang.String" resultMap="ProductByIDdetailMap">
+		SELECT
+		product.*,product_pic.*,order_table.order_id,common_order.*,reply_order.*
+		FROM
+		product
+		left join product_pic on product.product_id=product_pic.be_product_id and product_pic.is_active=1
+		left join order_table left join common_order left join reply_order 
+			on reply_order.reply_o_common_id=common_order.com_order_id
+			left join pic_common_order on pic_common_order.p_c_o_common_id=common_order.com_order_id
+			on common_order.common_order_id=order_table.order_id
+			on order_table.order_product_id=product.product_id	
+		WHERE
+		product.product_id=#{product_id}
+	</select>
 	
 </mapper>

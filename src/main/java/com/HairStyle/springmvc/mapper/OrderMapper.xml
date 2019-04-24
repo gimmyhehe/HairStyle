@@ -70,7 +70,7 @@
 		insert into order_table (order_id,order_product_id,order_user_id,order_time,order_price,
 		order_create_time,otherinfo,user_phone,hairstyle_id,is_common,is_active)
 		VALUES
-		(#{order_id},#{order_product_id},#{order_user_id},#{order_time},#{order_price},#{order_create_time},#{other_info},#{user_phone},#{hairstyle_id},0,1)	
+		(#{order_id},#{order_product_id},#{order_user_id},#{order_time},#{order_price},#{order_create_time},#{other_info},#{user_phone},#{hairstyle_id},0,"1")	
 	</insert>
 	
 	<!-- 预约订单成功 -->
@@ -80,12 +80,12 @@
 	
 	<!-- 完成订单 -->
 	<update id="completeorderDao" parameterType="java.util.Map">
-		update order_table set order_finish_time=#{order_finish_time},is_active=0 where order_id=#{order_id}
+		update order_table set order_finish_time=#{order_finish_time},is_active="0" where order_id=#{order_id}
 	</update>
 	
 	<!-- 取消订单 -->
 	<update id="cancelorderDao" parameterType="java.lang.String">
-		update order_table set is_active=1 where order_id=#{order_id}
+		update order_table set is_active="1" where order_id=#{order_id}
 	</update>
 	
 	<select id="findorderbyuser_idDao" parameterType="java.lang.String" resultMap="OrderByUserResultMap">

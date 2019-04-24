@@ -44,8 +44,7 @@ public class Order implements Serializable{
 	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	private boolean is_common;
 	
-	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
-	private boolean is_active;
+	private int is_active;
 	private User user;
 	private Product product;
 	private Hairstyler hairstyle;
@@ -164,11 +163,11 @@ public class Order implements Serializable{
 		this.is_common = is_common;
 	}
 	
-	public boolean getIs_active() {
+	public int getIs_active() {
 		return is_active;
 	}
 
-	public void setIs_active(boolean is_active) {
+	public void setIs_active(int is_active) {
 		this.is_active = is_active;
 	}
 	

@@ -26,7 +26,7 @@ public interface IPostDao {
 
 	public boolean post_articleDao(Map<String, Object> map) ;
 	public boolean update_articleDao(Map<String, Object> map);
-	public boolean delete_articleDao(String post_id) ;
+	public boolean delete_articleDao(Map<String, Object> map) ;
 	public boolean insert_post_picDao(Map<String, Object> map) ;
 	public boolean delete_post_picDao(Map<String, Object> map) ;
 	public Post_Type findPostByPost_typeDao(Map<String, Object> map);

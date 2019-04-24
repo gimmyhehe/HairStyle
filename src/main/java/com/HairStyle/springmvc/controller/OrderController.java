@@ -58,8 +58,11 @@ public class OrderController {
 	 @RequestMapping(value="makeorder",method=RequestMethod.POST)
 	 @ResponseBody
 	 public Map<String, Object> makeorder(@RequestParam("product_id") String product_id, 
-			 @RequestParam("product_amount") String product_amount,
 			 @RequestParam("order_price") String order_price,
+			 @RequestParam("order_time") String order_time,
+			 @RequestParam("other_info") String other_info,
+			 @RequestParam("user_phone") String user_phone,
+			 @RequestParam("hairstyle_id") String hairstyle_id,
 	    		HttpServletRequest request) {
 		 	Map<String,Object> order_state=new HashMap<String,Object>();
 		 	String user_id=null;
@@ -83,6 +86,13 @@ public class OrderController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		 	Date order_time1 = null;
+		 	try {
+		 		order_time1 = sdf2.parse(order_time);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		 	
 		 	String str = sdf2.format(date);
     		Random random = new Random();	    		 
@@ -94,7 +104,10 @@ public class OrderController {
     		order.setOrder_product_id(Integer.parseInt(product_id));
     		order.setOrder_create_time(create_time);
     		order.setOrder_user_id(user_id);
-    		
+    		order.setOrder_time(order_time1);
+    		order.setOther_info(other_info);
+    		order.setUser_phone(user_phone);
+    		order.setHairstyle_id(Integer.parseInt(hairstyle_id));
     		if(OrderService.makeorder(order)){
     			order_state.put("msg", "订单创建成功");
     			order_state.put("status", 0);

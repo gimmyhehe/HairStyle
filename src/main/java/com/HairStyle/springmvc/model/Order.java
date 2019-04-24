@@ -18,23 +18,62 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Order implements Serializable{
 	
+	
+	private int hairstyle_id;
 	private String order_id;
+	private String user_phone;
 	private int order_product_id;
 	private String order_user_id;
 	private int product_amount;
 	private double order_price;
+	private Date order_time;
 	private Date order_create_time;
 	private Date order_finish_time;
+	private String other_info;
 	private boolean is_common;
 	private boolean is_active;
 	private User user;
 	private Product product;
+	private Hairstyler hairstyle;
+	
+	public Hairstyler getHairstyle() {
+		return hairstyle;
+	}
+
+	public void setHairstyle(Hairstyler hairstyle) {
+		this.hairstyle = hairstyle;
+	}
+	
+	public int getHairstyle_id() {
+		return hairstyle_id;
+	}
+
+	public void setHairstyle_id(int hairstyle_id) {
+		this.hairstyle_id = hairstyle_id;
+	}
+	
 	public String getOrder_id() {
 		return order_id;
 	}
 
 	public void setOrder_id(String order_id) {
 		this.order_id = order_id;
+	}
+	
+	public String getUser_phone() {
+		return user_phone;
+	}
+
+	public void setUser_phone(String user_phone) {
+		this.user_phone =user_phone;
+	}
+	
+	public String getOther_info() {
+		return other_info;
+	}
+
+	public void setOther_info(String other_info) {
+		this.other_info =other_info;
 	}
 	
 	public int getOrder_product_id() {
@@ -67,6 +106,14 @@ public class Order implements Serializable{
 
 	public void setOrder_price(double order_price) {
 		this.order_price = order_price;
+	}
+	
+	public Date getOrder_time() {
+		return order_time;
+	}
+
+	public void setOrder_time(Date order_time) {
+		this.order_time = order_time;
 	}
 	
 	public Date getOrder_create_time() {
@@ -122,7 +169,7 @@ public class Order implements Serializable{
 		return "Order [order_id=" + order_id + ", order_product_id" + order_product_id
 				+ ", order_user_id=" + order_user_id + ", product_amount=" + product_amount + ", order_price=" + order_price
 				+", order_create_time="+order_create_time+", order_finish_time="+order_finish_time+", is_common="+is_common+",is_active="+is_active
-				+", user="+user+", product="+product+"]";
+				+", user="+user+", product="+product+", hairstyle_id="+hairstyle_id+", order_time="+order_time+", other_info="+other_info+", user_phone="+user_phone+"]";
 	}
-		
+	   
 }

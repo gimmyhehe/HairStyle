@@ -124,9 +124,21 @@ public class PostController {
     public Map<String,Object> delete_post(@RequestParam("post_id") String post_id) {
 			
 			Map<String, Object> delete_post_state = new HashMap<String, Object>();
-			
-			
-			if(PostService.Delete_article(post_id)){
+			Date date = new Date();
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+    		
+    		String last_edit = sdf1.format(date);
+    		Date last_edit_time = null;
+			try {
+				last_edit_time = sdf1.parse(last_edit);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Map<String, Object> delete_post = new HashMap<String, Object>();
+			delete_post.put("post_id", post_id);
+			delete_post.put("last_edit_time", last_edit_time);
+			if(PostService.Delete_article(delete_post)){
 				delete_post_state.put("msg", "删除成功！");
 				delete_post_state.put("status", 0);
 			}

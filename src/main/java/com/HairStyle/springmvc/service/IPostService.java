@@ -24,7 +24,7 @@ public interface IPostService {
 	public boolean insert_post_picture(Map<String, Object> map);
 	public boolean delete_post_picture(Map<String, Object> map);
 
-	public boolean Delete_article(String post_id);
+	public boolean Delete_article(Map<String, Object> map);
 	public Post_Type getPostContentByType(Map<String, Object> map);
 	public User getPostContentByUser_id(Map<String, Object> map);
 	public Poster getPostByPost_id(Map<String, Object> map);

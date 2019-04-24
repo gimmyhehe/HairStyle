@@ -8,11 +8,14 @@
 		<collection property="order" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Order">
 			<id property="order_id" column="order_id" />
 			<result column="order_price" property="order_price" />
-			<result column="product_amount" property="product_amount" />
 			<result column="order_create_time" property="order_create_time" />
 			<result column="order_finish_time" property="order_finish_time" />
+			<result column="order_time" property="order_time" />
+			<result column="otherinfo" property="other_info" />
+			<result column="user_phone" property="user_phone" />
 			<result column="is_active" property="is_active" />
 			<result column="is_common" property="is_common" />
+			<association property="hairstyle" column="hairstyle_id" javaType="com.HairStyle.springmvc.model.Hairstyler" resultMap="HairstylerMap"/>
 			<association property="product" column="product_id" javaType="com.HairStyle.springmvc.model.Product" resultMap="ProductMap"/>
         </collection>
 	</resultMap>
@@ -27,12 +30,15 @@
 			<collection property="order" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Order">
 				<id property="order_id" column="order_id" />
 				<result column="order_price" property="order_price" />
-				<result column="product_amount" property="product_amount" />
 				<result column="order_create_time" property="order_create_time" />
 				<result column="order_finish_time" property="order_finish_time" />
+				<result column="order_time" property="order_time" />
+				<result column="otherinfo" property="other_info" />
+				<result column="user_phone" property="user_phone" />
 				<result column="is_active" property="is_active" />
 				<result column="is_common" property="is_common" />
 				<association property="user" column="user_id" javaType="com.HairStyle.springmvc.model.User" resultMap="UserMap"/>
+				<association property="hairstyle" column="hairstyle_id" javaType="com.HairStyle.springmvc.model.Hairstyler" resultMap="HairstylerMap"/>
         	</collection>
         </collection>
 	</resultMap>
@@ -54,51 +60,61 @@
 		<result column="user_name" property="user_name"/>
 	</resultMap>
 	
+	<resultMap id="HairstylerMap" type="com.HairStyle.springmvc.model.Hairstyler">
+		<id property="hairstyle_id" column="hairstyle_id"/>
+		<result column="hairstyle_name" property="hairstyle_name"/>
+	</resultMap>
+	
 	<!--创建订单 -->
 	<insert id="makeorderDao" parameterType="com.HairStyle.springmvc.model.Order">
-		insert into order (order_id,order_product_id,order_user_id,product_amount,order_price,order_create_time,is_common,is_active)
+		insert into order_table (order_id,order_product_id,order_user_id,order_time,order_price,
+		order_create_time,otherinfo,user_phone,hairstyle_id,is_common,is_active)
 		VALUES
-		(#{order_id},#{order_product_id},#{order_user_id},#{product_amount},#{order_price},#{order_create_time},0,1)	
+		(#{order_id},#{order_product_id},#{order_user_id},#{order_time},#{order_price},#{order_create_time},#{other_info},#{user_phone},#{hairstyle_id},0,1)	
 	</insert>
 	
 	<!-- 预约订单成功 -->
 	<update id="ordersuccessDao" parameterType="java.util.Map">
-		update order set is_active=2 where order_id=#{order_id}
+		update order_table set is_active=2 where order_id=#{order_id}
 	</update>
 	
 	<!-- 完成订单 -->
 	<update id="completeorderDao" parameterType="java.util.Map">
-		update order set order_finish_time=#{order_finish_time},is_active=0 where order_id=#{order_id}
+		update order_table set order_finish_time=#{order_finish_time},is_active=0 where order_id=#{order_id}
 	</update>
 	
 	<!-- 取消订单 -->
 	<update id="cancelorderDao" parameterType="java.lang.String">
-		update order set is_active=0 where order_id=#{order_id}
+		update order_table set is_active=0 where order_id=#{order_id}
 	</update>
 	
 	<select id="findorderbyuser_idDao" parameterType="java.lang.String" resultMap="OrderByUserResultMap">
 		select user.user_id,user.user_name,
-		order.order_id,order.order_price,order.product_amount,order.order_create_time,order.order_finish_time
-		order.is_active,order.is_common,
+		order_table.order_id,order_table.order_price,order_table.order_create_time,order_table.order_finish_time,order_table.order_time,order_table.user_phone,order_table.otherinfo,
+		order_table.is_active,order_table.is_common,
 		product.product_id,product.product_name,product.product_price,
-		company.company_id,company.company_name
+		company.company_id,company.company_name,
+		hairstylist.hairstyle_id,hairstylist.hairstyle_name
 		from user
-		left join (order left join (product left join company 
+		left join (order_table left join (product left join company 
 				on product.product_company_id=company.company_id)
-			on order.order_product_id=product.product_id)
-		on user.user_id=order.order_user_id
+			on order_table.order_product_id=product.product_id)
+						 left join (hairstylist on hairstylist.hairstyle_id =order_table.hairstyle_id) 
+		on user.user_id=order_table.order_user_id
 		where user.user_id=#{user_id}
 	</select>
 	
 	<select id="findorderbycompany_idDao" parameterType="java.lang.String" resultMap="OrderByCompanyResultMap">
 		select user.user_id,user.user_name,
-		order.order_id,order.order_price,order.product_amount,order.order_create_time,order.order_finish_time
-		order.is_active,order.is_common,
+		order_table.order_id,order_table.order_price,order_table.order_create_time,order_table.order_finish_time,order_table.order_time,order_table.user_phone,order_table.otherinfo,
+		order_table.is_active,order_table.is_common,
 		product.product_id,product.product_name,product.product_price,
-		company.company_id,company.company_name
+		company.company_id,company.company_name,
+		hairstylist.hairstyle_id,hairstylist.hairstyle_name
 		from company
-		left join (product left join (order left join user on user.user_id=order.order_user_id)
-			on order.order_product_id=product.product_id)						 
+		left join (product left join (order_table left join user on user.user_id=order_table.order_user_id
+											left join hairstylist on hairstylist.hairstyle_id =order_table.hairstyle_id)
+			on order_table.order_product_id=product.product_id)						 
 			on product.product_company_id=company.company_id
 		where company.company_id=#{company_id}
 	</select>

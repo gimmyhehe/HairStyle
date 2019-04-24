@@ -58,9 +58,9 @@ public class PostServiceImpl implements IPostService{
 	}
 
 	
-	public boolean Delete_article(String post_id){
+	public boolean Delete_article(Map<String, Object> map){
 		
-			return postDao.delete_articleDao(post_id);
+			return postDao.delete_articleDao(map);
 	}
 	
 	public Poster getPostByPost_id(Map<String, Object> map){

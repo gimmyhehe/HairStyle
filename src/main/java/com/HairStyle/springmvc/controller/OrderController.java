@@ -348,7 +348,7 @@ public class OrderController {
 
 				Reply_Order ro=new Reply_Order();
 			    ro.setOrder_reply_content(order_reply_content);
-			    ro.setorder_reply_time(create_time);
+			    ro.setOrder_reply_time(create_time);
 			    ro.setOrder_reply_id(order_reply_id);
 			    ro.setReply_o_common_id(com_order_id);			    
 			    		

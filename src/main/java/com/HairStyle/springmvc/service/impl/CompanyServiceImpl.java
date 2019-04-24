@@ -148,7 +148,14 @@ public class CompanyServiceImpl implements ICompanyService{
         }
 	}
 
+	public User scan_detailbusiness(String company_id) {
+		// TODO Auto-generated method stub
+		return companyDao.scan_detailbusinessDao(company_id);
+	}
 
-
+	public Product getoneproductdetail(String product_id) {
+		// TODO Auto-generated method stub
+		return companyDao.getoneproductdetailDao(product_id);
+	}
 	
 }

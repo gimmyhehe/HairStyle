@@ -99,7 +99,7 @@
 		left join (order_table left join (product left join company 
 				on product.product_company_id=company.company_id)
 			on order_table.order_product_id=product.product_id)
-						 left join (hairstylist on hairstylist.hairstyle_id =order_table.hairstyle_id) 
+						 left join hairstylist on hairstylist.hairstyle_id =order_table.hairstyle_id
 		on user.user_id=order_table.order_user_id
 		where user.user_id=#{user_id}
 	</select>
@@ -123,7 +123,7 @@
 	<insert id="commonorderDao" parameterType="com.HairStyle.springmvc.model.Common_Order">
 		insert into common_order (com_order_id,common_order_id,score,common_order_content,common_time,is_reply)
 		VALUES
-		(#{com_order_id},#{common_order_id},#{score},#{common_order_content},#{common_time},#{order_create_time},0)	
+		(#{com_order_id},#{common_order_id},#{score},#{common_order_content},#{common_time},0)	
 	</insert>
 	
 	<!--评论订单的图片 -->
@@ -135,9 +135,9 @@
 	
 	<!--回复订单的评论 -->
 	<insert id="replycommonorderDao" parameterType="com.HairStyle.springmvc.model.Reply_Order">
-		insert into reply_order (order_reply_id,reply_o_common_id,order_reply_content,order_peply_time)
+		insert into reply_order (order_reply_id,reply_o_common_id,order_reply_content,order_reply_time)
 		VALUES
-		(#{order_reply_id},#{reply_o_common_id},#{order_reply_content},#{order_peply_time})	
+		(#{order_reply_id},#{reply_o_common_id},#{order_reply_content},#{order_reply_time})	
 	</insert>
 		
 	<!-- 评论已被回复 -->

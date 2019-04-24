@@ -52,11 +52,11 @@ public class Reply_Order implements Serializable{
 		this.order_reply_content = order_reply_content;
 	}
 	
-	public Date getorder_reply_time() {
+	public Date getOrder_reply_time() {
 		return order_reply_time;
 	}
 
-	public void setorder_reply_time(Date order_reply_time) {
+	public void setOrder_reply_time(Date order_reply_time) {
 		this.order_reply_time = order_reply_time;
 	}
 	

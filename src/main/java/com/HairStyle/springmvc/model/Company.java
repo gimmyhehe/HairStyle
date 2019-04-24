@@ -28,6 +28,33 @@ public class Company implements Serializable {
 	private String location;
 	private List<Hairstyler> lh;
 	private List<Product> LP;
+	private int score;
+	private int totalbuyer;
+	private int totalcommont;
+	
+	public int getTotalcommont() {
+		return totalcommont;
+	}
+
+	public void setTotalcommont(int totalcommont) {
+		this.totalcommont = totalcommont;
+	}
+	
+	public int getTotalbuyer() {
+		return totalbuyer;
+	}
+
+	public void setTotalbuyer(int totalbuyer) {
+		this.totalbuyer = totalbuyer;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
 	
 	public int getCompany_id() {
 		return company_id;
@@ -88,6 +115,8 @@ public class Company implements Serializable {
 	@Override
 	public String toString() {
 		return "Company [company_id=" + company_id + ", company_name" + company_name + ", company_user_id" + company_user_id + ",company_intr=" + company_intr 
-				+ ", location=" + location + ", lh=" + lh + ", LP=" + LP + "]";
+				+ ", location=" + location + ", lh=" + lh + ", LP=" + LP +
+				", score=" + score + ", totalbuyer=" + totalbuyer + ", totalcommont=" + totalcommont +"]";
 	}
+
 }

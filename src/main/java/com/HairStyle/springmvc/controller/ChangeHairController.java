@@ -73,7 +73,7 @@ public class ChangeHairController {
 			                && !"null".equals(imgs[i].getOriginalFilename().trim())){
 
 			        		String imagename = new SimpleDateFormat("yyyyMMddHHmmss")
-			        				.format(new Date()).concat(imgs[i].getOriginalFilename());
+			        				.format(new Date()).concat(i+".jpg");
 			        		String filename = pic_path_Pack + File.separator +imagename;
 			        		File file = new File(filename);	
 			        		arg1[i]=filename;

@@ -126,7 +126,6 @@ public class PostController {
 			Map<String, Object> delete_post_state = new HashMap<String, Object>();
 			Date date = new Date();
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-    		
     		String last_edit = sdf1.format(date);
     		Date last_edit_time = null;
 			try {
@@ -146,7 +145,6 @@ public class PostController {
 				delete_post_state.put("msg", "删除失败！");
 				delete_post_state.put("status", 1);
 			}
-			
 			return delete_post_state;
 	}
 	

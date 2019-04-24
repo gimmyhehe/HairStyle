@@ -67,6 +67,23 @@
 		<id property="company_name" column="company_name"/>
 		<id property="location" column="location"/>
 		<id property="company_intr" column="company_intr"/>
+		<id property="totalbuyer" column="totalbuyer"/>
+		<id property="totalcommont" column="totalcommont"/>
+		<id property="score" column="score"/>
+		<collection property="LP" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product">         
+		<id property="product_id" column="product_id" />
+			<result column="product_intr" property="product_intr" />
+			<result column="product_name" property="product_name" />
+			<result column="product_price" property="product_price" />
+			<result column="product_time" property="product_time" />
+			<result column="product_amount" property="product_amount" />
+			<result column="is_active" property="is_active" />
+			<collection property="pp" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Product_Pic">         
+            	<id column="product_pic_id" property="product_pic_id" />
+            	<result column="product_seq_id" property="product_seq_id"  />
+            	<result column="product_pic_dir" property="product_pic_dir"  />
+        	</collection>
+        </collection>
 	</resultMap>
 
 	<resultMap id="ProductByIDMap" type="com.HairStyle.springmvc.model.Product">
@@ -83,7 +100,29 @@
             	<result column="product_pic_dir" property="product_pic_dir"  />
         	</collection>
      </resultMap>
-
+	
+	<resultMap id="CompanydetailByUserMap" type="com.HairStyle.springmvc.model.User">
+  		<id property="user_id" column="user_id" />
+		<result column="user_name" property="user_name" />
+		<result column="password" property="password" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+		<result column="birth_date" property="birth_date" />
+		<result column="phone_area" property="phone_area" />
+		<result column="phone_number" property="phone_number" />
+		<result column="face_type" property="face_type" />
+		<result column="career" property="career" />
+		<result column="create_time" property="create_time"  />
+		<result column="country" property="country" />
+		<result column="province" property="province" />
+		<result column="area" property="area" />
+		<result column="user_type" property="user_type" />
+		<association property="company" column="company_id" javaType="com.HairStyle.springmvc.model.Company" resultMap="CompanyMap"/>
+		<association property="user_pic" column="pic_id" javaType="com.HairStyle.springmvc.model.User_Pic" resultMap="User_PicMap"/>		
+	</resultMap>
+	
+	
+	
 	<!--商户注册-->
 	<insert id="regicompanyDao" parameterType="com.HairStyle.springmvc.model.Company">
 		insert into company (company_name,company_user_id,location,company_intr)
@@ -222,5 +261,34 @@
 		WHERE
 		country=#{country} and province=#{province} and area=#{area} and user_type=1
 	</select>
+	
+	<select id="scan_detailbusinessDao" parameterType="java.lang.String" resultMap="CompanydetailByUserMap">
+		SELECT
+		user.*,user_pic.*,company.*,product.*,product_pic.*,
+		(select count(order_table.order_id) 
+			from order_table,product,company
+			where order_table.order_product_id=product.product_id and product.product_company_id=company.company_id
+		) as totalbuyer,
+		(select count(common_order.com_order_id) 
+			from order_table,product,company,common_order
+			where common_order.common_order_id=order_table.order_id and order_table.order_product_id=product.product_id and product.product_company_id=company.company_id
+		) as totalcommont,
+		(select avg(DISTINCT common_order.score) 
+			from order_table,product,company,common_order
+			where common_order.common_order_id=order_table.order_id and order_table.order_product_id=product.product_id and product.product_company_id=company.company_id
+		) as score
+		FROM
+		company
+		left join user left join user_pic on user.user_id=user_pic.uploader_id
+		on user.user_id=company.company_user_id
+		left join product left join order_table left join common_order 
+			on common_order.common_order_id=order_table.order_id
+			on order_table.order_product_id=product.product_id	
+			on product.product_company_id=company.company_id
+			left join product_pic on product_pic.be_product_id=product.product_id
+		WHERE
+		company.company_id=#{company_id}
+	</select>
+	
 	
 </mapper>

@@ -32,7 +32,7 @@ public interface IPostDao {
 	public Post_Type findPostByPost_typeDao(Map<String, Object> map);
 	public User findPostByUser_idDao(Map<String, Object> map);
 	public Poster findPostByPost_idDao(Map<String, Object> map);
-	
+	public User scan_detailbusiness(String company_id);
 
 	
 	

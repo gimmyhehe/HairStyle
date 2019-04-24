@@ -122,13 +122,19 @@ public class CompanyServiceImpl implements ICompanyService{
         //到第几条数据结束
         int lastIndex = currPage * pageSize;
         List<Company> companys = companyDao.search_business_locaDao(location);
+        Map<String,Object>companys_data=new HashMap();
         int total=companys.size();
         int totalPage; 
+        if(total==0){
+        	companys_data.put("Result", companys);
+            companys_data.put("hasMore", 0);
+        	return companys_data;
+        }else{
         if(total%pageSize==0){
         	totalPage=total/pageSize;
         }
         else totalPage=total/pageSize+1;
-        Map<String,Object>companys_data=new HashMap();
+        
         
         if(currPage==totalPage){
         companys_data.put("Result", companys.subList(firstIndex, total));
@@ -139,6 +145,7 @@ public class CompanyServiceImpl implements ICompanyService{
             companys_data.put("hasMore", 1);
         }
 		return companys_data;
+        }
 	}
 
 

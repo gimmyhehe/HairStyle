@@ -283,6 +283,7 @@ public class OrderController {
 			    		co.setScore(Integer.parseInt(score));
 			    		
 			    		OrderService.commonorder(co);
+			    		OrderService.setiscommon(commont_order_id);
 			    		Pic_Common_Order pco=new Pic_Common_Order();
 			    		for(int i=0;i<=8;i++){  
 					        
@@ -300,7 +301,8 @@ public class OrderController {
 				        			pco.setP_c_o_seq_id(String.valueOf(i));
 				        			pco.setP_c_o_id(str+String.valueOf(i));
 				        			pco.setP_c_o_dir("/HairStyle/pic/picture/commont_order/"+com_order_id+"/"+imagename);				        			
-				        			OrderService.insert_commonorder_pic(pco);				        	
+				        			OrderService.insert_commonorder_pic(pco);	
+				        			
 					        }
 					        else break;
 			            }

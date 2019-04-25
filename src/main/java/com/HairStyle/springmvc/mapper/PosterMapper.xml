@@ -34,7 +34,7 @@
             		<result column="replyed_user_name" property="replyed_user_name"  />
             		<result column="reply_content" property="reply_content"  />
             		<result column="reply_time" property="reply_time"  />
-            		<result column="reply_is_active" property="reply_is_active" />          		            		
+            		<result column="reply_is_active" property="is_active" />          		            		
             	</collection>
         </collection>
         <collection property="like_table" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.like_table">
@@ -205,16 +205,16 @@
 	
 	<!-- 单个帖子展示评论回复 -->
 	<select id="findPostByPost_idDao" parameterType="java.util.Map" resultMap="APostbyPostIDResultMap">
-		select post.post_id,post.post_type,post.post_content,post.post_time,post.last_edit_time,post.is_active as post_is_active
+		select post.post_id,post.post_type,post.post_content,post.post_time,post.last_edit_time,post.is_active as post_is_active,
 		post_pic.idpost_pic,post_pic.seq_id,post_pic.post_pic_dir,
         user.user_id,user.user_name,
         user_pic.pic_id as user_pic_id,
         user_pic.user_pic_dir,
-        common.common_id,common.common_user_id,common.common_content,common.common_time,common.is_active as common_is_active
+        common.common_id,common.common_user_id,common.common_content,common.common_time,common.is_active as common_is_active,
         cm_user.user_id as common_user_id,
         cm_user.user_name as common_user_name,
         cm_user_pic.user_pic_dir as common_user_pic,
-        reply.reply_id,reply.reply_user_id,reply.replyed_user_id,reply.reply_time,reply.reply_content,reply.is_active as reply_is_active
+        reply.reply_id,reply.reply_user_id,reply.replyed_user_id,reply.reply_time,reply.reply_content,reply.is_active as reply_is_active,
         re_user.user_name as reply_user_name,
         re_user_pic.user_pic_dir as re_user_pic,
         red_user.user_name as replyed_user_name,

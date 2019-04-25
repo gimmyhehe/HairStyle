@@ -27,7 +27,10 @@ public class Company implements Serializable {
 	private String company_intr;
 	private String location;
 	private List<Hairstyler> lh;
+	
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	private List<Product> LP;
+	
 	private int score;
 	private int totalbuyer;
 	private int totalcommont;

@@ -28,6 +28,8 @@ public class Product implements Serializable {
 	private int product_company_id;
 	
 	private String product_name;
+	
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	private double product_price;
 	private String product_intr;
 	

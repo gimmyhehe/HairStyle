@@ -144,4 +144,10 @@
 	<update id="setcommontreplyDao" parameterType="java.lang.String">
 		update common_order set is_reply=1 where com_order_id=#{com_order_id}
 	</update>
+	
+	
+	<!-- 评论已被回复 -->
+	<update id="setiscommonDao" parameterType="java.lang.String">
+		update order_table set is_common=1 where order_id=#{order_id}
+	</update>
 </mapper>

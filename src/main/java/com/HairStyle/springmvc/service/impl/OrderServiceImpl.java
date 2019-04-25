@@ -91,4 +91,10 @@ public class OrderServiceImpl implements IOrderService{
 		return orderDao.setcommontreplyDao(com_order_id);
 	}
 
+
+	public boolean setiscommon(String order_id) {
+		// TODO Auto-generated method stub
+		return orderDao.setiscommonDao(order_id);
+	}
+
 }

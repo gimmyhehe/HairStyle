@@ -33,6 +33,8 @@ public interface IOrderDao {
 
 	public boolean replycommonorderDao(Reply_Order ro);
 
-	public boolean setcommontreplyDao(String com_order_id); 
+	public boolean setcommontreplyDao(String com_order_id);
+
+	public boolean setiscommonDao(String order_id); 
 
 }

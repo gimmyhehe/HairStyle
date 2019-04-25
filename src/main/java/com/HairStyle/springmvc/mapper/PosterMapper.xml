@@ -98,7 +98,7 @@
 		<collection property="lt" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.like_table">	
 			<id property="like_id" column="like_id" />
 			<result column="like_time" property="like_time" />
-			<association property="poster" column="post_id" javaType="com.HairStyle.springmvc.model.Poster" resultMap="PostMap"/>				
+			<association property="post" column="post_id" javaType="com.HairStyle.springmvc.model.Poster" resultMap="PostMap"/>				
 	    </collection>
 	</resultMap>
 	
@@ -110,7 +110,7 @@
 		<collection property="ct" javaType="java.util.List" ofType="com.HairStyle.springmvc.model.Collection">	
 			<id property="collect_id" column="collect_id" />
 			<result column="collect_time" property="collect_time" />
-			<association property="poster" column="post_id" javaType="com.HairStyle.springmvc.model.Poster" resultMap="PostMap"/>				
+			<association property="post" column="post_id" javaType="com.HairStyle.springmvc.model.Poster" resultMap="PostMap"/>				
 	    </collection>
 	</resultMap>
 	
@@ -173,8 +173,8 @@
         left join (user left join user_pic on user.user_id=user_pic.uploader_id and user_pic.is_active=1)
         on post.post_user_id=user.user_id
         left join post_pic on post.post_id=post_pic.pic_post_id and post_pic.is_active=1
-		left join like_table on like_table.like_post_id=post.post_id and like_table.like_user_id=#{user_id}
-		left join collect_table on collect_table.collect_post_id=post.post_id and collect_table.collect_user_id=#{user_id}
+		left join like_table on like_table.like_post_id=post.post_id and like_table.like_user_id=#{user_id} and like_table.is_active=1
+		left join collect_table on collect_table.collect_post_id=post.post_id and collect_table.collect_user_id=#{user_id} and collect_table.is_active=1
 		where 
 		post.post_type=#{post_type}
 		
